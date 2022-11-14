@@ -403,8 +403,9 @@ export default {
         return;
       }
       createQRCode(this.form).then(res => {
-        this.form.id = res.data.id;
-        this.form.inviterQrCode = res.data.inviterUrl;
+        this.form.id = res.id;
+        this.form.inviterQrCode = res.inviterUrl;
+        console.log(this.form.inviterQrCode);
       })
     }
   }

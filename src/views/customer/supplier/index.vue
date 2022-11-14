@@ -55,7 +55,7 @@
       <el-table-column label="备注" align="center" prop="remark" /> -->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <router-link :to=" { path: `/customer/commodity/${ scope.row.storeId || 1 }` } ">
+          <router-link :to=" { path: `/customer/commodity/${ scope.row.storeId || 0 }` } ">
             <el-button size="small" icon="el-icon-view" type="text" class="mr10" v-hasPermi="['admin:product:save']">查看商品</el-button>
           </router-link>
         </template>

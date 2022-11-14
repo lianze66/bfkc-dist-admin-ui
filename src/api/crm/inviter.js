@@ -63,7 +63,7 @@ export function getInviterCode() {
 // 生成邀请二维码
 export function createQRCode(data) {
   return request({
-    url: `/api/admin/crm/inviter/qrcode`,
+    url: `/user/inviter/qrcode`,
     method: 'post',
     data: data
   })

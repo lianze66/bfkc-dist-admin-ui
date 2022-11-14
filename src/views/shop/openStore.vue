@@ -16,9 +16,13 @@
           <el-form-item label="是否自营" prop="companyAddress">
             <el-input v-model="form.selfOperated" placeholder="是否自营" />
           </el-form-item>
-          <el-form-item label="店铺logo" prop="storeLogo">
-            <!-- <el-input v-model="form.storeLogo" placeholder="店铺logo" /> -->
-            <ImageUpload v-model="form.storeLogo" />
+          <el-form-item label="店铺logo" prop="image">
+            <div class="upLoadPicBox" @click="modalPicTap('1')">
+              <div v-if="form.storeLogo" class="pictrue"><img :src="form.storeLogo"></div>
+              <div v-else class="upLoad">
+                <i class="el-icon-camera cameraIconfont" />
+              </div>
+            </div>
           </el-form-item>
           <el-form-item label="店铺经营类目" prop="goodsManagementCategory">
             <el-input v-model="form.goodsManagementCategory" type="textarea" placeholder="请输入内容" />
@@ -260,13 +264,28 @@
         this.open = false;
         this.reset();
       },
-
+      // 点击商品图
+      modalPicTap (tit, num, i,status) {
+        const _this = this;
+        this.$modalUpload(function(img) {
+          if(tit==='1'&& !num){
+            _this.form.storeLogo = img[0].sattDir
+          }
+          if(tit==='1'&& num === 'dan' ){
+            _this.OneattrValue[0].image = img[0].sattDir
+          }
+          if(tit==='1'&& num === 'duo' ){
+            _this.ManyAttrValue[i].image = img[0].sattDir
+          }
+          if(tit==='1'&& num === 'pi' ){
+            _this.oneFormBatch[0].image = img[0].sattDir
+          }
+        },tit, 'content')
+      },
       /** 新增按钮操作 */
       /** 修改按钮操作 */
       /** 提交按钮 */
       submitForm() {
-        console.log(this.form);
-        return;
         this.$refs["form"].validate(valid => {
           if (valid) {
             if (this.form.id != null) {
