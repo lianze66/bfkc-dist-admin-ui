@@ -211,7 +211,12 @@ export default {
         inviterType: null,
         inviterStatus: null,
       },
-      options: [],// 类型列表
+      options: [ // 类型列表
+        {dictLabel: '未知', dictValue: 0},
+        {dictLabel: '供应商', dictValue: 1},
+        {dictLabel: '代理商', dictValue: 2},
+        {dictLabel: '分销商', dictValue: 3},
+      ],
       options1: [// 类型列表
         {dictLabel: '未知', dictValue: 0},
         {dictLabel: '供应商', dictValue: 1},
