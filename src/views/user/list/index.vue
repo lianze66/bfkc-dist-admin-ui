@@ -787,7 +787,7 @@
               this.getList()
             }).catch(() => {
               this.loading = false
-            }) : tagPiApi({tagId: this.dynamicValidateForm.groupId.join(','), id: this.userIds}).then(res => {
+            }) : tagPiApi({tagId: this.dynamicValidateForm.groupId, id: this.userIds}).then(res => {
               this.$message.success('设置成功')
               this.loading = false
               this.handleClose()
