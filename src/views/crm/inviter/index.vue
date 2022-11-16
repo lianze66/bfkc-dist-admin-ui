@@ -271,7 +271,7 @@ export default {
     getInfo(getToken()).then(res => {
       this.user = {
         userId: res.id,
-        userName: res.admin,
+        userName: res.realName,
       }
     })
     // getDicts('user_type').then(res => {
