@@ -30,7 +30,7 @@
       <el-table-column label="计量单位" align="center" prop="unitName" width="100" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120">
         <template slot-scope="scope">
-          <router-link :to=" { path:`/store/list/creatProduct/${scope.row.id}` } ">
+          <router-link :to=" { path:`/store/list/creatProduct/${scope.row.supplierId}` } ">
             <el-button size="small" icon="el-icon-edit" type="text" class="mr10">添加到我的店铺</el-button>
           </router-link>
         </template>
