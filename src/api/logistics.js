@@ -128,7 +128,7 @@ export function shippingFree(data) {
 // 物流运费模板不包邮
 export function shippingRegion(data) {
   return request({
-    url: 'admin/express/shipping/region/list',
+    url: '/api/admin/express/shipping/region/list',
     method: 'get',
     params: { ...data }
   })
@@ -137,7 +137,7 @@ export function shippingRegion(data) {
 // 物流运费模板新增
 export function shippingSave(data) {
   return request({
-    url: 'admin/express/shipping/templates/save',
+    url: '/api/admin/express/shipping/templates/save',
     method: 'post',
     data: data
   })
@@ -146,7 +146,7 @@ export function shippingSave(data) {
 // 物流运费模板更新
 export function shippingUpdate(data, id) {
   return request({
-    url: 'admin/express/shipping/templates/update',
+    url: '/api/admin/express/shipping/templates/update',
     method: 'post',
     data: data,
     params: { ...id }
@@ -156,7 +156,7 @@ export function shippingUpdate(data, id) {
 // 物流运费模板删除
 export function shippingDetete(data) {
   return request({
-    url: 'admin/express/shipping/templates/delete',
+    url: '/api/admin/express/shipping/templates/delete',
     method: 'get',
     params: data
   })
@@ -165,7 +165,7 @@ export function shippingDetete(data) {
 // 物流公司详情
 export function expressInfo(data) {
   return request({
-    url: 'admin/express/info',
+    url: '/api/admin/express/info',
     method: 'get',
     params: { ...data }
   })
