@@ -3,7 +3,7 @@
 
     <el-form ref="form" :model="form" :rules="rules" label-width="155px">
       <el-tabs v-model="activeName" type="border-card">
-        <el-tab-pane label="店铺信息" name="0">
+        <el-tab-pane label="店铺基础信息" name="0">
           <!-- *****************店铺信息********************************* -->
           <div class="text item">
             <el-form-item label="店铺名称" prop="storeName">
@@ -126,7 +126,7 @@
             </el-form-item>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="账户信息" name="3">
+        <el-tab-pane label="结算账户信息" name="3">
           <!-- *******************账户信息******************************* -->
           <div class="text item">
             <el-form-item label="注册资金" prop="registeredCapital">
