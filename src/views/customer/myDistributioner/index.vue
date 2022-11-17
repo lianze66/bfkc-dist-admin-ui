@@ -119,15 +119,6 @@
           label="邀请时间"
           min-width="100"
         />
-        <el-table-column
-          align="center"
-          label="操作"
-          min-width="100"
-        >
-          <template slot-scope="scope">
-            <el-button type="text" @click="deposit(scope.row.id, scope.row.deposit)">设置押金</el-button>
-          </template>
-        </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination

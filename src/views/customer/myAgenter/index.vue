@@ -69,6 +69,13 @@
         />
 
         <el-table-column
+          prop="deposit"
+          align="center"
+          label="押金"
+          min-width="100"
+        />
+
+        <el-table-column
           label="代理等级"
           align="center"
           min-width="100"
@@ -112,6 +119,15 @@
           label="邀请时间"
           min-width="100"
         />
+        <el-table-column
+          align="center"
+          label="操作"
+          min-width="100"
+        >
+          <template slot-scope="scope">
+            <el-button type="text" @click="deposit(scope.row.id, scope.row.deposit)">设置押金</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -148,6 +164,22 @@
         <el-button type="primary" @click="submitForm('ruleForm', '4')">确 定</el-button>
       </span>
     </el-dialog>
+    <!--设置押金-->
+    <el-dialog
+      title="设置押金"
+      :visible.sync="visible5"
+      width="600px"
+    >
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="押金" prop="deposit">
+          <el-input v-model="ruleForm.deposit" placeholder="请输入押金"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="close('5')">取 消</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm', '5')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -159,6 +191,7 @@
       return {
         loadingBtn: false,
         visible4: false,
+        visible5: false,
         userIds: '',  // 列表多选
         ruleForm: {
           ids: null,
@@ -276,6 +309,9 @@
           case '4':
             this.visible4 = false;
             break;
+          case '5':
+            this.visible5 = false;
+            break;
           default:
             break;
         }
@@ -311,6 +347,25 @@
                       deposit: null
                     }
                     this.visible4 = false;
+                    this.getList()
+                    this.loading = false;
+                  }
+                })
+                break;
+              case '5':
+                let list = {id: this.ruleForm.id, deposit: this.ruleForm.deposit};
+                updateDeposit(list).then(res => {
+                  if(res.code == 200) {
+                    this.$message.success(res.msg);
+                    this.ruleForm = {
+                      ids: null,
+                      groupId: null,
+                      tagId: null,
+                      userLevelId: null,
+                      id: null,
+                      deposit: null
+                    }
+                    this.visible5 = false;
                     this.getList()
                     this.loading = false;
                   }
