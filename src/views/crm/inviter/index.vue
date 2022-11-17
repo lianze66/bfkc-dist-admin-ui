@@ -49,10 +49,28 @@
             plain
             icon="el-icon-plus"
             size="mini"
-            @click="handleAdd"
-          >新增</el-button>
+            @click="handleAdd(1)"
+          >邀请供应商</el-button>
         </el-col>
         <el-col :span="1.5">
+          <el-button
+            type="primary"
+            plain
+            icon="el-icon-plus"
+            size="mini"
+            @click="handleAdd(2)"
+          >邀请经销商</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="primary"
+            plain
+            icon="el-icon-plus"
+            size="mini"
+            @click="handleAdd(3)"
+          >邀请代理商</el-button>
+        </el-col>
+        <!-- <el-col :span="1.5">
           <el-button
             type="success"
             plain
@@ -80,28 +98,28 @@
             size="mini"
             @click="handleExport"
           >导出</el-button>
-        </el-col>
+        </el-col> -->
       </el-row>
 
       <el-table v-loading="loading" :data="inviterList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <!-- <el-table-column label="Id" align="center" prop="id" /> -->
         <!-- <el-table-column label="邀请人" align="center" prop="inviterUserId" /> -->
-        <el-table-column label="邀请二维码" prop="inviterQrCode" width="100">
+        <el-table-column label="邀请人名称" align="center" prop="inviterUserName" />
+        <el-table-column label="邀请二维码" align="center" prop="inviterQrCode" width="100">
           <template slot-scope="scope">
             <ImagePreview :src="scope.row.inviterQrCode || ''" />
           </template>
         </el-table-column>
-        <el-table-column label="邀请人名称" prop="inviterUserName" />
         <!-- <el-table-column label="邀请链接" align="center" prop="inviterUrl" /> -->
         <!-- <el-table-column label="邀请码" align="center" prop="inviterCode" /> -->
-        <el-table-column label="邀请类型" prop="inviterType" :formatter="typeFormatter" />
-        <el-table-column label="状态" prop="inviterStatus">
+        <el-table-column label="邀请类型" align="center" prop="inviterType" :formatter="typeFormatter" />
+        <el-table-column label="状态" align="center" prop="inviterStatus">
           <template slot-scope="scope">
-            {{ scope.row.inviterStatus == 0 ? '未通过' : '已通过' }}
+            {{ scope.row.inviterStatus == 0 ? '未接受' : '已接受' }}
           </template>
         </el-table-column>
-        <el-table-column label="新增时间" prop="createTime" />
+        <el-table-column label="新增时间" align="center" prop="createTime" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
@@ -139,7 +157,7 @@
           <el-input disabled v-model="form.inviterUserName" placeholder="请输入邀请人名称" />
         </el-form-item>
         <el-form-item label="邀请类型" prop="inviterType">
-          <el-select style="width: 100%" v-model="form.inviterType" placeholder="请输入邀请类型">
+          <el-select style="width: 100%" v-model="form.inviterType" disabled placeholder="请输入邀请类型">
             <el-option
               v-for="item in options1"
               :key="item.dictValue"
@@ -230,11 +248,11 @@ export default {
       statusList: [
         {
           value: '0',
-          label: '未通过'
+          label: '未接受'
         },
         {
           value: '1',
-          label: '通过'
+          label: '已接受'
         }
       ],
       user: {  // 用户信息
@@ -333,8 +351,9 @@ export default {
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
-    handleAdd() {
+    handleAdd(index) {
       this.reset();
+      this.form.inviterType = index;
       // this.getInviterCode();
       this.open = true;
       this.title = "添加邀请申请";
@@ -344,7 +363,7 @@ export default {
       this.reset();
       const id = row.id || this.ids
       getInviter(id).then(response => {
-        this.form = response.data;
+        this.form = response;
         this.open = true;
         this.title = "修改邀请申请";
       });

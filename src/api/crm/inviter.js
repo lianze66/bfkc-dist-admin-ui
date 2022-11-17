@@ -12,7 +12,7 @@ export function listInviter(query) {
 // 查询邀请申请详细
 export function getInviter(id) {
   return request({
-    url: '/api/admin/crm/inviter/' + id,
+    url: '/user/inviter/' + id,
     method: 'get'
   })
 }
