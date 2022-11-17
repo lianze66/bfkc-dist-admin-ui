@@ -1,130 +1,133 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="邀请码" prop="inviterCode">
-        <el-input
-          v-model="queryParams.inviterCode"
-          placeholder="请输入邀请码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="邀请类型" prop="inviterType">
-        <el-select v-model="queryParams.inviterType" placeholder="请输入邀请类型">
-          <el-option
-            v-for="item in options"
-            :key="item.dictValue"
-            :label="item.dictLabel"
-            :value="item.dictValue">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="状态" prop="inviterStatus">
-        <!-- <el-input
-          v-model="queryParams.inviterStatus"
-          placeholder="请输入状态"
-          clearable
-          @keyup.enter.native="handleQuery"
-        /> -->
-        <el-select v-model="queryParams.inviterStatus" placeholder="请输入状态">
-          <el-option
-            v-for="item in statusList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <el-card class="box-card">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form-item label="邀请码" prop="inviterCode">
+          <el-input
+            v-model="queryParams.inviterCode"
+            placeholder="请输入邀请码"
+            clearable
+            @keyup.enter.native="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item label="邀请类型" prop="inviterType">
+          <el-select v-model="queryParams.inviterType" placeholder="请输入邀请类型">
+            <el-option
+              v-for="item in options"
+              :key="item.dictValue"
+              :label="item.dictLabel"
+              :value="item.dictValue">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态" prop="inviterStatus">
+          <!-- <el-input
+            v-model="queryParams.inviterStatus"
+            placeholder="请输入状态"
+            clearable
+            @keyup.enter.native="handleQuery"
+          /> -->
+          <el-select v-model="queryParams.inviterStatus" placeholder="请输入状态">
+            <el-option
+              v-for="item in statusList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-        >导出</el-button>
-      </el-col>
-    </el-row>
-
-    <el-table v-loading="loading" :data="inviterList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column label="Id" align="center" prop="id" /> -->
-      <!-- <el-table-column label="邀请人" align="center" prop="inviterUserId" /> -->
-      <el-table-column label="邀请人名称" align="center" prop="inviterUserName" />
-      <el-table-column label="邀请二维码" align="center" prop="inviterQrCode">
-        <template slot-scope="scope">
-          <ImagePreview :src="scope.row.inviterQrCode || ''" />
-        </template>
-      </el-table-column>
-      <!-- <el-table-column label="邀请链接" align="center" prop="inviterUrl" /> -->
-      <!-- <el-table-column label="邀请码" align="center" prop="inviterCode" /> -->
-      <el-table-column label="邀请类型" align="center" prop="inviterType" :formatter="typeFormatter" />
-      <el-table-column label="状态" align="center" prop="inviterStatus">
-        <template slot-scope="scope">
-          {{ scope.row.inviterStatus == 0 ? '未通过' : '已通过' }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+      <el-row :gutter="10" style="margin-bottom: 10px">
+        <el-col :span="1.5">
           <el-button
+            type="primary"
+            plain
+            icon="el-icon-plus"
             size="mini"
-            type="text"
+            @click="handleAdd"
+          >新增</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="success"
+            plain
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-          >修改</el-button>
-          <el-button
             size="mini"
-            type="text"
+            :disabled="single"
+            @click="handleUpdate"
+          >修改</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="danger"
+            plain
             icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
+            size="mini"
+            :disabled="multiple"
+            @click="handleDelete"
           >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="warning"
+            plain
+            icon="el-icon-download"
+            size="mini"
+            @click="handleExport"
+          >导出</el-button>
+        </el-col>
+      </el-row>
+
+      <el-table v-loading="loading" :data="inviterList" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center" />
+        <!-- <el-table-column label="Id" align="center" prop="id" /> -->
+        <!-- <el-table-column label="邀请人" align="center" prop="inviterUserId" /> -->
+        <el-table-column label="邀请二维码" prop="inviterQrCode" width="100">
+          <template slot-scope="scope">
+            <ImagePreview :src="scope.row.inviterQrCode || ''" />
+          </template>
+        </el-table-column>
+        <el-table-column label="邀请人名称" prop="inviterUserName" />
+        <!-- <el-table-column label="邀请链接" align="center" prop="inviterUrl" /> -->
+        <!-- <el-table-column label="邀请码" align="center" prop="inviterCode" /> -->
+        <el-table-column label="邀请类型" prop="inviterType" :formatter="typeFormatter" />
+        <el-table-column label="状态" prop="inviterStatus">
+          <template slot-scope="scope">
+            {{ scope.row.inviterStatus == 0 ? '未通过' : '已通过' }}
+          </template>
+        </el-table-column>
+        <el-table-column label="新增时间" prop="createTime" />
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleUpdate(scope.row)"
+            >修改</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.row)"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+      />
+    </el-card>
 
     <!-- 添加或修改邀请申请对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
