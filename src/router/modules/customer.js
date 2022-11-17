@@ -46,6 +46,15 @@ const customer = {
         icon: 'clipboard'
       }
     },
+    {
+      path: 'shopAddFrom/:id',
+      name: 'shopAddFrom',
+      component: () => import('@/views/customer/supplierCommodity/shopAddFrom'),
+      meta: {
+        title: '编辑商品',
+        icon: 'clipboard'
+      }
+    },
   ]
 }
 

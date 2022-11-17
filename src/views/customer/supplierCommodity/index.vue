@@ -30,7 +30,7 @@
       <el-table-column label="计量单位" align="center" prop="unitName" width="100" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120">
         <template slot-scope="scope">
-          <router-link :to=" { path:`/store/list/creatProduct/${scope.row.supplierId}` } ">
+          <router-link :to=" { path:`/customer/shopAddFrom/${scope.row.id}` } ">
             <el-button size="small" icon="el-icon-edit" type="text" class="mr10">添加到我的店铺</el-button>
           </router-link>
         </template>
@@ -75,7 +75,7 @@
           pageNum: 1,
           pageSize: 10,
           sn: null,
-          storeId: null,
+          merId: null,
           supplierId: null,
           categoryId: null,
           categoryName: null,
@@ -96,13 +96,13 @@
           sales: null,
           stock: null,
           gainIntegral: null,
-          type: '1'
+          type: '1',
+          merId: null
         },
       };
     },
     created() {
-      this.queryParams.storeId = this.$route.params.tableId;
-      console.log(this.queryParams.storeId);
+      this.queryParams.merId = this.$route.params.tableId;
       this.getList();
     },
     methods: {
