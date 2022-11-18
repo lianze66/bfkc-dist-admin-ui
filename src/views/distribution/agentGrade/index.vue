@@ -1,109 +1,113 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-card class="box-card">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
 
-      <el-form-item label="级别名称" prop="gradeName">
-        <el-input
-          v-model="queryParams.gradeName"
-          placeholder="请输入级别名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+        <el-form-item label="级别名称" prop="gradeName">
+          <el-input
+            v-model="queryParams.gradeName"
+            placeholder="请输入级别名称"
+            clearable
+            @keyup.enter.native="handleQuery"
+          />
+        </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['distribution:agentGrade:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['distribution:agentGrade:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['distribution:agentGrade:remove']"
-        >删除</el-button>
-      </el-col>
-
-    </el-row>
-
-    <el-table v-loading="loading" :data="agentGradeList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="店铺名称" align="center" prop="storeName" />
-      <el-table-column label="级别名称" align="center" prop="gradeName" />
-      <el-table-column label="级别" align="center" prop="gradeCode" />
-      <el-table-column label="代理类型" :formatter="formatterAgentType"  align="center" prop="agentType" />
-      <el-table-column label="达标业绩" align="center" prop="saleAmount" />
-      <!-- <el-table-column label="业绩开始值" align="center" prop="startNum" />
-      <el-table-column label="业绩结束值" align="center" prop="endNum" /> -->
-      <el-table-column label="计算模式"  :formatter="formatterCalModel" align="center" prop="calModel"/>
-      <el-table-column label="百分比（%）" align="center" prop="profitRate" />
-      <el-table-column label="分润金额" align="center" prop="profitAmount" />
-      <el-table-column label="状态"   align="center" prop="status" >
-        <template slot-scope="scope">
-          <el-switch
-            class="switchGrade"
-            v-model="scope.row.status"
-            active-value="0"
-            inactive-value="1"
-            @change="handleStatusChange(scope.row)"
-          ></el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column label="排序" align="center" prop="sort" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+      <el-row :gutter="10" class="mb8">
+        <el-col :span="1.5">
           <el-button
+            type="primary"
+            plain
+            icon="el-icon-plus"
             size="mini"
-            type="text"
+            @click="handleAdd"
+            v-hasPermi="['distribution:agentGrade:add']"
+          >新增</el-button>
+        </el-col>
+        <el-col :span="1.5">
+          <el-button
+            type="success"
+            plain
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            size="mini"
+            :disabled="single"
+            @click="handleUpdate"
             v-hasPermi="['distribution:agentGrade:edit']"
           >修改</el-button>
+        </el-col>
+        <el-col :span="1.5">
           <el-button
-            size="mini"
-            type="text"
+            type="danger"
+            plain
             icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
+            size="mini"
+            :disabled="multiple"
+            @click="handleDelete"
             v-hasPermi="['distribution:agentGrade:remove']"
           >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+        </el-col>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+      </el-row>
+
+      <el-table v-loading="loading" :data="agentGradeList" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="店铺名称" align="center" prop="storeName" />
+        <el-table-column label="级别名称" align="center" prop="gradeName" />
+        <el-table-column label="级别" align="center" prop="gradeCode" />
+        <el-table-column label="代理类型" :formatter="formatterAgentType"  align="center" prop="agentType" />
+        <el-table-column label="达标业绩" align="center" prop="saleAmount" />
+        <!-- <el-table-column label="业绩开始值" align="center" prop="startNum" />
+        <el-table-column label="业绩结束值" align="center" prop="endNum" /> -->
+        <el-table-column label="计算模式"  :formatter="formatterCalModel" align="center" prop="calModel"/>
+        <el-table-column label="百分比（%）" align="center" prop="profitRate" />
+        <el-table-column label="分润金额" align="center" prop="profitAmount" />
+        <el-table-column label="状态"   align="center" prop="status" >
+          <template slot-scope="scope">
+            <el-switch
+              class="switchGrade"
+              v-model="scope.row.status"
+              active-value="0"
+              inactive-value="1"
+              @change="handleStatusChange(scope.row)"
+            ></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column label="排序" align="center" prop="sort" />
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleUpdate(scope.row)"
+              v-hasPermi="['distribution:agentGrade:edit']"
+            >修改</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['distribution:agentGrade:remove']"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <div class="block">
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
+        />
+      </div>
+    </el-card>
 
     <!-- 添加或修改代理级别对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
@@ -401,3 +405,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/deep/ .pagination-container {
+  padding: 0;
+}
+</style>
