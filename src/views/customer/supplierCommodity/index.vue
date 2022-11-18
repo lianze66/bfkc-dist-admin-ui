@@ -75,7 +75,6 @@
           pageNum: 1,
           pageSize: 10,
           sn: null,
-          merId: null,
           supplierId: null,
           categoryId: null,
           categoryName: null,
@@ -96,13 +95,12 @@
           sales: null,
           stock: null,
           gainIntegral: null,
-          type: '1',
-          merId: null
+          type: '1'
         },
       };
     },
     created() {
-      this.queryParams.merId = this.$route.params.tableId;
+      this.queryParams.supplierId = this.$route.params.tableId;
       this.getList();
     },
     methods: {
