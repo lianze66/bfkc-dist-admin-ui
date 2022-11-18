@@ -33,8 +33,8 @@
               >
               </el-input>
             </el-form-item>
-            <el-form-item label="分销等级" prop="">
-              <el-button type="primary" @click="addDisGradeList('first')">新增分销等级</el-button>
+            <el-form-item label="经销商等级" prop="">
+              <el-button type="primary" @click="addDisGradeList('first')">新增经销商等级</el-button>
               <el-table
                 :data="form.disGradeList"
                 border
@@ -48,17 +48,17 @@
                 <el-table-column
                   prop="gradeName"
                   align="center"
-                  label="等级名称">
+                  label="经销商等级名称">
                   <template slot-scope="scope">
-                    <el-input style="width: 100%" v-model="scope.row.gradeName" placeholder="请输入等级名称"></el-input>
+                    <el-input style="width: 100%" v-model="scope.row.gradeName" placeholder="请输入经销商等级名称"></el-input>
                   </template>
                 </el-table-column>
                 <el-table-column
                   prop="gradeCode"
                   align="center"
-                  label="等级code">
+                  label="经销商等级">
                   <template slot-scope="scope">
-                    <el-input style="width: 100%" v-model="scope.row.gradeCode" placeholder="请输入等级code"></el-input>
+                    <el-input style="width: 100%" v-model="scope.row.gradeCode" placeholder="请输入经销商等级"></el-input>
                   </template>
                 </el-table-column>
                 <el-table-column
@@ -93,8 +93,8 @@
             size="medium"
             label-width="160px"
           >
-            <el-form-item label="分佣等级" prop="">
-              <el-button type="primary" @click="addDisGradeList('second')">新增分佣等级</el-button>
+            <el-form-item label="代理商等级" prop="">
+              <el-button type="primary" @click="addDisGradeList('second')">新增代理商等级</el-button>
               <el-table
                 :data="form.agentGradeList"
                 border
@@ -108,17 +108,17 @@
                 <el-table-column
                   prop="gradeName"
                   align="center"
-                  label="分佣名称">
+                  label="代理商等级名称">
                   <template slot-scope="scope">
-                    <el-input style="width: 100%" v-model="scope.row.gradeName" placeholder="请输入分佣名称"></el-input>
+                    <el-input style="width: 100%" v-model="scope.row.gradeName" placeholder="请输入代理商等级名称"></el-input>
                   </template>
                 </el-table-column>
                 <el-table-column
                   prop="gradeCode"
                   align="center"
-                  label="等级code">
+                  label="代理商等级">
                   <template slot-scope="scope">
-                    <el-input style="width: 100%" v-model="scope.row.gradeCode" placeholder="请输入等级code"></el-input>
+                    <el-input style="width: 100%" v-model="scope.row.gradeCode" placeholder="请输入代理商等级"></el-input>
                   </template>
                 </el-table-column>
                 <el-table-column

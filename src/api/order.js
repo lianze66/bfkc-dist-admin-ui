@@ -14,6 +14,18 @@ export function orderListApi(params) {
 }
 
 /**
+ * 订单 列表
+ * @param prams
+ */
+export function orderAgentList(params) {
+  return request({
+    url: '/api/admin/store/order/agentList',
+    method: 'get',
+    params
+  })
+}
+
+/**
  * 订单 列表 获取各状态数量
  * @param params
  */
