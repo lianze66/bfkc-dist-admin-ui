@@ -55,6 +55,15 @@ const customer = {
         icon: 'clipboard'
       }
     },
+    {
+      path: 'client',
+      name: 'client',
+      component: () => import('@/views/customer/client/index'),
+      meta: {
+        title: '我的客户',
+        icon: 'clipboard'
+      }
+    },
   ]
 }
 

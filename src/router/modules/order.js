@@ -24,6 +24,12 @@ const orderRouter = {
       component: () => import('@/views/order/paying/index'),
       name: 'paying',
       meta: { title: '一件代发' }
+    },
+    {
+      path: 'myOrder',
+      component: () => import('@/views/order/myOrder/index'),
+      name: 'myOrder',
+      meta: { title: '我的订单' }
     }
   ]
 }
