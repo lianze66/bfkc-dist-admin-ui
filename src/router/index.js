@@ -25,6 +25,7 @@ import codegen from './modules/codegen'
 import crm from './modules/crm'
 import customer from './modules/customer'
 import shop from './modules/shop'
+import ecologyStatistics from './modules/ecologyStatistics'
 
 
 /**
@@ -86,6 +87,8 @@ export const constantRoutes = [
   customer,
   // 店铺管理
   shop,
+  // 生态圈统计
+  ecologyStatistics,
 
   {
     path: '/404',
