@@ -26,6 +26,7 @@ import crm from './modules/crm'
 import customer from './modules/customer'
 import shop from './modules/shop'
 import ecologyStatistics from './modules/ecologyStatistics'
+import commodityStatistics from './modules/commodityStatistics'
 
 
 /**
@@ -89,6 +90,8 @@ export const constantRoutes = [
   shop,
   // 生态圈统计
   ecologyStatistics,
+  // 商品数据统计
+  commodityStatistics,
 
   {
     path: '/404',
