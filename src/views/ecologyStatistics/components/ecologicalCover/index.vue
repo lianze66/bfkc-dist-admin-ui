@@ -232,6 +232,7 @@ export default {
               normal: {
                 label: {
                   show: true,
+                  formatter:'{b}\n{c}',
                   textStyle: {
                     color: "black",
                   },
