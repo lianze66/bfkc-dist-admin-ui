@@ -6,7 +6,7 @@ module.exports = {
   // 接口请求地址
   apiBaseURL: VUE_APP_API_URL,
 
-  title: 'BFKC',
+  title: '北方科成',
 
   /**
    * @type {boolean} true | false
