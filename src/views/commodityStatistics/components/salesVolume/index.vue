@@ -16,7 +16,8 @@
       </el-col>
       <el-col :span="8">
         <div style="padding: 20px 0">
-          <div style="text-align: center; font-size: 14px">50%</div>
+          <div style="text-align: center; font-size: 14px; margin-bottom: 10px">50%</div>
+          <el-progress :percentage="50" :show-text="false"></el-progress>
         </div>
       </el-col>
       <el-col :span="8">
