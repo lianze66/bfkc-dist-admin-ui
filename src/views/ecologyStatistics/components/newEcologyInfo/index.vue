@@ -29,41 +29,28 @@
         <td>加入时间</td>
       </tr>
       <tr v-for="(item, index) in tableData" :key="index">
-        <td>{{ item.type }}</td>
+        <td>{{ item.userTypeName }}</td>
         <td>{{ item.name }}</td>
-        <td>{{ item.address }}</td>
+        <td>{{ item.date }}</td>
       </tr>
     </table>
   </div>
 </template>
 
 <script>
+import { selectAdminByUserId } from '@/api/ecologyStatistics'
 export default {
   data() {
-      return {
-        tableData: [{
-          name: 'AA',
-          address: '2022-11-25 10:25:32',
-          type: '供应商',
-        },{
-          name: 'BB',
-          address: '2022-11-25 10:25:32',
-          type: '供应商',
-        },{
-          name: 'CC',
-          address: '2022-11-25 10:25:32',
-          type: '供应商',
-        },{
-          name: 'DD',
-          address: '2022-11-25 10:25:32',
-          type: '供应商',
-        },{
-          name: 'EE',
-          address: '2022-11-25 10:25:32',
-          type: '供应商',
-        },]
-      }
+    return {
+      tableData: []
     }
+  },
+  mounted() {
+    selectAdminByUserId().then(res => {
+      console.log(res, '新增生态信息')
+      this.tableData = res
+    })
+  },
 }
 </script>
 

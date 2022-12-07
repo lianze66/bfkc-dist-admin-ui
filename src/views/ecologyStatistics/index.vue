@@ -3,7 +3,7 @@
     <div class="ecologyStatistics">
       <el-row :gutter="15">
         <el-col :span="6">
-          <!-- 分销商等级分布 -->
+          <!-- 经销商等级分布 -->
           <el-card class="box-card" style="height: 300px;">
             <dealerLevel />
           </el-card>

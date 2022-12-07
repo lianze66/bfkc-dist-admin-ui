@@ -7,19 +7,34 @@
         <td>订单状态</td>
         <td>订单时间</td>
       </tr>
-      <tr v-for="item in 8" :key="item">
-        <td>1001211212</td>
-        <td>交易成功</td>
-        <td>2022-11-25 10:25:32</td>
+      <tr v-for="(item, index) in trandeOrderList" :key="index">
+        <td>{{ item.orderId }}</td>
+        <td>{{ item.status == 0 ? '待发货' : item.status == 1 ? '待收货' : item.status == 2 ? '已收货，待评价' : item.status == 3 ? '已完成' : '' }}</td>
+        <td>{{ item.date }}</td>
       </tr>
     </table>
   </div>
 </template>
 
 <script>
+import { trandeOrderList } from '@/api/commodityStatistics'
 export default {
-
-}
+  name: "index",
+  data() {
+    return {
+      trandeOrderList: [],
+    };
+  },
+  mounted() {
+    trandeOrderList(10).then(res => {
+      console.log(res, 'trandeOrderList')
+      this.trandeOrderList = res;
+    })
+  },
+  methods: {
+    
+  },
+};
 </script>
 
 <style lang="scss" scoped>

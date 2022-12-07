@@ -13,7 +13,7 @@
               color: rgb(49, 182, 241);
             "
           >
-            25
+            {{ selectLackStockWarn.storeNum }}
           </div>
           <div style="font-size: 14px">缺货店家数</div>
         </div>
@@ -27,7 +27,7 @@
               color: rgb(224, 58, 79);
             "
           >
-            56
+            {{ selectLackStockWarn.lackStockNum }}
           </div>
           <div style="font-size: 14px">缺货商品数</div>
         </div>
@@ -39,42 +39,34 @@
         <td>商家名称</td>
         <td>库存量</td>
       </tr>
-      <tr>
-        <td>面膜</td>
-        <td>欧仕莱</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td>口红</td>
-        <td>笆子</td>
-        <td>8</td>
-      </tr>
-      <tr>
-        <td>面膜</td>
-        <td>欧仕莱</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td>口红</td>
-        <td>笆子</td>
-        <td>8</td>
-      </tr>
-      <tr>
-        <td>面膜</td>
-        <td>欧仕莱</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <td>口红</td>
-        <td>笆子</td>
-        <td>8</td>
+      <tr v-for="(item, index) in selectLackStockWarn.productlList" :key="index">
+        <td>{{ item.proName }}</td>
+        <td>{{ item.storeName }}</td>
+        <td>{{ item.stock }}</td>
       </tr>
     </table>
   </div>
 </template>
 
 <script>
-export default {};
+import { selectLackStockWarn } from '@/api/commodityStatistics'
+export default {
+  name: "index",
+  data() {
+    return {
+      selectLackStockWarn: {},
+    };
+  },
+  mounted() {
+    selectLackStockWarn().then(res => {
+      console.log(res, 'selectLackStockWarn')
+      this.selectLackStockWarn = res;
+    })
+  },
+  methods: {
+    
+  },
+};
 </script>
 
 <style lang="scss" scoped>

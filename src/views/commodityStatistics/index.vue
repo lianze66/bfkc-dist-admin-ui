@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="ecologyStatistics">
+    <div class="commodityStatistics">
       <el-row :gutter="15">
         <el-col :span="6">
           <!-- 商品销售排名 -->

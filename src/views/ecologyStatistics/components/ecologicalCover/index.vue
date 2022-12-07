@@ -4,30 +4,36 @@
       <el-col :span="8">
         <el-card class="box-card">
           <div
-            style="display: flex; flex-direction: column; align-items: center"
+            :class="userType == 1 ? 'selected' : ''"
+            style="display: flex; flex-direction: column; align-items: center;cursor:pointer"
+            @click="list(1)"
           >
             <div>供应商</div>
-            <div style="margin-top: 10px">123</div>
+            <div style="margin-top: 10px">{{ quantityList.supplierNum }}</div>
           </div>
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card class="box-card">
           <div
-            style="display: flex; flex-direction: column; align-items: center"
+            :class="userType == 2 ? 'selected' : ''"
+            style="display: flex; flex-direction: column; align-items: center;cursor:pointer"
+            @click="list(2)"
           >
             <div>代理商</div>
-            <div style="margin-top: 10px">340</div>
+            <div style="margin-top: 10px">{{ quantityList.agentNum }}</div>
           </div>
         </el-card>
       </el-col>
       <el-col :span="8">
         <el-card class="box-card">
           <div
-            style="display: flex; flex-direction: column; align-items: center"
+            :class="userType == 3 ? 'selected' : ''"
+            style="display: flex; flex-direction: column; align-items: center;cursor:pointer"
+            @click="list(3)"
           >
             <div>经销商</div>
-            <div style="margin-top: 10px">245</div>
+            <div style="margin-top: 10px">{{ quantityList.distributorNum }}</div>
           </div>
         </el-card>
       </el-col>
@@ -43,214 +49,107 @@
 </template>
 
 <script>
+import { selectUserNumByUserId, selectDisByArea } from '@/api/ecologyStatistics'
 import * as echarts from "echarts";
 import "./china";
 export default {
   data() {
-    return {};
+    return {
+      quantityList: [],
+      userType: 1,
+    };
   },
   mounted() {
-    this.list();
+    selectUserNumByUserId().then(res => {
+      console.log(res, '数量');
+      this.quantityList = res;
+    })
+    this.list(1);
   },
   methods: {
-    list() {
-      const data_list = [
-        {
-          name: "江苏",
-          value: 0,
-        },
-        {
-          name: "安徽",
-          value: 1,
-        },
-        {
-          name: "湖北",
-          value: 1,
-        },
-        {
-          name: "湖南",
-          value: 0,
-        },
-        {
-          name: "广东",
-          value: 1,
-        },
-        {
-          name: "浙江",
-          value: 1,
-        },
-        {
-          name: "福建",
-          value: 1,
-        },
-        {
-          name: "山东",
-          value: 1,
-        },
-        {
-          name: "河南",
-          value: 4,
-        },
-        {
-          name: "四川",
-          value: 0,
-        },
-        {
-          name: "河北",
-          value: 0,
-        },
-        {
-          name: "江西",
-          value: 0,
-        },
-        {
-          name: "黑龙江",
-          value: 1,
-        },
-        {
-          name: "陕西",
-          value: 0,
-        },
-        {
-          name: "贵州",
-          value: 0,
-        },
-        {
-          name: "吉林",
-          value: 0,
-        },
-        {
-          name: "广西",
-          value: 1,
-        },
-        {
-          name: "山西",
-          value: 0,
-        },
-        {
-          name: "云南",
-          value: 0,
-        },
-        {
-          name: "辽宁",
-          value: 0,
-        },
-        {
-          name: "甘肃",
-          value: 0,
-        },
-        {
-          name: "重庆",
-          value: 0,
-        },
-        {
-          name: "内蒙古",
-          value: 0,
-        },
-        {
-          name: "海南",
-          value: 0,
-        },
-        {
-          name: "天津",
-          value: 0,
-        },
-        {
-          name: "新疆",
-          value: 0,
-        },
-        {
-          name: "上海",
-          value: 2,
-        },
-        {
-          name: "宁夏",
-          value: 0,
-        },
-        {
-          name: "青海",
-          value: 0,
-        },
-        {
-          name: "北京",
-          value: 0,
-        },
-        {
-          name: "西藏",
-          value: 0,
-        },
-      ];
-      let new_data_list = data_list.map((item, index) => {
-        return item.value;
-      });
-      let data_list_max = Math.max(...new_data_list);
-      var map_Chart = echarts.init(document.getElementById("map"));
-      let option = {
-        title: {
-          text: "生态覆盖情况",
-          // x: "center",
-        },
-        tooltip: {
-          trigger: "item",
-          formatter: (params) => {
-            let num;
-            let showHtml = "";
-            if (isNaN(params.value)) {
-              num = "0";
-            } else {
-              num = params.value;
-            }
-            showHtml += `
-                        <span style="display: flex;">
-                            ${"省份"}：${params.name}</br>
-                            ${"供应商"}：${num}
-                        </span>
-                    `;
-            return showHtml;
+    list(userType) {
+      this.userType = userType;
+      selectDisByArea(userType).then(res => {
+        console.log(res, '地图数据')
+        const data_list = res;
+        let new_data_list = data_list.map((item, index) => {
+          return item.num;
+        });
+        let data_list_max = Math.max(...new_data_list);
+        var map_Chart = echarts.init(document.getElementById("map"));
+        let option = {
+          title: {
+            text: "生态覆盖情况",
+            // x: "center",
           },
-        },
+          tooltip: {
+            trigger: "item",
+            formatter: (params) => {
+              let num;
+              let showHtml = "";
+              if (isNaN(params.value)) {
+                num = "0";
+              } else {
+                num = params.value;
+              }
+              showHtml += `
+                          <span style="display: flex;">
+                              ${"省份"}：${params.name}</br>
+                              ${userType == 1 ? '供应商' : userType == 2 ? '代理商' : userType == 3 ? '经销商' : ''}：${num}
+                          </span>
+                      `;
+              return showHtml;
+            },
+          },
 
-        dataRange: {
-          x: "left",
-          y: "bottom",
-          min: 0,
-          max: data_list_max,
-          text: ["高", "低"], // 文本，默认为数值文本
-          calculable: true,
-          inRange: {
-            color: ["rgb(217, 217, 217)", "rgb(254, 212, 152)"],
+          dataRange: {
+            x: "left",
+            y: "bottom",
+            min: 0,
+            max: data_list_max,
+            text: ["高", "低"], // 文本，默认为数值文本
+            calculable: true,
+            inRange: {
+              color: ["rgb(217, 217, 217)", "rgb(254, 212, 152)"],
+            },
           },
-        },
-        series: [
-          {
-            name: "数据",
-            type: "map",
-            mapType: "china",
-            roam: false,
-            selectedMode: false,
-            itemStyle: {
-              normal: {
-                label: {
-                  show: true,
-                  formatter:'{b}\n{c}',
-                  textStyle: {
-                    color: "black",
+          series: [
+            {
+              name: "数据",
+              type: "map",
+              mapType: "china",
+              roam: false,
+              selectedMode: false,
+              itemStyle: {
+                normal: {
+                  label: {
+                    show: true,
+                    formatter: (params) => {
+                      if (isNaN(params.value)) {
+                        params.value = "";
+                      }
+                      return `${params.name}
+${params.value}`;
+                    },
+                    textStyle: {
+                      color: "black",
+                    },
+                  },
+                },
+                emphasis: {
+                  areaColor: "rgb(254, 212, 152)",
+                  label: {
+                    show: true,
                   },
                 },
               },
-              emphasis: {
-                areaColor: "rgb(254, 212, 152)",
-                label: {
-                  show: true,
-                },
-              },
+              data: data_list,
             },
-            data: data_list,
-          },
-        ],
-      };
+          ],
+        };
 
-      map_Chart.setOption(option);
+        map_Chart.setOption(option);
+      })
     },
   },
 };
@@ -263,4 +162,7 @@ export default {
     margin-bottom: 0;
   }
 }
+// .selected {
+//   color: rgb(225, 74, 74);
+// }
 </style>
