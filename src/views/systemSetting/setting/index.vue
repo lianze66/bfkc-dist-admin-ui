@@ -110,6 +110,10 @@ export default {
       systemFormConfigApi.getFormConfigInfo(formPram).then(data => {
         const { id, name, info, content } = data
         this.formConfChild.content = JSON.parse(content)
+        this.formConfChild.content.fields.forEach(item => {
+          item.__config__.tips = false;
+          item.__config__.tipsIsLink = false;
+        })
         this.formConfChild.id = id
         this.handlerGetSettingInfo(id, 2)
         this.loading = false
