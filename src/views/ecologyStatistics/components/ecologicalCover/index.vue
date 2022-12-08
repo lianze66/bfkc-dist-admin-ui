@@ -2,10 +2,9 @@
   <div class="ecologicalCover">
     <el-row :gutter="20">
       <el-col :span="8">
-        <el-card class="box-card">
+        <el-card :class="userType == 1 ? 'selected' : 'selected1'" class="box-card">
           <div
-            :class="userType == 1 ? 'selected' : ''"
-            style="display: flex; flex-direction: column; align-items: center;cursor:pointer"
+            style="display: flex; flex-direction: column; align-items: center;cursor: pointer;"
             @click="list(1)"
           >
             <div>供应商</div>
@@ -14,10 +13,9 @@
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card class="box-card">
+        <el-card :class="userType == 2 ? 'selected' : 'selected1'" class="box-card">
           <div
-            :class="userType == 2 ? 'selected' : ''"
-            style="display: flex; flex-direction: column; align-items: center;cursor:pointer"
+            style="display: flex; flex-direction: column; align-items: center;cursor: pointer;"
             @click="list(2)"
           >
             <div>代理商</div>
@@ -26,10 +24,9 @@
         </el-card>
       </el-col>
       <el-col :span="8">
-        <el-card class="box-card">
+        <el-card :class="userType == 3 ? 'selected' : 'selected1'" class="box-card">
           <div
-            :class="userType == 3 ? 'selected' : ''"
-            style="display: flex; flex-direction: column; align-items: center;cursor:pointer"
+            style="display: flex; flex-direction: column; align-items: center;cursor: pointer;"
             @click="list(3)"
           >
             <div>经销商</div>
@@ -162,7 +159,11 @@ ${params.value}`;
     margin-bottom: 0;
   }
 }
-// .selected {
-//   color: rgb(225, 74, 74);
-// }
+.selected {
+  background: rgba(24,144,255, .5);
+  transition: 0.5s;
+}
+.selected1 {
+  transition: 0.5s;
+}
 </style>
