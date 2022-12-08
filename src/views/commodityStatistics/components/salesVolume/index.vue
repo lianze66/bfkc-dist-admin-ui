@@ -16,8 +16,8 @@
       </el-col>
       <el-col :span="8">
         <div style="padding: 20px 0">
-          <div style="text-align: center; font-size: 14px; margin-bottom: 10px">50%</div>
-          <el-progress :percentage="50" :show-text="false"></el-progress>
+          <div style="text-align: center; font-size: 14px; margin-bottom: 10px">{{ percentage }}%</div>
+          <el-progress :percentage="percentage" :show-text="false"></el-progress>
         </div>
       </el-col>
       <el-col :span="8">
@@ -64,6 +64,7 @@ export default {
       dialogVisible: false,
       targetSales: null,
       currentSales: null,
+      percentage: null,
       form: {
         targetSales: null,
       }
@@ -79,6 +80,8 @@ export default {
       trandeDataByMonth().then(res => {
         console.log(res, '销售额')
         this.targetSales = res.targetSales;
+        this.currentSales = res.currentSales;
+        this.percentage = Number(res.currentSales) / Number(res.targetSales) * 100;
         let targetSalesList = [];
         for (let i = 0; i < 30; i++) {
           targetSalesList.push(res.targetSales);
