@@ -61,12 +61,13 @@ export default {
                 {
                     type: 'pie',
                     radius: '70%',
-                    radius: ['30%', '70%'],
-                    center: ['40%', '50%'],
+                    radius: ['30%', '68%'],
+                    center: ['34%', '50%'],
                     // roseType: 'area', //所有圆心角相同，仅通过半径展示数据大小
                     itemStyle: {
                         borderRadius: '100%' //内圆半径和外圆半径
                     },
+                    hoverAnimation:false,
                     // data: [
                     //     {value: 30, name: '青铜'},
                     //     {value: 28, name: '白银'},

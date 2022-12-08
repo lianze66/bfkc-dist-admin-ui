@@ -70,8 +70,9 @@ export default {
             // name: 'bug分布',
             type: 'pie',             //echarts图的类型   pie代表饼图
             radius: '70%',           //饼图中饼状部分的大小所占整个父元素的百分比
-            radius: ['15%', '50%'],
-            center: ['40%', '50%'],  //整个饼图在整个父元素中的位置
+            radius: ['30%', '68%'],
+            center: ['34%', '50%'],  //整个饼图在整个父元素中的位置
+            hoverAnimation:false,
             // data:''               //饼图数据
             // data: [                  //每个模块的名字和值
             //   { name: '青铜', value: 10 },
