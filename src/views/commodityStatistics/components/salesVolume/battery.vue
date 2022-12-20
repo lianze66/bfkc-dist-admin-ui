@@ -66,11 +66,11 @@ export default {
     // 根据电量画出一个块
     drawPath (quantity) {
       if (this.proIsCharge) {
-        this.ctx.fillStyle = 'green'
+        this.ctx.fillStyle = 'rgb(24, 175, 241)'
       } else if (quantity < 20) {
         this.ctx.fillStyle = 'red'
       } else {
-        this.ctx.fillStyle = 'green'
+        this.ctx.fillStyle = 'rgb(24, 175, 241)'
       }
       this.ctx.fillRect(1, 1, (60 - 2) * quantity / 100, 26)
     },
