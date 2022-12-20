@@ -2,7 +2,7 @@
   <div class="orderInfo">
     <div style="font-size: 18px;font-weight: 600;margin-bottom:20px;">交易订单信息</div>
     <table>
-      <tr>
+      <tr style="font-size: 16px;font-weight: 600;">
         <td>订单编号</td>
         <td>订单状态</td>
         <td>订单时间</td>
@@ -61,7 +61,7 @@ table caption {
 
 th,
 td {
-  border: 1px solid #999;
+  // border: 1px solid #999;
   text-align: center;
   padding: 10px 0;
 }

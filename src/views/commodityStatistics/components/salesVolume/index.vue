@@ -17,7 +17,8 @@
       <el-col :span="8">
         <div style="padding: 20px 0">
           <div style="text-align: center; font-size: 14px; margin-bottom: 10px">{{ percentage }}%</div>
-          <el-progress :percentage="percentage" :show-text="false"></el-progress>
+          <!-- <el-progress :percentage="percentage" :show-text="false"></el-progress> -->
+          <battery style="width: 100%;height: 30px;" :proIsCharge="IsCharge" :proQuantity="percentage"></battery>
         </div>
       </el-col>
       <el-col :span="8">
@@ -56,9 +57,13 @@
 
 <script>
 import { trandeDataByMonth, updateUserTargetSales } from '@/api/commodityStatistics'
+import battery from './battery.vue'
 import echarts from "echarts";
 export default {
   name: "index",
+  components: {
+    battery
+  },
   data() {
     return {
       dialogVisible: false,

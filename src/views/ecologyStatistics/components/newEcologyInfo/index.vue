@@ -23,7 +23,7 @@
       </el-table-column>
     </el-table> -->
     <table>
-      <tr>
+      <tr style="font-size: 16px;font-weight: 600;">
         <td>生态分类</td>
         <td>公司名称</td>
         <td>加入时间</td>
@@ -78,7 +78,7 @@ table caption {
 
 th,
 td {
-  border: 1px solid #999;
+  // border: 1px solid #999;
   text-align: center;
   padding: 10px 0;
 }

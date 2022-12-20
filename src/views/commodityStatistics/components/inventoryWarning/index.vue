@@ -34,7 +34,7 @@
       </el-col>
     </el-row>
     <table>
-      <tr>
+      <tr style="font-size: 16px;font-weight: 600;">
         <td>商品名称</td>
         <td>商家名称</td>
         <td>库存量</td>
@@ -93,7 +93,7 @@ table caption {
 
 th,
 td {
-  border: 1px solid #999;
+  // border: 1px solid #999;
   text-align: center;
   padding: 10px 0;
 }
