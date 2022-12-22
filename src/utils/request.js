@@ -38,7 +38,8 @@ service.interceptors.response.use(
     if (res.code === 401) {
       // to re-login
       Message.error('无效的会话，或者登录已过期，请重新登录。');
-      location.href = '/login';
+      // location.href = '/login';
+      this.$router.push({path:'/login'})
     }else if(res.code === 403){
       Message.error('没有权限访问。');
     }
