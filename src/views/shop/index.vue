@@ -36,22 +36,22 @@
 
     <el-table v-loading="loading" :data="storeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="会员名称" align="center" prop="userName" />
-      <el-table-column label="是否自营" align="center" prop="selfOperated" />
       <el-table-column label="店铺名称" align="center" prop="storeName" />
-      <el-table-column label="店铺logo" align="center" prop="storeLogo" />
-      <el-table-column label="店铺状态" align="center" prop="storeDisable" />
-      <el-table-column label="详细地址" align="center" prop="storeAddressDetail" />
-      <el-table-column label="地址名称" align="center" prop="storeAddressPath" />
-      <el-table-column label="经纬度" align="center" prop="storeCenter" />
-      <el-table-column label="店铺简介" align="center" prop="storeDesc" />
-      <el-table-column label="物流评分" align="center" prop="deliveryScore" />
-      <el-table-column label="描述评分" align="center" prop="descriptionScore" />
-      <el-table-column label="服务评分" align="center" prop="serviceScore" />
+<!--      <el-table-column label="店铺简介" align="center" prop="storeDesc" />-->
       <el-table-column label="商品数量" align="center" prop="goodsNum" />
       <el-table-column label="收藏数量" align="center" prop="collectionNum" />
-      <el-table-column label="客服标识" align="center" prop="merchantEuid" />
-      <el-table-column label="审核状态 " align="center" prop="status" />
+      <el-table-column label="店铺状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.status"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="1"
+            inactive-value="0"
+          >
+          </el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="300" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -105,51 +105,10 @@
     <!-- 添加或修改店铺对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="会员名称" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入会员名称" />
-        </el-form-item>
-        <el-form-item label="是否自营" prop="selfOperated">
-          <el-input v-model="form.selfOperated" placeholder="请输入是否自营" />
-        </el-form-item>
-        <el-form-item label="店铺名称" prop="storeName">
-          <el-input v-model="form.storeName" placeholder="请输入店铺名称" />
-        </el-form-item>
-        <el-form-item label="店铺logo" prop="storeLogo">
-          <el-input v-model="form.storeLogo" placeholder="请输入店铺logo" />
-        </el-form-item>
-        <el-form-item label="店铺状态" prop="storeDisable">
-          <el-input v-model="form.storeDisable" placeholder="请输入店铺状态" />
-        </el-form-item>
-        <el-form-item label="详细地址" prop="storeAddressDetail">
-          <el-input v-model="form.storeAddressDetail" placeholder="请输入详细地址" />
-        </el-form-item>
-        <el-form-item label="地址名称" prop="storeAddressPath">
-          <el-input v-model="form.storeAddressPath" placeholder="请输入地址名称" />
-        </el-form-item>
-        <el-form-item label="经纬度" prop="storeCenter">
-          <el-input v-model="form.storeCenter" placeholder="请输入经纬度" />
-        </el-form-item>
-        <el-form-item label="店铺简介" prop="storeDesc">
-          <el-input v-model="form.storeDesc" placeholder="请输入店铺简介" />
-        </el-form-item>
-        <el-form-item label="物流评分" prop="deliveryScore">
-          <el-input v-model="form.deliveryScore" placeholder="请输入物流评分" />
-        </el-form-item>
-        <el-form-item label="描述评分" prop="descriptionScore">
-          <el-input v-model="form.descriptionScore" placeholder="请输入描述评分" />
-        </el-form-item>
-        <el-form-item label="服务评分" prop="serviceScore">
-          <el-input v-model="form.serviceScore" placeholder="请输入服务评分" />
-        </el-form-item>
-        <el-form-item label="商品数量" prop="goodsNum">
-          <el-input v-model="form.goodsNum" placeholder="请输入商品数量" />
-        </el-form-item>
-        <el-form-item label="收藏数量" prop="collectionNum">
-          <el-input v-model="form.collectionNum" placeholder="请输入收藏数量" />
-        </el-form-item>
-        <el-form-item label="客服标识" prop="merchantEuid">
-          <el-input v-model="form.merchantEuid" placeholder="请输入客服标识" />
-        </el-form-item>
+          <el-image
+            style="width: 100%;"
+            :src="url"
+            fit="contain"></el-image>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel">取 消</el-button>
@@ -271,9 +230,8 @@
 
 <script>
 import { listStore, getStore, delStore, addStore, updateStore } from "@/api/store/store";
-
 import { getStoreDetail, updateStoreDetail,addStoreDetail,updateSettlementCycle} from "@/api/store/storeDetail";
-
+import SettingMer from '@/utils/settingMer'
 export default {
   name: "Store",
   data() {
@@ -322,6 +280,7 @@ export default {
         status: null,
         deleteFlag: null,
       },
+      url:null,
       // 表单参数
       form: {
         storeId:null,
@@ -337,6 +296,7 @@ export default {
   },
   created() {
     this.getList();
+    console.log('SettingMer',SettingMer)
   },
   methods: {
     /** 查询店铺列表 */
@@ -424,6 +384,7 @@ export default {
     showStore(row) {
       this.reset();
       const id = row.id || this.ids
+      this.url = SettingMer.httpUrl + row.qrCode
       getStore(id).then(response => {
         this.form = response;
         this.open = true;

@@ -27,18 +27,18 @@
               <el-input v-model="form.scope" placeholder="请输入法定经营范围" />
             </el-form-item>
 
-            <el-form-item label="店铺ID" prop="storeId">
-              <el-input v-model="form.storeId" placeholder="请输入店铺ID" />
-            </el-form-item>
+<!--            <el-form-item label="店铺ID" prop="storeId">-->
+<!--              <el-input v-model="form.storeId" placeholder="请输入店铺ID" />-->
+<!--            </el-form-item>-->
             <el-form-item label="库存预警数量" prop="stockWarning">
               <el-input v-model="form.stockWarning" placeholder="请输入库存预警数量" />
             </el-form-item>
             <el-form-item label="结算周期" prop="settlementCycle">
               <el-input v-model="form.settlementCycle" placeholder="请输入结算周期" />
             </el-form-item>
-            <el-form-item label="退货地址Id" prop="salesConsigneeAddressId">
-              <el-input v-model="form.salesConsigneeAddressId" placeholder="请输入退货地址Id" />
-            </el-form-item>
+<!--            <el-form-item label="退货地址Id" prop="salesConsigneeAddressId">-->
+<!--              <el-input v-model="form.salesConsigneeAddressId" placeholder="请输入退货地址Id" />-->
+<!--            </el-form-item>-->
             <el-form-item label="退货地址名称" prop="salesConsigneeAddressPath">
               <el-input v-model="form.salesConsigneeAddressPath" placeholder="请输入退货地址名称" />
             </el-form-item>
@@ -51,14 +51,14 @@
             <el-form-item label="退货收货人姓名" prop="salesConsigneeName">
               <el-input v-model="form.salesConsigneeName" placeholder="请输入退货收货人姓名" />
             </el-form-item>
-            <el-form-item label="店铺上次结算日" prop="settlementDay">
-              <el-date-picker clearable
-                              v-model="form.settlementDay"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择店铺上次结算日">
-              </el-date-picker>
-            </el-form-item>
+<!--            <el-form-item label="店铺上次结算日" prop="settlementDay">-->
+<!--              <el-date-picker clearable-->
+<!--                              v-model="form.settlementDay"-->
+<!--                              type="date"-->
+<!--                              value-format="yyyy-MM-dd"-->
+<!--                              placeholder="请选择店铺上次结算日">-->
+<!--              </el-date-picker>-->
+<!--            </el-form-item>-->
             <el-form-item label="详细地址" prop="storeAddressDetail">
               <el-input v-model="form.storeAddressDetail" placeholder="详细地址" />
             </el-form-item>
@@ -66,7 +66,7 @@
               <el-input v-model="form.storeAddressPath" placeholder="地址名称" />
             </el-form-item>
             <el-form-item label="经纬度" prop="storeCenter">
-              <el-input v-model="form.storeCenter" placeholder="店铺logo" />
+              <el-input v-model="form.storeCenter" placeholder="经纬度" />
             </el-form-item>
           </div>
         </el-tab-pane>
