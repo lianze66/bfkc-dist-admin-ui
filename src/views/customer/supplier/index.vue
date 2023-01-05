@@ -26,17 +26,17 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="invitationSupplier"
-        >邀请供应商</el-button>
-      </el-col>
-    </el-row>
+<!--    <el-row :gutter="10" class="mb8">-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="invitationSupplier"-->
+<!--        >邀请供应商</el-button>-->
+<!--      </el-col>-->
+<!--    </el-row>-->
 
 
 
