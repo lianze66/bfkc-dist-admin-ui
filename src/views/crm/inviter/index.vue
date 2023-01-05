@@ -2,14 +2,14 @@
   <div class="app-container">
     <el-card class="box-card">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-        <el-form-item label="邀请码" prop="inviterCode">
-          <el-input
-            v-model="queryParams.inviterCode"
-            placeholder="请输入邀请码"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-form-item>
+<!--        <el-form-item label="邀请码" prop="inviterCode">-->
+<!--          <el-input-->
+<!--            v-model="queryParams.inviterCode"-->
+<!--            placeholder="请输入邀请码"-->
+<!--            clearable-->
+<!--            @keyup.enter.native="handleQuery"-->
+<!--          />-->
+<!--        </el-form-item>-->
         <el-form-item label="邀请类型" prop="inviterType">
           <el-select v-model="queryParams.inviterType" placeholder="请输入邀请类型">
             <el-option
@@ -137,7 +137,7 @@
           </template>
         </el-table-column>
       </el-table>
-      
+
       <pagination
         v-show="total>0"
         :total="total"
@@ -166,10 +166,10 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="邀请二维码" prop="inviterQrCode">
+        <el-form-item class="img-fat" label="邀请二维码" prop="inviterQrCode">
+          <el-button style="margin-bottom:15px" type="primary" @click="createQRCode">生成二维码</el-button>
           <ImagePreview v-if="form.inviterQrCode" :src="form.inviterQrCode" />
           <img v-if="!form.inviterQrCode" src="../../../assets/imgs/previewQrCode.jpg" alt="">
-          <el-button type="primary" @click="createQRCode">生成二维码</el-button>
         </el-form-item>
         <!-- <el-form-item label="邀请码" prop="inviterCode">
           <el-input v-model="form.inviterCode" placeholder="请输入邀请码" style="width: 69%" />
@@ -241,8 +241,8 @@ export default {
       options1: [// 类型列表
         {dictLabel: '未知', dictValue: 0},
         {dictLabel: '供应商', dictValue: 1},
-        {dictLabel: '代理商', dictValue: 2},
-        {dictLabel: '分销商', dictValue: 3},
+        {dictLabel: '经销商', dictValue: 2},
+        {dictLabel: '代理商', dictValue: 3},
       ],
       QRimg: null,
       statusList: [
@@ -269,14 +269,14 @@ export default {
         inviterUserName: [
           { required: true, message: "邀请人名称不能为空", trigger: "blur" }
         ],
-        // inviterQrCode: [
-        //   { required: true, message: "邀请二维码不能为空", trigger: "blur" }
-        // ],
+        inviterQrCode: [
+          { required: true, message: "邀请二维码不能为空", trigger: "change" }
+        ],
         // inviterUrl: [
         //   { required: true, message: "邀请链接不能为空", trigger: "blur" }
         // ],
         // inviterCode: [
-        //   { required: true, message: "邀请码不能为空", trigger: "blur" }
+        //   { required: true, message: "邀请码不能为空", trigger: "change" }
         // ],
         inviterType: [
           { required: true, message: "邀请类型不能为空", trigger: "change" }

@@ -2,10 +2,10 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
 
-      <el-form-item label="会员名称" prop="userName">
+      <el-form-item label="店主账号" prop="userName">
         <el-input
           v-model="queryParams.userName"
-          placeholder="请输入会员名称"
+          placeholder="请输入店主账号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -37,17 +37,19 @@
     <el-table v-loading="loading" :data="storeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="店铺名称" align="center" prop="storeName" />
-<!--      <el-table-column label="店铺简介" align="center" prop="storeDesc" />-->
-      <el-table-column label="商品数量" align="center" prop="goodsNum" />
-      <el-table-column label="收藏数量" align="center" prop="collectionNum" />
+      <el-table-column label="店主账号" align="center" prop="userName" />
+      <el-table-column label="店铺简介" align="center" prop="storeDesc" />
+      <el-table-column label="物流评分" align="center" prop="deliveryScore" />
+      <el-table-column label="服务评分" align="center" prop="serviceScore" />
+      <el-table-column label="开店时间" align="center" prop="createTime" />
       <el-table-column label="店铺状态" align="center" prop="status">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.status"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="1"
-            inactive-value="0"
+            active-value="0"
+            inactive-value="1"
           >
           </el-switch>
         </template>
@@ -91,7 +93,8 @@
     <el-dialog title="设置结算周期" :visible.sync="openSettlement" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="结算周期" prop="merchantEuid">
-          <el-input v-model="form.settlementCycle" placeholder="请输入结算周期" />
+<!--          <el-input v-model="form.settlementCycle" placeholder="请输入结算周期" />-->
+          <el-input-number v-model="form.settlementCycle"  :min="1" :max="100000" label="结算周期"></el-input-number>
           <br/>
           为空默认月结
         </el-form-item>
@@ -103,7 +106,7 @@
     </el-dialog>
 
     <!-- 添加或修改店铺对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="350px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
           <el-image
             style="width: 100%;"
@@ -394,13 +397,16 @@ export default {
 
     /** 店铺详情按钮操作 */
     showDetail(row) {
-      this.reset();
-      const id = row.id || this.ids
-      getStoreDetail(id).then(response => {
-        this.storeDetail = response;
-        this.openStoreDetail = true;
-        //this.title = "修改店铺";
-      });
+      this.$router.push({
+        path:'openStore'
+      })
+      // this.reset();
+      // const id = row.id || this.ids
+      // getStoreDetail(id).then(response => {
+      //   this.storeDetail = response;
+      //   this.openStoreDetail = true;
+      //   //this.title = "修改店铺";
+      // });
     },
 
     /** 设置结算周期 */
