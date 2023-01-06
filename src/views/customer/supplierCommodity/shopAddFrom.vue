@@ -618,6 +618,7 @@
     watch: {
       'formValidate.attr': {
         handler: function(val) {
+          console.log(val, '123123123123123');
           if (this.formValidate.specType && this.isAttr) this.watCh(val) //重要！！！
         },
         immediate: false,
@@ -1163,6 +1164,7 @@
         if( this.formValidate.specType && this.formValidate.attr.length < 1 ) return this.$message.warning("请填写多规格属性！");
         this.formValidate.cateId = this.formValidate.cateIds.join(',')
         this.formValidate.sliderImage = JSON.stringify(this.formValidate.sliderImages)
+        console.log(this.formValidate);
         if(this.formValidate.specType){
           this.formValidate.attrValue=this.ManyAttrValue;
           this.formValidate.attr = this.formValidate.attr.map((item) =>{
@@ -1179,7 +1181,8 @@
             delete this.formValidate.attrValue[i].value0
           }
         }else{
-          this.formValidate.attr = [{attrName:'规格',attrValues:'默认',id: this.$route.params.id? this.formValidate.attr[0].id : 0}]
+          this.formValidate.attr = [{attrName:'规格',attrValues:'默认',id: this.$route.params.id ? this.formValidate.attr[0].id : 0}]
+          // this.formValidate.attr = [{attrName:'规格',attrValue:'默认',id: this.$route.params.id ? this.infoAttr[0].id : 0}]
           this.OneattrValue.map(item => {
             this.$set(item, 'attrValue', JSON.stringify({'规格':'默认'}))
           })
