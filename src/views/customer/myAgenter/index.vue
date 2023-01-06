@@ -60,13 +60,13 @@
         />
 
 
-        <el-table-column
+        <!-- <el-table-column
           prop="userType"
           align="center"
           label="用户类型"
           min-width="100"
           :formatter="typeFun"
-        />
+        /> -->
 
         <el-table-column
           prop="deposit"
@@ -85,24 +85,12 @@
             <span>{{ userLevel(scope.row.agentGradeId) }}</span>
           </template> -->
         </el-table-column>
-        <el-table-column
-          prop="groupName"
-          align="center"
-          label="分组"
-          min-width="100"
-        />
-        <el-table-column
-          prop="tagName"
-          align="center"
-          label="标签"
-          min-width="100"
-        />
-        <el-table-column
+        <!-- <el-table-column
           prop="inviterUserId"
           align="center"
           label="邀请人"
           min-width="130"
-        />
+        /> -->
         <el-table-column
           label="手机号"
           align="center"
