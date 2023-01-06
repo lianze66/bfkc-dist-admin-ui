@@ -47,6 +47,8 @@
       <!-- <el-table-column label="企业名称" align="center" prop="userType" /> -->
       <!-- <el-table-column label="行业" align="center" prop="userType" /> -->
       <!-- <el-table-column label="联系人" align="center" prop="userType" /> -->
+       <el-table-column label="店铺名称" align="center" prop="storeName" />
+       <el-table-column label="商铺数量" align="center" prop="shopNum" />
       <el-table-column label="联系电话" align="center" prop="phone" />
       <!-- <el-table-column label="所属等级" align="center" prop="email" /> -->
       <!-- <el-table-column label="开店时间" align="center" prop="email" />
@@ -56,7 +58,7 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <router-link :to=" { path: `/customer/commodity/${ scope.row.id || 0 }` } ">
-            <el-button size="small" icon="el-icon-view" type="text" class="mr10" v-hasPermi="['admin:product:save']">查看商品</el-button>
+            <el-button type="primary" size="small" icon="el-icon-view" class="mr10" v-hasPermi="['admin:product:save']">查看商品</el-button>
           </router-link>
         </template>
       </el-table-column>

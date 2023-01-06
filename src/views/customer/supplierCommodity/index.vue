@@ -14,8 +14,30 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
-    <el-table v-loading="loading" :data="goodsList">
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          style="margin-bottom: 17px;"
+          type="primary"
+          plain
+          icon="el-icon-thumb"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+        >一件铺货</el-button
+        >
+      </el-col>
+      <right-toolbar
+        :showSearch.sync="showSearch"
+        @queryTable="getList"
+      ></right-toolbar>
+    </el-row>
+    <el-table  @selection-change="handleSelectionChange" v-loading="loading" :data="goodsList">
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      />
       <el-table-column label="商品图片" align="center" prop="salesModel" width="120" >
         <template slot-scope="scope">
           <ImagePreview :src="scope.row.image || ''" />
@@ -25,13 +47,13 @@
       <!-- <el-table-column label="商品分类名称" align="center" prop="categoryName" /> -->
       <!-- <el-table-column label="成本价格" align="center" prop="costPrice" />
       <el-table-column label="市场价格" align="center" prop="marketPrice" /> -->
-      <el-table-column label="销售价格" align="center" prop="price" width="100" />
-      <el-table-column label="销售佣金" align="center" prop="saleAmount" width="100" />
-      <el-table-column label="计量单位" align="center" prop="unitName" width="100" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120">
+      <el-table-column label="销售价格" align="center" prop="price" width="80" />
+      <el-table-column label="销售佣金" align="center" prop="saleAmount" width="80" />
+      <el-table-column label="计量单位" align="center" prop="unitName" width="80" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
         <template slot-scope="scope">
           <router-link :to=" { path:`/customer/shopAddFrom/${scope.row.id}` } ">
-            <el-button size="small" icon="el-icon-edit" type="text" class="mr10">添加到我的店铺</el-button>
+            <el-button size="small" icon="el-icon-shopping-cart-2" type="primary" class="mr10">添加到我的店铺</el-button>
           </router-link>
         </template>
       </el-table-column>
@@ -113,10 +135,34 @@
           this.loading = false;
         });
       },
+      // 多选框选中数据
+      handleSelectionChange(selection) {
+        this.ids = selection.map((item) => item.id);
+        this.single = selection.length !== 1;
+        this.multiple = !selection.length;
+
+        console.log('this.mul',this.multiple)
+        console.log('this.idsidsidsids',this.ids)
+      },
       /** 搜索按钮操作 */
       handleQuery() {
         this.queryParams.pageNum = 1;
         this.getList();
+      },
+      /** 删除按钮操作 */
+      handleDelete(row) {
+        const aimId = row.id || this.ids;
+        const storeName = row.storeName
+        this.$modal
+          .confirm('是否确认铺货商品名称为"' + aimId + '"的数据项？')
+          .then(function () {
+            // return delAimYear(aimId);
+          })
+          .then(() => {
+            this.getList();
+            this.$modal.msgSuccess("操作成功");
+          })
+          .catch(() => {});
       },
       /** 重置按钮操作 */
       resetQuery() {
