@@ -27,18 +27,18 @@
               <el-input v-model="form.scope" placeholder="请输入法定经营范围" />
             </el-form-item>
 
-            <el-form-item label="店铺ID" prop="storeId">
-              <el-input v-model="form.storeId" placeholder="请输入店铺ID" />
-            </el-form-item>
+<!--            <el-form-item label="店铺ID" prop="storeId">-->
+<!--              <el-input v-model="form.storeId" placeholder="请输入店铺ID" />-->
+<!--            </el-form-item>-->
             <el-form-item label="库存预警数量" prop="stockWarning">
-              <el-input v-model="form.stockWarning" placeholder="请输入库存预警数量" />
+              <el-input-number v-model="form.stockWarning" :min="1" :max="9999999999" label="描述文字"></el-input-number>
             </el-form-item>
             <el-form-item label="结算周期" prop="settlementCycle">
               <el-input v-model="form.settlementCycle" placeholder="请输入结算周期" />
             </el-form-item>
-            <el-form-item label="退货地址Id" prop="salesConsigneeAddressId">
-              <el-input v-model="form.salesConsigneeAddressId" placeholder="请输入退货地址Id" />
-            </el-form-item>
+<!--            <el-form-item label="退货地址Id" prop="salesConsigneeAddressId">-->
+<!--              <el-input v-model="form.salesConsigneeAddressId" placeholder="请输入退货地址Id" />-->
+<!--            </el-form-item>-->
             <el-form-item label="退货地址名称" prop="salesConsigneeAddressPath">
               <el-input v-model="form.salesConsigneeAddressPath" placeholder="请输入退货地址名称" />
             </el-form-item>
@@ -51,14 +51,14 @@
             <el-form-item label="退货收货人姓名" prop="salesConsigneeName">
               <el-input v-model="form.salesConsigneeName" placeholder="请输入退货收货人姓名" />
             </el-form-item>
-            <el-form-item label="店铺上次结算日" prop="settlementDay">
-              <el-date-picker clearable
-                              v-model="form.settlementDay"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择店铺上次结算日">
-              </el-date-picker>
-            </el-form-item>
+<!--            <el-form-item label="店铺上次结算日" prop="settlementDay">-->
+<!--              <el-date-picker clearable-->
+<!--                              v-model="form.settlementDay"-->
+<!--                              type="date"-->
+<!--                              value-format="yyyy-MM-dd"-->
+<!--                              placeholder="请选择店铺上次结算日">-->
+<!--              </el-date-picker>-->
+<!--            </el-form-item>-->
             <el-form-item label="详细地址" prop="storeAddressDetail">
               <el-input v-model="form.storeAddressDetail" placeholder="详细地址" />
             </el-form-item>
@@ -66,7 +66,7 @@
               <el-input v-model="form.storeAddressPath" placeholder="地址名称" />
             </el-form-item>
             <el-form-item label="经纬度" prop="storeCenter">
-              <el-input v-model="form.storeCenter" placeholder="店铺logo" />
+              <el-input v-model="form.storeCenter" placeholder="经纬度" />
             </el-form-item>
           </div>
         </el-tab-pane>
@@ -91,15 +91,26 @@
 
             <el-form-item label="法人身份证" prop="legalId">
               <el-input v-model="form.legalId" placeholder="请输入法人身份证" />
+
             </el-form-item>
             <el-form-item label="法人姓名" prop="legalName">
               <el-input v-model="form.legalName" placeholder="请输入法人姓名" />
             </el-form-item>
             <el-form-item label="法人身份证照片" prop="legalPhoto">
-              <el-input v-model="form.legalPhoto" placeholder="请输入法人身份证照片" />
+              <div class="upLoadPicBox" @click="modalPicTap('2')">
+                <div v-if="form.legalPhoto" class="pictrue"><img :src="form.legalPhoto"></div>
+                <div v-else class="upLoad">
+                  <i class="el-icon-camera cameraIconfont" />
+                </div>
+              </div>
             </el-form-item>
             <el-form-item label="营业执照电子版" prop="licencePhoto">
-              <el-input v-model="form.licencePhoto" placeholder="请输入营业执照电子版" />
+              <div class="upLoadPicBox" @click="modalPicTap('3')">
+                <div v-if="form.licencePhoto" class="pictrue"><img :src="form.licencePhoto"></div>
+                <div v-else class="upLoad">
+                  <i class="el-icon-camera cameraIconfont" />
+                </div>
+              </div>
             </el-form-item>
             <el-form-item label="营业执照号" prop="licenseNum">
               <el-input v-model="form.licenseNum" placeholder="请输入营业执照号" />
@@ -118,9 +129,9 @@
             <el-form-item label="公司地址" prop="companyAddress">
               <el-input v-model="form.companyAddress" placeholder="请输入公司地址" />
             </el-form-item>
-            <el-form-item label="公司地址地区ID" prop="companyAddressIdPath">
-              <el-input v-model="form.companyAddressIdPath" placeholder="请输入公司地址地区ID" />
-            </el-form-item>
+<!--            <el-form-item label="公司地址地区ID" prop="companyAddressIdPath">-->
+<!--              <el-input v-model="form.companyAddressIdPath" placeholder="请输入公司地址地区ID" />-->
+<!--            </el-form-item>-->
             <el-form-item label="公司地址地区" prop="companyAddressPath">
               <el-input v-model="form.companyAddressPath" placeholder="请输入公司地址地区" />
             </el-form-item>
@@ -254,15 +265,21 @@
           if(tit==='1'&& !num){
             _this.form.storeLogo = img[0].sattDir
           }
-          if(tit==='1'&& num === 'dan' ){
-            _this.OneattrValue[0].image = img[0].sattDir
+          if(tit==='2'&& !num){
+            _this.form.legalPhoto = img[0].sattDir
           }
-          if(tit==='1'&& num === 'duo' ){
-            _this.ManyAttrValue[i].image = img[0].sattDir
+          if(tit==='3'&& !num){
+            _this.form.licencePhoto = img[0].sattDir
           }
-          if(tit==='1'&& num === 'pi' ){
-            _this.oneFormBatch[0].image = img[0].sattDir
-          }
+          // if(tit==='1'&& num === 'dan' ){
+          //   _this.OneattrValue[0].image = img[0].sattDir
+          // }
+          // if(tit==='1'&& num === 'duo' ){
+          //   _this.ManyAttrValue[i].image = img[0].sattDir
+          // }
+          // if(tit==='1'&& num === 'pi' ){
+          //   _this.oneFormBatch[0].image = img[0].sattDir
+          // }
         },tit, 'content')
       },
       /** 新增按钮操作 */

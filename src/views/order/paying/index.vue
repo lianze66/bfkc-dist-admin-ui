@@ -114,7 +114,7 @@
         />
         <el-table-column label="操作" min-width="150" fixed="right" align="center">
           <template slot-scope="scope">
-            <!-- <el-button v-if="scope.row.paid === false" type="text" size="small" @click="edit(scope.row)" class="mr10" v-hasPermi="['admin:order:update:price']">编辑</el-button> 
+            <!-- <el-button v-if="scope.row.paid === false" type="text" size="small" @click="edit(scope.row)" class="mr10" v-hasPermi="['admin:order:update:price']">编辑</el-button>
             <el-button v-if="scope.row.statusStr.key === 'notShipped' && scope.row.refundStatus ===0" type="text" size="small" class="mr10" @click="sendOrder(scope.row)" v-hasPermi="['admin:order:send']">发送货</el-button>
             <el-button v-if=" scope.row.statusStr.key === 'toBeWrittenOff'  && scope.row.paid == true && scope.row.refundStatus === 0 " type="text" size="small" class="mr10" v-hasPermi="['admin:order:write:update']" @click="onWriteOff(scope.row)">立即核销</el-button> -->
             <el-dropdown trigger="click">
