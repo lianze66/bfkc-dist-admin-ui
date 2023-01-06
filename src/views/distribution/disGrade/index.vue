@@ -62,7 +62,7 @@
 
     <el-table v-loading="loading" :data="disGradeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="店铺名称" align="center" prop="storeName" />
+      <!-- <el-table-column label="店铺名称" align="center" prop="storeName" /> -->
       <el-table-column label="等级名称" align="center" prop="gradeName" />
       <el-table-column label="等级" align="center" prop="gradeCode" />
       <el-table-column label="百分比（%）" align="center" prop="profitRate" />
@@ -75,14 +75,12 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['distribution:disGrade:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['distribution:disGrade:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
