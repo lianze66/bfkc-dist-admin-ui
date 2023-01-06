@@ -56,7 +56,7 @@
 
       <el-table v-loading="loading" :data="agentGradeList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="店铺名称" align="center" prop="storeName" />
+        <!-- <el-table-column label="店铺名称" align="center" prop="storeName" /> -->
         <el-table-column label="级别名称" align="center" prop="gradeName" />
         <el-table-column label="级别" align="center" prop="gradeCode" />
         <el-table-column label="代理类型" :formatter="formatterAgentType"  align="center" prop="agentType" />
@@ -85,14 +85,12 @@
               type="text"
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
-              v-hasPermi="['distribution:agentGrade:edit']"
             >修改</el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['distribution:agentGrade:remove']"
             >删除</el-button>
           </template>
         </el-table-column>
