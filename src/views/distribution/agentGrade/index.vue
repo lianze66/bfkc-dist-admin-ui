@@ -2,7 +2,6 @@
   <div class="app-container">
     <el-card class="box-card">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-
         <el-form-item label="级别名称" prop="gradeName">
           <el-input
             v-model="queryParams.gradeName"
@@ -11,7 +10,6 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -149,10 +147,10 @@
               :label="dict.dictValue">{{dict.dictLabel}}</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="form.calModel == 0" label="比例(%)" prop="profitRate">
+        <el-form-item v-if="form.calModel == 1" label="比例(%)" prop="profitRate">
           <el-input-number v-model="form.profitRate" controls-position="right"></el-input-number>
         </el-form-item>
-        <el-form-item v-if="form.calModel == 1" label="分润金额" prop="profitAmount">
+        <el-form-item v-if="form.calModel == 0" label="分润金额" prop="profitAmount">
           <el-input-number v-model="form.profitAmount" controls-position="right"></el-input-number>
         </el-form-item>
         <el-form-item label="排序" prop="sort">
