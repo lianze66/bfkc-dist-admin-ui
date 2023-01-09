@@ -37,6 +37,12 @@ const distributionRouter = {
       meta: { title: '分销配置', icon: '' }
     },
     {
+      path: 'disScheme',
+      component: () => import('@/views/distribution/disScheme/index'),
+      name: 'disScheme',
+      meta: { title: '分销配置新', icon: '' }
+    },
+    {
       path: 'agentGrade',
       component: () => import('@/views/distribution/agentGrade/index'),
       name: 'agentGrade',

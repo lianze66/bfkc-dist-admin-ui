@@ -61,9 +61,10 @@
         <el-table-column label="达标业绩" align="center" prop="saleAmount" />
         <!-- <el-table-column label="业绩开始值" align="center" prop="startNum" />
         <el-table-column label="业绩结束值" align="center" prop="endNum" /> -->
-        <el-table-column label="计算模式"  :formatter="formatterCalModel" align="center" prop="calModel"/>
+        <!-- <el-table-column label="计算模式"  :formatter="formatterCalModel" align="center" prop="calModel"/> -->
         <el-table-column label="百分比（%）" align="center" prop="profitRate" />
-        <el-table-column label="分润金额" align="center" prop="profitAmount" />
+        <!-- <el-table-column label="分润金额" align="center" prop="profitAmount" /> -->
+        <!-- <el-table-column label="分润金额" align="center" prop="profitAmount" /> -->
         <el-table-column label="状态"   align="center" prop="status" >
           <template slot-scope="scope">
             <el-switch
@@ -139,14 +140,14 @@
           <el-input v-model="form.endNum" placeholder="请输入业绩结束值" />
           <el-input-number v-model="num" controls-position="right"  :min="1" :max="10"></el-input-number>
         </el-form-item>-->
-        <el-form-item label="计算模式" prop="calModel">
+        <!-- <el-form-item label="计算模式" prop="calModel">
           <el-radio-group v-model="form.calModel">
             <el-radio-button
               v-for="dict in calModelOptions"
               :key="dict.dictValue"
               :label="dict.dictValue">{{dict.dictLabel}}</el-radio-button>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item v-if="form.calModel == 1" label="比例(%)" prop="profitRate">
           <el-input-number v-model="form.profitRate" controls-position="right"></el-input-number>
         </el-form-item>
@@ -192,8 +193,8 @@ export default {
         {dictValue: 1, dictLabel:"代理商等级"}
       ],//计算公式下拉框
       agentTypeOptions:[ //代理类型下拉框
-        {dictValue: 0, dictLabel:"交押金"},
-        {dictValue: 1, dictLabel:"交押金1"}
+        {dictValue: '0', dictLabel:"交押金"},
+        {dictValue: '1', dictLabel:"交押金1"}
       ],
       // 弹出层标题
       title: "",
@@ -290,7 +291,7 @@ export default {
         saleAmount: null,
         startNum: null,
         endNum: null,
-        calModel: null,
+        calModel: 1,
         profitRate: null,
         profitAmount: null,
         status: "0",

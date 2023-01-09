@@ -93,12 +93,12 @@
                 <el-radio :label="true">多规格</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="佣金设置：" props="isSub">
+            <!-- <el-form-item label="佣金设置：" props="isSub">
               <el-radio-group v-model="formValidate.isSub" @change="onChangetype(formValidate.isSub)" :disabled="isDisabled">
                 <el-radio :label="true" class="radio">单独设置</el-radio>
                 <el-radio :label="false">默认设置</el-radio>
               </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
           </el-col>
           <!-- 多规格添加-->
           <el-col v-if="formValidate.specType && !isDisabled" :span="24" class="noForm">
@@ -359,7 +359,7 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <!-- <el-col :span="24">
             <el-form-item label="设置佣金：">
               <el-radio-group v-model="formValidate.commission">
                 <el-radio :label="0">仅自己可见</el-radio>
@@ -372,7 +372,7 @@
               <div>{{ distribution || '' }}</div>
               <el-button type="primary" @click="commissionFun">设置销售规则</el-button>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-form-item>
           <el-button v-show="currentTab>0" class="submission priamry_border" @click="handleSubmitUp">上一步</el-button>
@@ -600,7 +600,9 @@
         showAll:false,
         videoLink: "",
         dialogVisible: false,
-        distribution: null
+        distribution: null,
+
+        attrId: null
       }
     },
     computed: {
@@ -618,6 +620,7 @@
     watch: {
       'formValidate.attr': {
         handler: function(val) {
+          console.log(val, '123123123123123');
           if (this.formValidate.specType && this.isAttr) this.watCh(val) //重要！！！
         },
         immediate: false,
@@ -992,6 +995,7 @@
         productDetailApi(this.$route.params.id || 0).then(async res => {
           // this.isAttr = true;
           let info = res
+          this.attrId = info.attr[0].id;
           this.formValidate = {
             image: this.$selfUtil.setDomain(info.image),
             sliderImage: info.sliderImage,
@@ -1159,10 +1163,12 @@
       },
       // 提交
       handleSubmit:Debounce(function(name) {
+        this.formValidate.isSub = false;
         this.onChangeGroup()
         if( this.formValidate.specType && this.formValidate.attr.length < 1 ) return this.$message.warning("请填写多规格属性！");
         this.formValidate.cateId = this.formValidate.cateIds.join(',')
         this.formValidate.sliderImage = JSON.stringify(this.formValidate.sliderImages)
+        console.log(this.formValidate);
         if(this.formValidate.specType){
           this.formValidate.attrValue=this.ManyAttrValue;
           this.formValidate.attr = this.formValidate.attr.map((item) =>{
@@ -1179,7 +1185,8 @@
             delete this.formValidate.attrValue[i].value0
           }
         }else{
-          this.formValidate.attr = [{attrName:'规格',attrValues:'默认',id: this.$route.params.id? this.formValidate.attr[0].id : 0}]
+          // this.formValidate.attr = [{attrName:'规格',attrValues:'默认',id: this.$route.params.id ? this.formValidate.attr[0].id : 0}]
+          this.formValidate.attr = [{attrName:'规格',attrValues:'默认',id: this.$route.params.id ? this.attrId : 0}]
           this.OneattrValue.map(item => {
             this.$set(item, 'attrValue', JSON.stringify({'规格':'默认'}))
           })
