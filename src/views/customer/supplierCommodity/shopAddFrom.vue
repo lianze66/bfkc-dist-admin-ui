@@ -600,7 +600,9 @@
         showAll:false,
         videoLink: "",
         dialogVisible: false,
-        distribution: null
+        distribution: null,
+
+        attrId: null
       }
     },
     computed: {
@@ -993,6 +995,7 @@
         productDetailApi(this.$route.params.id || 0).then(async res => {
           // this.isAttr = true;
           let info = res
+          this.attrId = info.attr[0].id;
           this.formValidate = {
             image: this.$selfUtil.setDomain(info.image),
             sliderImage: info.sliderImage,
@@ -1181,8 +1184,8 @@
             delete this.formValidate.attrValue[i].value0
           }
         }else{
-          this.formValidate.attr = [{attrName:'规格',attrValues:'默认',id: this.$route.params.id ? this.formValidate.attr[0].id : 0}]
-          // this.formValidate.attr = [{attrName:'规格',attrValue:'默认',id: this.$route.params.id ? this.infoAttr[0].id : 0}]
+          // this.formValidate.attr = [{attrName:'规格',attrValues:'默认',id: this.$route.params.id ? this.formValidate.attr[0].id : 0}]
+          this.formValidate.attr = [{attrName:'规格',attrValues:'默认',id: this.$route.params.id ? this.attrId : 0}]
           this.OneattrValue.map(item => {
             this.$set(item, 'attrValue', JSON.stringify({'规格':'默认'}))
           })
