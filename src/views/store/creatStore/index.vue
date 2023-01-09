@@ -93,12 +93,12 @@
                 <el-radio :label="true">多规格</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="佣金设置：" props="isSub">
+            <!-- <el-form-item label="佣金设置：" props="isSub">
               <el-radio-group v-model="formValidate.isSub" @change="onChangetype(formValidate.isSub)" :disabled="isDisabled">
                 <el-radio :label="true" class="radio">单独设置</el-radio>
                 <el-radio :label="false">默认设置</el-radio>
               </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
           </el-col>
           <!-- 多规格添加-->
           <el-col v-if="formValidate.specType && !isDisabled" :span="24" class="noForm">
@@ -359,20 +359,20 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <!-- <el-col :span="24">
             <el-form-item label="设置佣金：">
               <el-radio-group v-model="formValidate.commission">
                 <el-radio :label="0">仅自己可见</el-radio>
                 <el-radio :label="1">全部分销商可见</el-radio>
               </el-radio-group>
             </el-form-item>
-          </el-col>
-          <el-col :span="24">
+          </el-col> -->
+          <!-- <el-col :span="24">
             <el-form-item v-if="formValidate.commission == 1" label="销售规则：">
               <div>{{ distribution || '' }}</div>
               <el-button type="primary" @click="commissionFun">设置销售规则</el-button>
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-form-item>
           <el-button v-show="currentTab>0" class="submission priamry_border" @click="handleSubmitUp">上一步</el-button>
@@ -383,7 +383,7 @@
     </el-card>
     <CreatTemplates ref="addTemplates" @getList="getShippingList" />
 
-    <el-dialog
+    <!-- <el-dialog
       title="销售规则"
       :visible.sync="dialogVisible"
       width="50%"
@@ -419,7 +419,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="preservation">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
 
   </div>
 </template>
@@ -1159,6 +1159,7 @@
       },
       // 提交
       handleSubmit:Debounce(function(name) {
+        this.formValidate.isSub = false;
         this.onChangeGroup()
         if( this.formValidate.specType && this.formValidate.attr.length < 1 ) return this.$message.warning("请填写多规格属性！");
         this.formValidate.cateId = this.formValidate.cateIds.join(',')
