@@ -112,7 +112,7 @@
         <el-form-item label="级别名称" prop="gradeName">
           <el-input v-model="form.gradeName" placeholder="请输入级别名称" />
         </el-form-item>
-        <el-form-item label="级别" prop="gradeCode">
+        <el-form-item label="级别code" prop="gradeCode">
           <el-input v-model="form.gradeCode" placeholder="请输入级别" />
         </el-form-item>
 
