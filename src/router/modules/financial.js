@@ -53,6 +53,12 @@ const financialRouter = {
       component: () => import('@/views/financial/brokerage/index'),
       name: 'Brokerage',
       meta: { title: '佣金记录', icon: '' }
+    },
+    {
+      path: 'withdrawalSettings',
+      component: () => import('@/views/financial/withdrawalSettings/index'),
+      name: 'WithdrawalSettings',
+      meta: { title: '提现设置', icon: 'thumb' }
     }
   ]
 }

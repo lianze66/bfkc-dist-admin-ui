@@ -60,4 +60,31 @@ export function getDisSettingInfo(query) {
     method: 'get',
     params: query
   })
+}// 查询分销设置列表
+
+
+//提现设置详情
+export function getExtractSetting() {
+  return request({
+    url: '/api/admin/finance/extractSetting',
+    method: 'get'
+  })
+}
+
+//新增修改提现设置
+export function addExtractSetting(data) {
+  return request({
+    url: '/api/admin/finance/extractSetting',
+    method: 'post',
+    data
+  })
+}
+
+//修改提现设置
+export function editExtractSetting(data) {
+  return request({
+    url: '/api/admin/finance/extractSetting',
+    method: 'put',
+    data
+  })
 }
