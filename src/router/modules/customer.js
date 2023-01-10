@@ -38,6 +38,15 @@ const customer = {
       }
     },
     {
+      path: 'cooperativeShop',
+      name: 'cooperativeShop',
+      component: () => import('@/views/customer/cooperativeShop/index'),
+      meta: {
+        title: '我的合作店铺',
+        icon: 'clipboard'
+      }
+    },
+    {
       path: 'commodity/:tableId',
       name: 'commodity',
       component: () => import('@/views/customer/supplierCommodity/index'),
