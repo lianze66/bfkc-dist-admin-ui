@@ -70,102 +70,102 @@
 </template>
 
 <script>
-  // import { listGoods, getGoods, delGoods, addGoods, updateGoods } from "@/api/goods/goods";
-  import { productLstApi } from '@/api/store';
-  import { productBatchSave } from '@/api/crm/inviter'
-  export default {
-    name: "Goods",
-    data() {
-      return {
-        // 遮罩层
-        loading: true,
-        // 选中数组
-        ids: [],
-        // 非单个禁用
-        single: true,
-        // 非多个禁用
-        multiple: true,
-        // 显示搜索条件
-        showSearch: true,
-        // 总条数
-        total: 0,
-        // 商品表格数据
-        goodsList: [],
-        // 查询参数
-        queryParams: {
-          pageNum: 1,
-          pageSize: 10,
-          sn: null,
-          supplierId: null,
-          categoryId: null,
-          categoryName: null,
-          goodsName: null,
-          goodsUnit: null,
-          salesModel: null,
-          costPrice: null,
-          marketPrice: null,
-          price: null,
-          brandId: null,
-          brandName: null,
-          intro: null,
-          isExtension: null,
-          status: null,
-          reason: null,
-          isShow: null,
-          mobileIntro: null,
-          sales: null,
-          stock: null,
-          gainIntegral: null,
-          type: '1'
-        },
-      };
+// import { listGoods, getGoods, delGoods, addGoods, updateGoods } from "@/api/goods/goods";
+import { productLstApi } from '@/api/store';
+import { productBatchSave } from '@/api/crm/inviter'
+export default {
+  name: "Goods",
+  data() {
+    return {
+      // 遮罩层
+      loading: true,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 显示搜索条件
+      showSearch: true,
+      // 总条数
+      total: 0,
+      // 商品表格数据
+      goodsList: [],
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        sn: null,
+        supplierId: null,
+        categoryId: null,
+        categoryName: null,
+        goodsName: null,
+        goodsUnit: null,
+        salesModel: null,
+        costPrice: null,
+        marketPrice: null,
+        price: null,
+        brandId: null,
+        brandName: null,
+        intro: null,
+        isExtension: null,
+        status: null,
+        reason: null,
+        isShow: null,
+        mobileIntro: null,
+        sales: null,
+        stock: null,
+        gainIntegral: null,
+        type: '1'
+      },
+    };
+  },
+  created() {
+    this.queryParams.supplierId = this.$route.params.tableId;
+    this.getList();
+  },
+  methods: {
+    /** 查询商品列表 */
+    getList() {
+      this.loading = true;
+      productLstApi(this.queryParams).then(response => {
+        this.goodsList = response.list;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
-    created() {
-      this.queryParams.supplierId = this.$route.params.tableId;
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map((item) => item.id);
+      this.single = selection.length !== 1;
+      this.multiple = !selection.length;
+
+      console.log('this.mul',this.multiple)
+      console.log('this.idsidsidsids',this.ids)
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
       this.getList();
     },
-    methods: {
-      /** 查询商品列表 */
-      getList() {
-        this.loading = true;
-        productLstApi(this.queryParams).then(response => {
-          this.goodsList = response.list;
-          this.total = response.total;
-          this.loading = false;
-        });
-      },
-      // 多选框选中数据
-      handleSelectionChange(selection) {
-        this.ids = selection.map((item) => item.id);
-        this.single = selection.length !== 1;
-        this.multiple = !selection.length;
-
-        console.log('this.mul',this.multiple)
-        console.log('this.idsidsidsids',this.ids)
-      },
-      /** 搜索按钮操作 */
-      handleQuery() {
-        this.queryParams.pageNum = 1;
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const productIds = row.id || this.ids;
+      const storeName = row.storeName
+      this.$modal .confirm('是否确认铺货商品名称为"' + productIds + '"的数据项？') .then(function () {
+        return productBatchSave(productIds);
+      }).then(() => {
         this.getList();
-      },
-      /** 删除按钮操作 */
-      handleDelete(row) {
-        const productIds = row.id || this.ids;
-        const storeName = row.storeName
-        this.$modal .confirm('是否确认铺货商品名称为"' + productIds + '"的数据项？') .then(function () {
-            return productBatchSave(productIds);
-          }).then(() => {
-            this.getList();
-            this.$modal.msgSuccess("操作成功");
-          }).catch(() => {});
-      },
-      /** 重置按钮操作 */
-      resetQuery() {
-        this.handleQuery();
-      },
-      add(row) {
-        this.$tab.openPage("添加到我的店铺", `/store/list/creatProduct/${ row.id }`);
-      },
-    }
-  };
+        this.$modal.msgSuccess("操作成功");
+      }).catch(() => {});
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.handleQuery();
+    },
+    add(row) {
+      this.$tab.openPage("添加到我的店铺", `/store/list/creatProduct/${ row.id }`);
+    },
+  }
+};
 </script>

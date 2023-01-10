@@ -90,6 +90,13 @@
           label="邀请时间"
           min-width="100"
         />
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <router-link :to=" { path: `/customer/shop/${ scope.row.id || 0 }`}">
+              <el-button type="primary" size="small" icon="el-icon-view" class="mr10" v-hasPermi="['admin:product:save']">查看商品</el-button>
+            </router-link>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="block">
         <el-pagination
@@ -109,6 +116,7 @@
 
 <script>
   import { getUserList, getGroupList, getTagList, postUserGroup, postUserTag, postUserLevel, disGradeList, agentGradeList, changeDisGradeLevel, changeAgentGradeLevel, updateDeposit, getUserDistributor } from '@/api/crm/inviteUser.js'
+  import { listAgentGrade } from '@/api/crm/cooperativeStores'
   // import { getDicts } from '@/api/system/dict/data.js'
   export default {
     data() {
@@ -223,7 +231,7 @@
           case '1':
             this.visible = false;
             break;
-          
+
           case '4':
             this.visible4 = false;
             break;
@@ -338,7 +346,7 @@
       },
       // 等级列表
       levelLists () {
-        disGradeList().then(res => {
+        listAgentGrade().then(res => {
           this.dealerLevelList = res.rows;
         })
         agentGradeList().then(res => {

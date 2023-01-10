@@ -165,7 +165,9 @@
 <script>
   import { getUserList, getGroupList, getTagList, postUserGroup, postUserTag, postUserLevel, disGradeList, agentGradeList, changeDisGradeLevel, changeAgentGradeLevel, updateDeposit, getUserDistributor } from '@/api/crm/inviteUser.js'
   // import { getDicts } from '@/api/system/dict/data.js'
+
   export default {
+
     data() {
       return {
         loadingBtn: false,
@@ -292,7 +294,7 @@
           case '1':
             this.visible = false;
             break;
-          
+
           case '4':
             this.visible4 = false;
             break;
