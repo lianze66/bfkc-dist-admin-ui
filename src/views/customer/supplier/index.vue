@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="90px">
 
-      <el-form-item label="名称" prop="realName">
+      <el-form-item label="供应商名称" prop="realName">
         <el-input
           v-model="queryParams.nickName"
           placeholder="请输入名称"
@@ -11,14 +11,14 @@
         />
       </el-form-item>
 
-      <el-form-item label="所属等级" prop="userLevel">
-        <el-input
-          v-model="queryParams.userLevel"
-          placeholder="请输入等级"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="所属等级" prop="userLevel">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.userLevel"-->
+<!--          placeholder="请输入等级"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
 
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -41,15 +41,22 @@
 
 
     <el-table v-loading="loading" :data="supplierList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="名称" align="center" prop="realName" />
+      <el-table-column label="供应商名称" align="center" prop="realName" />
       <!-- <el-table-column label="用户昵称" align="center" prop="nickName" /> -->
       <!-- <el-table-column label="企业名称" align="center" prop="userType" /> -->
       <!-- <el-table-column label="行业" align="center" prop="userType" /> -->
       <!-- <el-table-column label="联系人" align="center" prop="userType" /> -->
-       <el-table-column label="店铺名称" align="center" prop="storeName" />
-       <el-table-column label="商铺数量" align="center" prop="shopNum" />
+<!--       <el-table-column label="店铺名称" align="center" prop="storeName" />-->
+<!--       <el-table-column label="商铺数量" align="center" prop="shopNum" />-->
       <el-table-column label="联系电话" align="center" prop="phone" />
+      <el-table-column label="店铺名称" align="center" prop="storeName" />
+      <el-table-column label="店主账号" align="center" prop="userName" />
+      <!--      <el-table-column label="店铺简介" align="center" prop="storeDesc" />-->
+      <el-table-column label="物流评分" align="center" prop="deliveryScore" />
+      <el-table-column label="服务评分" align="center" prop="serviceScore" width="80" />
+      <el-table-column label="开店时间" align="center" prop="createTime" />
       <!-- <el-table-column label="所属等级" align="center" prop="email" /> -->
       <!-- <el-table-column label="开店时间" align="center" prop="email" />
       <el-table-column label="有效期至" align="center" prop="email" />

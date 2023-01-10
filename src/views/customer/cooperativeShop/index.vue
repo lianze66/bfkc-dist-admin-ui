@@ -7,7 +7,7 @@
             <el-row>
               <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
                 <el-col>
-                  <el-form-item label="名称：">
+                  <el-form-item label="合作店铺名称：">
                     <el-input v-model="userFrom.realName" placeholder="请输入名称"></el-input>
                   </el-form-item>
                 </el-col>
@@ -54,11 +54,15 @@
         <el-table-column
           prop="realName"
           align="center"
-          label="名称"
+          label="合作店铺名称"
           min-width="100"
         />
-
-
+        <el-table-column label="店铺名称" align="center" prop="storeName" />
+        <el-table-column label="店主账号" align="center" prop="userName" />
+        <!--      <el-table-column label="店铺简介" align="center" prop="storeDesc" />-->
+        <el-table-column label="物流评分" align="center" prop="deliveryScore" />
+        <el-table-column label="服务评分" align="center" prop="serviceScore" width="80" />
+        <el-table-column label="开店时间" align="center" prop="createTime" />
         <!-- <el-table-column
           prop="userType"
           align="center"
@@ -73,23 +77,8 @@
           min-width="100"
           prop="gradeName"
         >
-          <!-- <template slot-scope="scope">
-            <span>{{ userLevel(scope.row.disGradeId) }}</span>
-          </template> -->
         </el-table-column>
-        <!-- <el-table-column
-          prop="inviterUserId"
-          align="center"
-          label="邀请人"
-          min-width="130"
-        /> -->
 
-        <el-table-column
-          prop="createTime"
-          align="center"
-          label="邀请时间"
-          min-width="100"
-        />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <router-link :to=" { path: `/customer/shop/${ scope.row.id || 0 }`}">
