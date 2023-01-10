@@ -35,7 +35,7 @@
             </el-row>
           </el-form>
         </div>
-        <el-button class="mr10" size="small" @click="onSend('1')">设置分销等级</el-button>
+        <el-button class="mr10" type="primary"  size="small" @click="onSend('1')">设置分销等级</el-button>
       </div>
       <el-table
         ref="table"

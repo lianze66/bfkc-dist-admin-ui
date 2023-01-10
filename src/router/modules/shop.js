@@ -15,7 +15,7 @@ const shop = {
       name: 'openStore',
       component: () => import('@/views/shop/openStore'),
       meta: {
-        title: '申请开店',
+        title: '店铺信息',
         icon: 'clipboard'
       }
     },

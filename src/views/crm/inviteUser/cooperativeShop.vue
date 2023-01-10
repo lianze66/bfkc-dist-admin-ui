@@ -32,7 +32,7 @@
               </el-col>
             </el-row>
           </el-form>
-          <el-button class="mr10" size="small" @click="onSend('4')">设置我的合作商铺</el-button>
+          <el-button class="mr10" type="primary"  size="small" @click="onSend('4')">设置我的合作商铺</el-button>
         </div>
       </div>
       <el-table
