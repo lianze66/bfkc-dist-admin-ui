@@ -81,7 +81,7 @@
 
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
-            <router-link :to=" { path: `/customer/shop/${ scope.row.id || 0 }`}">
+            <router-link :to=" { path: `/customer/shop/${ scope.row.userId || 0 }`}">
               <el-button type="primary" size="small" icon="el-icon-view" class="mr10" v-hasPermi="['admin:product:save']">查看商品</el-button>
             </router-link>
           </template>
