@@ -1,795 +1,327 @@
 <template>
-  <div class="divBox">
+  <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <el-tabs v-model="loginType" @tab-click="getList(1)">
-          <el-tab-pane :label="item.dictLabel" :name="item.dictValue" v-for="(item, index) in headeNum" :key="index"/>
-        </el-tabs>
-        <div class="container">
-          <el-form inline size="small" :model="userFrom" ref="userFrom" :label-position="labelPosition" >
-            <el-row>
-              <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
-                <el-col>
-                  <el-form-item label="名称：">
-                    <el-input v-model="userFrom.nickname" placeholder="请输入名称"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
-                <el-col>
-                  <el-form-item v-show="userFrom.userLevel == 0" label="类型：">
-                    <el-select v-model="userFrom.userType" placeholder="请选择类型">
-                      <el-option
-                        v-for="item in headeNum"
-                        :key="item.dictValue"
-                        :label="item.dictLabel"
-                        :value="item.dictValue">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
-                <el-col>
-                  <el-form-item v-show="userFrom.userType == 2" label="经销商等级：">
-                    <el-select v-model="userFrom.userLevelId" placeholder="请选择经销商等级">
-                      <el-option
-                        v-for="item in dealerLevelList"
-                        :key="item.id"
-                        :label="item.gradeName"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
-                <el-col>
-                  <el-form-item v-show="userFrom.userType == 3" label="代理商等级：">
-                    <el-select v-model="userFrom.userLevelId" placeholder="请选择代理商等级">
-                      <el-option
-                        v-for="item in agentLevelList"
-                        :key="item.id"
-                        :label="item.gradeName"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-col>
-              <el-col  :xs="24" :sm="24" :md="24" :lg="6" :xl="6" class="text-right userFrom">
-                <el-form-item>
-                  <el-button type="primary" icon="ios-search" label="default" class="mr15" size="small"   @click="userSearchs">搜索</el-button>
-                  <el-button class="ResetSearch mr10" @click="reset('userFrom')"  size="small">重置</el-button>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-        </div>
-        <el-button class="mr10" size="small" @click="onSend('1')" v-show="userFrom.userType == 2">设置分销等级</el-button>
-        <el-button class="mr10" size="small" @click="onSend('4')" v-show="userFrom.userType == 3">设置代理等级</el-button>
-        <el-button class="mr10" size="small" @click="onSend('2')">设置分组</el-button>
-        <el-button class="mr10" size="small" @click="onSend('3')">设置标签</el-button>
-      </div>
-      <el-table
-        ref="table"
-        v-loading="listLoading"
-        :data="tableData.data"
-        style="width: 100%"
-        size="mini"
-        @selection-change="onSelectTab"
-        highlight-current-row
-        >
-        <el-table-column
-          type="selection"
-          align="center"
-          width="55">
-        </el-table-column>
+      <div class="text item">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="我的供应商" name="1">
+            <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="90px">
+              <el-form-item label="名称" prop="realName">
+                <el-input
+                  v-model="queryParams.nickName"
+                  placeholder="请输入名称"
+                  clearable
+                  @keyup.enter.native="handleQuery"
+                />
+              </el-form-item>
 
-        <el-table-column
-          prop="nickName"
-          align="center"
-          label="名称"
-          min-width="100"
-        />
+              <el-form-item label="所属等级" prop="userLevel">
+                <el-input
+                  v-model="queryParams.userLevel"
+                  placeholder="请输入等级"
+                  clearable
+                  @keyup.enter.native="handleQuery"
+                />
+              </el-form-item>
 
-
-        <el-table-column
-          prop="userType"
-          align="center"
-          label="用户类型"
-          min-width="100"
-          :formatter="typeFun"
-        />
-        
-        <el-table-column
-          prop="deposit"
-          align="center"
-          label="押金"
-          min-width="100"
-        />
-
-        <el-table-column
-          label="用户等级"
-          align="center"
-          min-width="100"
-        >
-          <template slot-scope="scope">
-            <span>{{ userLevel(scope.row.userLevel) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="groupName"
-          align="center"
-          label="分组"
-          min-width="100"
-        />
-        <el-table-column
-          prop="tagName"
-          align="center"
-          label="标签"
-          min-width="100"
-        />
-        <el-table-column
-          prop="inviterUserName"
-          align="center"
-          label="邀请人"
-          min-width="130"
-        />
-        <el-table-column
-          label="手机号"
-          align="center"
-          min-width="100"
-        >
-          <template slot-scope="scope">
-            <span>{{scope.row.phonenumber}}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          prop="createTime"
-          align="center"
-          label="邀请时间"
-          min-width="100"
-        />
-        <el-table-column
-          align="center"
-          label="操作"
-          min-width="100"
-        >
-        <template slot-scope="scope">
-          <el-button type="text" @click="deposit(scope.row.userId, scope.row.deposit)">设置押金</el-button>
-        </template>
-        </el-table-column>
-      </el-table>
-      <div class="block">
-        <el-pagination
-          :page-sizes="[15, 30, 45, 60]"
-          :page-size="userFrom.limit"
-          :current-page="userFrom.page"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="tableData.total"
-          @size-change="handleSizeChange"
-          @current-change="pageChange"
-        />
-      </div>
+              <el-form-item>
+                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table v-loading="loading" :data="supplierList" @selection-change="handleSelectionChange">
+              <!-- <el-table-column type="selection" width="55" align="center" /> -->
+              <el-table-column label="名称" align="center" prop="realName" />
+              <el-table-column label="店铺名称" align="center" prop="storeName" />
+              <el-table-column label="商铺数量" align="center" prop="shopNum" />
+              <el-table-column label="联系电话" align="center" prop="phone" />
+            </el-table>
+            <el-pagination
+              v-show="total>0"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="queryParams.pageNum"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="queryParams.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+            </el-pagination>
+          </el-tab-pane>
+            <el-tab-pane label="我的经销商" name="2">
+              <myDistributioner ref="tabs" v-if="isRouterAlive" />
+            </el-tab-pane>
+          <el-tab-pane label="我的代理商" name="3">
+            <myAgenter ref="tabs" v-if="isRouterAlive" />
+          </el-tab-pane>
+          <el-tab-pane label="我的合作商铺" name="4">
+            <cooperativeShop ref="tabs" v-if="isRouterAlive" />
+          </el-tab-pane>
+        </el-tabs></div>
     </el-card>
-    <!--设置经销商等级-->
-    <el-dialog
-      title="设置经销商等级"
-      :visible.sync="visible"
-      width="600px"
-    >
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="经销商等级" prop="region">
-          <el-select v-model="ruleForm.userLevelId" placeholder="请选择经销商等级">
+
+
+    <!-- 添加或修改邀请申请对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="95px">
+        <!-- <el-form-item label="邀请人" prop="inviterUserId">
+          <el-input v-model="form.inviterUserId" placeholder="请输入邀请人" />
+        </el-form-item> -->
+        <el-form-item label="邀请人名称" prop="inviterUserName">
+          <el-input disabled v-model="form.inviterUserName" placeholder="请输入邀请人名称" />
+        </el-form-item>
+        <el-form-item label="邀请类型" prop="inviterType">
+          <el-select style="width: 100%" v-model="form.inviterType" disabled placeholder="请输入邀请类型">
             <el-option
-              v-for="item in dealerLevelList"
-              :key="item.id"
-              :label="item.gradeName"
-              :value="item.id">
+              v-for="item in options1"
+              :key="item.dictValue"
+              :label="item.dictLabel"
+              :value="item.dictValue">
             </el-option>
           </el-select>
         </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="close('1')">取 消</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm', '1')">确 定</el-button>
-      </span>
-    </el-dialog>
-    <!--设置代理商等级-->
-    <el-dialog
-      title="设置代理商等级"
-      :visible.sync="visible4"
-      width="600px"
-    >
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="代理商等级" prop="region">
-          <el-select v-model="ruleForm.userLevelId" placeholder="请选择代理商等级">
-            <el-option
-              v-for="item in agentLevelList"
-              :key="item.id"
-              :label="item.gradeName"
-              :value="item.id">
-            </el-option>
-          </el-select>
+        <el-form-item label="邀请二维码" prop="inviterQrCode">
+          <ImagePreview v-if="form.inviterQrCode" :src="form.inviterQrCode" />
+          <img v-if="!form.inviterQrCode" src="../../../assets/imgs/previewQrCode.jpg" alt="">
+          <el-button type="primary" @click="createQRCode">生成二维码</el-button>
+        </el-form-item>
+        <!-- <el-form-item label="邀请码" prop="inviterCode">
+          <el-input v-model="form.inviterCode" placeholder="请输入邀请码" style="width: 69%" />
+          <el-button type="primary" @click="getInviterCode">刷新邀请码</el-button>
+        </el-form-item> -->
+        <el-form-item label="描述" prop="remark">
+          <el-input
+            type="textarea"
+            :rows="3"
+            resize="none"
+            placeholder="请输入描述"
+            v-model="form.remark">
+          </el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="close('4')">取 消</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm', '4')">确 定</el-button>
-      </span>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
     </el-dialog>
-    <!--设置分组-->
-    <el-dialog
-      title="设置分组"
-      :visible.sync="visible2"
-      width="600px"
-    >
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="设置分组" prop="region">
-          <el-select v-model="ruleForm.groupId" placeholder="请选择分组">
-            <el-option
-              v-for="item in groupList"
-              :key="item.id"
-              :label="item.groupName"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="close('2')">取 消</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm', '2')">确 定</el-button>
-      </span>
-    </el-dialog>
-    <!--设置标签-->
-    <el-dialog
-      title="设置标签"
-      :visible.sync="visible3"
-      width="600px"
-    >
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="设置标签" prop="region">
-          <el-select v-model="ruleForm.tagId" placeholder="请选择标签">
-            <el-option
-              v-for="item in tagList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="close('3')">取 消</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm', '3')">确 定</el-button>
-      </span>
-    </el-dialog>
-    <!--设置押金-->
-    <el-dialog
-      title="设置押金"
-      :visible.sync="visible5"
-      width="600px"
-    >
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="押金" prop="deposit">
-          <el-input v-model="ruleForm.deposit" placeholder="请输入押金"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="close('5')">取 消</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm', '5')">确 定</el-button>
-      </span>
-    </el-dialog>
+
   </div>
 </template>
 
 <script>
-  import { getUserList, getGroupList, getTagList, postUserGroup, postUserTag, postUserLevel, disGradeList, agentGradeList, changeDisGradeLevel, changeAgentGradeLevel, updateDeposit } from '@/api/crm/inviteUser.js'
-  // import { getDicts } from '@/api/system/dict/data.js'
-  export default {
-    name: 'UserIndex',
-    data() {
-      return {
-        loadingBtn: false,
-        PointValidateForm: {
-          integralType: 2,
-          integralValue: 0,
-          moneyType: 2,
-          moneyValue: 0,
-          uid: ''
-        },
-        visible: false,
-        visible2: false,
-        visible3: false,
-        visible4: false,
-        visible5: false,
-        userIds: '',  // 列表多选
-        ruleForm: {
-          ids: null,
-          groupId: null,
-          tagId: null,
-          userLevelId: null,
-          id: null,
-          deposit: null
-        },
-        levelData: [],
-        groupData: [],
-        labelData: [],
-        selData:[],
-        labelPosition:'right',
-        collapse: false,
-        props: {
-          children: 'child',
-          label: 'name',
-          value: 'name',
-          emitPath: false
-        },
-        propsCity: {
-          children: 'child',
-          label: 'name',
-          value: 'name'
-        },
-        headeNum: [
-          { 'dictValue': '0', 'dictLabel': '全部' },
-          { 'dictValue': '1', 'dictLabel': '我的供应商' },
-          { 'dictValue': '2', 'dictLabel': '我的经销商' },
-          { 'dictValue': '3', 'dictLabel': '我的代理商' }
+import { listSupplier } from "@/api/crm/user";
+import { addInviter, updateInviter, getInfo, createQRCode } from "@/api/crm/inviter";
+import { getToken } from '@/utils/auth'
+import myDistributioner from '@/views/crm/inviteUser/myDistributioner'
+import myAgenter from '@/views/crm/inviteUser/myAgenter'
+import cooperativeShop from '@/views/crm/inviteUser/cooperativeShop'
+export default {
+  name: "Supplier",
+  components:{
+    myDistributioner,
+    myAgenter,
+    cooperativeShop
+  },
+  data() {
+    return {
+      // 遮罩层
+      loading: true,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 显示搜索条件
+      showSearch: true,
+      // 总条数
+      total: 0,
+      // 用户信息表格数据
+      supplierList: [],
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
+      options1: [// 类型列表
+        {dictLabel: '未知', dictValue: 0},
+        {dictLabel: '供应商', dictValue: 1},
+        {dictLabel: '代理商', dictValue: 2},
+        {dictLabel: '分销商', dictValue: 3},
+      ],
+      activeName:'1',
+      user: {  // 用户信息
+        id: null,
+        userName: null
+      },
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        deptId: null,
+        nickname: null,
+        nickName: null,
+        realName: null,
+        userType: null,
+        email: null,
+        phonenumber: null,
+        sex: null,
+        avatar: null,
+        password: null,
+        status: null,
+        loginIp: null,
+        loginDate: null,
+      },
+      isRouterAlive:true,
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+        inviterUserName: [
+          { required: true, message: "邀请人名称不能为空", trigger: "blur" }
         ],
-        listLoading: true,
-        tableData: {
-          data: [],
-          total: 0
-        },
-        loginType: '',
-        userFrom: {
-          gradeId: null,
-          nickname: null,
-          userType: 0,
-          userLevel: 0,
-          page: 1,
-          limit: 15,
-        },
-        dealerLevelList: [],   // 经销商列表
-        agentLevelList: [],   // 代理商列表
-        labelLists: [],
-        groupList: [],
-        tagList: [],
-        selectedData: [],
-        timeVal: [],
-        dynamicValidateForm:{
-          groupId: []
-        },
-        loading: false,
-        groupIdFrom: [],
-        selectionList: [],
-        batchName: '',
-        uid: 0,
-        Visible: false,
-        keyNum: 0,
-        address: [],
-        multipleSelectionAll: [],
-        idKey:'userId',
-        rules: {
-          groupId: [
-            { required: true, message: '请选择分组', trigger: 'change' }
-          ]
-        }
+        inviterType: [
+          { required: true, message: "邀请类型不能为空", trigger: "change" }
+        ]
       }
+    };
+  },
+  created() {
+    this.getList();
+    getInfo(getToken()).then(res => {
+      this.user = {
+        id: res.id,
+        userName: res.realName,
+      }
+    })
+  },
+  methods: {
+    handleClick(){
+      // this.$refs.tabs.refreshs();
+      this.isRouterAlive = false
+      this.$nextTick(() => (this.isRouterAlive = true))
     },
-    mounted() {
-      this.getList()
-      this.levelLists()
-      // getDicts('user_type').then(res => {
-      //   this.headeNum = res.data;
-      // })
+    /** 查询用户信息列表 */
+    getList() {
+      this.loading = true;
+      listSupplier(this.queryParams).then((res) => {
+        this.supplierList = res.rows;
+        this.total = res.total;
+        this.loading = false;
+      });
     },
-    methods: {
-      getTemplateRow(row){
-        this.formExtension.image = row.avatar
-        this.formExtension.spreadUid = row.uid
-      },
-      resetForm(){
-        this.visible = false;
-      },
-      reset(formName) {
-        this.userFrom = {
-          nickname: null,
-          userType: 0,
-          userLevel: 0,
-          page: 1,
-          limit: 15,
-        }
-        this.levelData = []
-        this.groupData = []
-        this.labelData = []
-        this.timeVal = []
-        this.getList()
-      },
-      // 设置顶级
-      onSend(index){
-        if (this.userIds.length === 0) return this.$message.warning('请选择要设置的用户');
-        switch (index) {
-          case '1':
-            this.visible = true;
-            break;
-          case '2':
-            this.visible2 = true;
-            break;
-          case '3':
-            this.visible3 = true;
-            break;
-          case '4':
-            this.visible4 = true;
-            break;
-          default:
-            break;
-        }
-      },
-      close(index) {
-        switch (index) {
-          case '1':
-            this.visible = false;
-            break;
-          case '2':
-            this.visible2 = false;
-            break;
-          case '3':
-            this.visible3 = false;
-            break;
-          case '4':
-            this.visible4 = false;
-            break;
-          case '5':
-            this.visible5 = false;
-            break;
-          default:
-            break;
-        }
-        this.ruleForm = {
-          ids: null,
-          groupId: null,
-          tagId: null,
-          userLevelId: null,
-          id: null,
-          deposit: null
-        }
-      },
-      editUser(id) {
-        this.uid = id
-        this.visible = true
-      },
-      submitForm(formName, index) {
-        this.ruleForm.ids = this.userIds;
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.loading = true
-            switch (index) {
-              case '1':
-                changeDisGradeLevel(this.ruleForm.ids, this.ruleForm.userLevelId).then(res => {
-                  if(res.code == 200) {
-                    this.$message.success(res.msg);
-                    this.ruleForm = {
-                      ids: null,
-                      groupId: null,
-                      tagId: null,
-                      userLevelId: null,
-                      id: null,
-                      deposit: null
-                    }
-                    this.visible = false;
-                    this.getList()
-                    this.loading = false;
-                  }
-                })
-                break;
-              case '2':
-                postUserGroup(this.ruleForm).then(res => {
-                  if(res.code == 200) {
-                    this.$message.success(res.msg);
-                    this.ruleForm = {
-                      ids: null,
-                      groupId: null,
-                      tagId: null,
-                      userLevelId: null,
-                      id: null,
-                      deposit: null
-                    }
-                    this.visible2 = false;
-                    this.getList()
-                    this.loading = false;
-                  }
-                })
-                break;
-              case '3':
-                postUserTag(this.ruleForm).then(res => {
-                  if(res.code == 200) {
-                    this.$message.success(res.msg);
-                    this.ruleForm = {
-                      ids: null,
-                      groupId: null,
-                      tagId: null,
-                      userLevelId: null,
-                      id: null,
-                      deposit: null
-                    }
-                    this.visible3 = false;
-                    this.getList()
-                    this.loading = false;
-                  }
-                })
-                break;
-              case '4':
-                changeAgentGradeLevel(this.ruleForm.ids, this.ruleForm.userLevelId).then(res => {
-                  if(res.code == 200) {
-                    this.$message.success(res.msg);
-                    this.ruleForm = {
-                      ids: null,
-                      groupId: null,
-                      tagId: null,
-                      userLevelId: null,
-                      id: null,
-                      deposit: null
-                    }
-                    this.visible4 = false;
-                    this.getList()
-                    this.loading = false;
-                  }
-                })
-                break;
-              case '5':
-                let list = {userId: this.ruleForm.id, deposit: this.ruleForm.deposit};
-                updateDeposit(list).then(res => {
-                  if(res.code == 200) {
-                    this.$message.success(res.msg);
-                    this.ruleForm = {
-                      ids: null,
-                      groupId: null,
-                      tagId: null,
-                      userLevelId: null,
-                      id: null,
-                      deposit: null
-                    }
-                    this.visible5 = false;
-                    this.getList()
-                    this.loading = false;
-                  }
-                })
-                break;
-              default:
-                break;
-            }
-          } else {
-            return false;
-          }
-        });
-      },
-      // 全选
-      onSelectTab (selection) {
-        this.selectionList = selection;
-        setTimeout(() => {
-          this.changePageCoreRecordData()
-          let data = [];
-          if(this.multipleSelectionAll.length){
-            this.multipleSelectionAll.map((item) => {
-              data.push(item.userId)
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();ckname
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        id: null,
+        inviterUserId: this.user.id,
+        inviterUserName: this.user.userName,
+        inviterQrCode: null,
+        inviterUrl: null,
+        inviterCode: null,
+        inviterType: 1,
+        inviterStatus: "0",
+        createBy: null,
+        createTime: null,
+        remark: null
+      };
+      this.resetForm("form");
+      this.form.inviterUserId = this.user.id;
+      this.form.inviterUserName = this.user.userName;
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },
+    handleUpdate(row) {
+      // console.log(row)
+      this.$tab.openPage("供应商商品列表", `/customer/commodity/${ row.storeId || 0 }`);
+    },
+    handleSizeChange(val) {
+      // console.log(`每页 ${val} 条`);
+      this.queryParams.pageNum = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.queryParams.pageSize = val;
+      this.getList();
+    },
+    invitationSupplier() {
+      this.reset();
+      // this.getInviterCode();
+      this.open = true;
+      this.title = "添加邀请申请";
+    },
+    /** 提交按钮 */
+    submitForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.id != null) {
+            updateInviter(this.form).then(response => {
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
             });
-            this.userIds = data.join(',');
           } else {
-            this.userIds = '';
-          }
-        }, 0)
-      },
-      // 搜索
-      userSearchs () {
-        this.userFrom.page = 1;
-        this.getList1();
-      },
-      // 等级列表
-      levelLists () {
-        disGradeList().then(res => {
-          this.dealerLevelList = res.data;
-        })
-        agentGradeList().then(res => {
-          this.agentLevelList = res.data;
-        })
-        getGroupList({ page: 1, limit: 9999}).then(res => {
-          this.groupList = res.rows
-        })
-        getTagList({ page: 1, limit: 9999}).then(res => {
-          this.tagList = res.rows
-        })
-      },
-      // 列表
-      getList(num) {
-        this.listLoading = true
-        this.userFrom.page = num ? num : this.userFrom.page;
-        if( this.loginType > 0 ){
-          this.userFrom.userLevel = null;
-        }
-        if( this.loginType == 0 ){
-          this.userFrom.userLevel = 0;
-        }
-        this.userFrom.userType = this.loginType == 0 ? null : this.loginType;
-        getUserList(this.userFrom).then(res => {
-          this.tableData.data = res.rows
-          this.tableData.total = res.total
-          this.$nextTick(function() {
-            this.setSelectRow()// 调用跨页选中方法
-          })
-          this.listLoading = false
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      // 类型搜索
-      getList1() {
-        this.listLoading = true;
-        if(this.userFrom.userType == 0) {
-          this.userFrom.userType = null;
-        }
-        getUserList(this.userFrom).then(res => {
-          this.tableData.data = res.rows
-          this.tableData.total = res.total
-          this.$nextTick(function() {
-            this.setSelectRow()// 调用跨页选中方法
-          })
-          this.listLoading = false
-        }).catch(() => {
-          this.listLoading = false
-        })
-      },
-      // 设置选中的方法
-      setSelectRow() {
-        if (!this.multipleSelectionAll || this.multipleSelectionAll.length <= 0) {
-          return
-        }
-        // 标识当前行的唯一键的名称
-        const idKey = this.idKey
-        const selectAllIds = []
-        this.multipleSelectionAll.forEach(row => {
-          selectAllIds.push(row[idKey])
-        })
-        this.$refs.table.clearSelection()
-        for (var i = 0; i < this.tableData.data.length; i++) {
-          if (selectAllIds.indexOf(this.tableData.data[i][idKey]) >= 0) {
-            // 设置选中，记住table组件需要使用ref="table"
-            this.$refs.table.toggleRowSelection(this.tableData.data[i], true)
+            addInviter(this.form).then(response => {
+              this.$modal.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
           }
         }
-      },
-      // 记忆选择核心方法
-      changePageCoreRecordData() {
-        // 标识当前行的唯一键的名称
-        const idKey = this.idKey
-        const that = this
-        // 如果总记忆中还没有选择的数据，那么就直接取当前页选中的数据，不需要后面一系列计算
-        if (this.multipleSelectionAll.length <= 0) {
-          this.multipleSelectionAll = this.selectionList
-          return
-        }
-        // 总选择里面的key集合
-        const selectAllIds = []
-        this.multipleSelectionAll.forEach(row => {
-          selectAllIds.push(row[idKey])
-        })
-        const selectIds = []
-        // 获取当前页选中的id
-        this.selectionList.forEach(row => {
-          selectIds.push(row[idKey])
-          // 如果总选择里面不包含当前页选中的数据，那么就加入到总选择集合里
-          if (selectAllIds.indexOf(row[idKey]) < 0) {
-            that.multipleSelectionAll.push(row)
-          }
-        })
-        const noSelectIds = []
-        // 得到当前页没有选中的id
-        this.tableData.data.forEach(row => {
-          if (selectIds.indexOf(row[idKey]) < 0) {
-            noSelectIds.push(row[idKey])
-          }
-        })
-        noSelectIds.forEach(uid => {
-          if (selectAllIds.indexOf(uid) >= 0) {
-            for (let i = 0; i < that.multipleSelectionAll.length; i++) {
-              if (that.multipleSelectionAll[i][idKey] == uid) {
-                // 如果总选择中有未被选中的，那么就删除这条
-                that.multipleSelectionAll.splice(i, 1)
-                break
-              }
-            }
-          }
-        })
-      },
-      pageChange(page) {
-        this.changePageCoreRecordData()
-        this.userFrom.page = page
-        this.getList()
-      },
-      handleSizeChange(val) {
-        this.changePageCoreRecordData()
-        this.userFrom.limit = val
-        this.getList()
-      },
-      // 删除
-      handleDelete(id, idx) {
-        this.$modalSure().then(() => {
-          productDeleteApi(id).then(() => {
-            this.$message.success('删除成功')
-            this.getList()
-          })
-        })
-      },
-      userLevel(id) {
-        if(id == 0 || id == null) {
-          return '未配置'
-        }
-        for (let i = 0; i < this.levelList.length; i++) {
-          if(this.levelList[i].id == id) {
-            return this.levelList[i].gradeName;
-          }
-        }
-      },
-      typeFun(row) {
-        let name = null;
-        this.headeNum.forEach(item => {
-          if(item.dictValue == row.userType) {
-            name = item.dictLabel;
-          }
-        })
-        return name;
-      },
-      deposit(id, deposit) {
-        this.ruleForm.id = id;
-        this.ruleForm.deposit = deposit;
-        this.visible5 = true;
+      });
+    },
+    createQRCode() {
+      if(!this.form.inviterType) {
+        this.$message({
+          message: '邀请类型不能为空！',
+          type: 'warning'
+        });
+        return;
       }
+      createQRCode(this.form).then(res => {
+        this.form.id = res.id;
+        this.form.inviterQrCode = res.inviterUrl;
+      })
     }
   }
+};
 </script>
+<style>
+.text {
+  font-size: 14px;
+}
 
-<style scoped lang="scss">
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
-    font-size: 12px;
-  }
-  .el-icon-arrow-down {
-    font-size: 12px;
-  }
-  .text-right{
-    // text-align: right;
-  }
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 33.33%;
-  }
-  .selWidth{
-    width: 100% !important;
-  }
-  .seachTiele{
-    line-height: 30px;
-  }
-  .container{
-    min-width: 821px;
-    ::v-deep.el-form-item{
-      width: 100%;
-    }
-    ::v-deep.el-form-item__content{
-      width: 72%;
-    }
-  }
-  .ivu-ml-8{
-    font-size: 12px;
-    color: #1682e6;
-  }
+.item {
+  margin-bottom: 18px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
+}
+
+.box-card {
+  width: 100%;
+}
 </style>

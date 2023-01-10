@@ -56,6 +56,15 @@ const customer = {
       }
     },
     {
+      path: 'shop/:tableId',
+      name: 'shop',
+      component: () => import('@/views/customer/cooperativeShop/shop'),
+      meta: {
+        title: '合作商商品',
+        icon: 'clipboard'
+      }
+    },
+    {
       path: 'shopAddFrom/:id',
       name: 'shopAddFrom',
       component: () => import('@/views/customer/supplierCommodity/shopAddFrom'),
@@ -70,6 +79,15 @@ const customer = {
       component: () => import('@/views/customer/client/index'),
       meta: {
         title: '我的客户',
+        icon: 'clipboard'
+      }
+    },
+    {
+      path: 'cooperativeStores',
+      name: 'cooperativeStores',
+      component: () => import('@/views/customer/cooperativeStores/index'),
+      meta: {
+        title: '合作商铺等级',
         icon: 'clipboard'
       }
     },

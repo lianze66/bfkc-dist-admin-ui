@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询邀请申请列表
 export function listInviter(query) {
   return request({
-    url: '/user/inviter/list',
+    url: '/api/admin/inviter/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listInviter(query) {
 // 查询邀请申请详细
 export function getInviter(id) {
   return request({
-    url: '/user/inviter/' + id,
+    url: '/api/admin/inviter/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getInviter(id) {
 // 新增邀请申请
 export function addInviter(data) {
   return request({
-    url: '/api/admin/crm/inviter',
+    url: '/api/admin/inviter',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addInviter(data) {
 // 修改邀请申请
 export function updateInviter(data) {
   return request({
-    url: '/api/admin/crm/inviter',
+    url: '/api/admin/inviter',
     method: 'put',
     data: data
   })
@@ -38,10 +38,19 @@ export function updateInviter(data) {
 // 删除邀请申请
 export function delInviter(id) {
   return request({
-    url: '/api/admin/crm/inviter/' + id,
+    url: '/api/admin/inviter/' + id,
     method: 'delete'
   })
 }
+
+// 一键铺货
+export function productBatchSave (id) {
+  return request({
+    url: '/api/admin/store/product/batchSave/' + id,
+    method: 'post'
+  })
+}
+
 
 // 获取用户详细信息
 export function getInfo(token) {
@@ -55,7 +64,7 @@ export function getInfo(token) {
 // 获取邀请码
 export function getInviterCode() {
   return request({
-    url: '/api/admin/crm/inviter/code',
+    url: '/api/admin/inviter/code',
     method: 'get'
   })
 }
@@ -63,7 +72,7 @@ export function getInviterCode() {
 // 生成邀请二维码
 export function createQRCode(data) {
   return request({
-    url: `/user/inviter/qrcode`,
+    url: `/api/admin/inviter/qrcode`,
     method: 'post',
     data: data
   })

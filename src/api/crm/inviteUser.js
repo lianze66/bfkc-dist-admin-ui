@@ -115,3 +115,11 @@ export function getUserAgent(query) {
     params: query
   })
 }
+
+// 设置我的合作商铺
+export function changecooperateShopLevel(ids, gradeId) {
+  return request({
+    url: `/api/admin/crm/user/changecooperateShopLevel?ids=${ids}&gradeId=${gradeId}`,
+    method: 'get'
+  })
+}
