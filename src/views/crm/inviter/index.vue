@@ -123,11 +123,7 @@
         <!-- <el-table-column label="邀请链接" align="center" prop="inviterUrl" /> -->
         <!-- <el-table-column label="邀请码" align="center" prop="inviterCode" /> -->
         <el-table-column label="邀请类型" align="center" prop="inviterType" :formatter="typeFormatter" />
-        <el-table-column label="状态" align="center" prop="inviterStatus">
-          <template slot-scope="scope">
-            {{ scope.row.inviterStatus == 0 ? '未接受' : '已接受' }}
-          </template>
-        </el-table-column>
+        <el-table-column label="受邀请人数" align="center" prop="inviterCount" />
         <el-table-column label="新增时间" align="center" prop="createTime" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
@@ -244,8 +240,8 @@ export default {
       options: [ // 类型列表
         {dictLabel: '未知', dictValue: 0},
         {dictLabel: '供应商', dictValue: 1},
-        {dictLabel: '代理商', dictValue: 2},
-        {dictLabel: '分销商', dictValue: 3},
+        {dictLabel: '经销商', dictValue: 2},
+        {dictLabel: '代理商', dictValue: 3},
         {dictLabel: '合作商铺', dictValue: 4},
       ],
       options1: [// 类型列表
