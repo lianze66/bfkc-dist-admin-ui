@@ -51,6 +51,18 @@ export function applyStatusApi(params, data) {
 }
 
 /**
+ * 离线支付
+ * @param pram
+ */
+export function applyOfflinePay(data) {
+  return request({
+    url: '/api/admin/finance/apply/offlinePay',
+    method: 'post',
+    data
+  })
+}
+
+/**
  * 充值 列表
  * @param pram
  */

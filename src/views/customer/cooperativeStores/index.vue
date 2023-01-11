@@ -52,7 +52,7 @@
 
       </el-row>
 
-      <el-table v-loading="loading" :data="agentGradeList" @selection-change="handleSelectionChange">
+      <el-table :header-cell-style="{fontWeight: 'bolder',fontSize:'14px' }" v-loading="loading" :data="agentGradeList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <!-- <el-table-column label="店铺名称" align="center" prop="storeName" /> -->
         <el-table-column label="级别名称" align="center" prop="gradeName" />
@@ -114,10 +114,10 @@
           <el-input v-model="form.gradeCode" placeholder="请输入级别" />
         </el-form-item>
         <el-form-item v-if="form.calModel == 1" label="比例(%)" prop="profitRate">
-          <el-input-number v-model="form.profitRate" controls-position="right"></el-input-number>
+          <el-input-number v-model="form.profitRate" min="0" controls-position="right"></el-input-number>
         </el-form-item>
-        <el-form-item v-if="form.calModel == 0" label="分润金额" prop="profitAmount">
-          <el-input-number v-model="form.profitAmount" controls-position="right"></el-input-number>
+        <el-form-item v-if="form.calModel == 0"  label="分润金额" prop="profitAmount">
+          <el-input-number v-model="form.profitAmount"min="0" controls-position="right"></el-input-number>
         </el-form-item>
         <el-form-item label="排序" prop="sort">
           <el-input-number v-model="form.sort" controls-position="right"></el-input-number>

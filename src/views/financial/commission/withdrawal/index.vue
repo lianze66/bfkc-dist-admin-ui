@@ -4,7 +4,7 @@
       <div class="clearfix">
         <div class="container">
           <el-form size="small" label-width="100px">
-            <el-form-item label="时间选择：" class="width100"> 
+            <el-form-item label="时间选择：" class="width100">
               <el-radio-group v-model="tableFrom.dateLimit" type="button" class="mr20" size="small" @change="selectChange(tableFrom.dateLimit)">
                 <el-radio-button v-for="(item,i) in fromList.fromTxt" :key="i" :label="item.val">{{ item.text }}</el-radio-button>
               </el-radio-group>
@@ -91,8 +91,8 @@
                  收款码：
                  <div class="demo-image__preview" v-if="scope.row.qrcodeUrl">
                     <el-image
-                     :src="scope.row.qrcodeUrl"
-                     :preview-src-list="[scope.row.qrcodeUrl]"
+                     :src="httpsURL() + scope.row.qrcodeUrl"
+                     :preview-src-list="[httpsURL() + scope.row.qrcodeUrl]"
                    />
                  </div>
                  <div v-else>无</div>
@@ -105,8 +105,8 @@
                  收款码：
                  <div class="demo-image__preview" v-if="scope.row.qrcodeUrl">
                  <el-image
-                 :src="scope.row.qrcodeUrl"
-                 :preview-src-list="[scope.row.qrcodeUrl]"
+                 :src="httpsURL() + scope.row.qrcodeUrl"
+                 :preview-src-list="[httpsURL() + scope.row.qrcodeUrl]"
                  />
                  </div>
                  <div v-else>无</div>
@@ -144,6 +144,7 @@
         <el-table-column label="操作" min-width="80" fixed="right" align="center">
           <template slot-scope="scope">
             <el-button v-if="scope.row.status !== 1" type="text" size="small" @click="handleEdit(scope.row)" v-hasPermi="['admin:finance:apply:update']">编辑</el-button>
+            <el-button v-else-if="scope.row.status === 1" type="text" size="small" @click="handleOffline(scope.row)">线下支付</el-button>
             <span v-else>无</span>
           </template>
         </el-table-column>
@@ -195,15 +196,49 @@
         @resetForm="resetForm"
       />
     </el-dialog>
+
+    <!--线下支付-->
+    <el-dialog
+      title="线下支付"
+      :visible.sync="dialogVisibleOffline"
+      width="500px"
+      :before-close="handleClose">
+      <el-form ref="form" :model="form" :rules="rules" label-width="95px">
+        <el-form-item label="支付操作人:" prop="payStatus">
+          <el-input v-model="form.operator" placeholder="请输入支付操作人" />
+        </el-form-item>
+        <el-form-item label="支付状态:" prop="payStatus">
+          <el-radio-group v-model="form.payStatus">
+            <el-radio :label="true">支付成功</el-radio>
+            <el-radio :label="false">支付失败</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="支付描述:" prop="mark">
+          <el-input
+            type="textarea"
+            :rows="3"
+            resize="none"
+            placeholder="请输入支付描述"
+            v-model="form.mark">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import { applyListApi, applyBalanceApi, applyUpdateApi, applyStatusApi } from '@/api/financial'
+  import { applyListApi, applyBalanceApi, applyUpdateApi, applyStatusApi, applyOfflinePay } from '@/api/financial'
   import cardsData from '@/components/cards/index'
   import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
   import { checkPermi } from "@/utils/permission"; // 权限判断函数
   import {Debounce} from '@/utils/validate'
+  import SettingMer from '@/utils/settingMer'
+  import { addInviter, updateInviter } from '@/api/crm/inviter'
   export default {
     name: 'AccountsExtract',
     components: {
@@ -215,6 +250,7 @@
         editData: {},
         isCreate: 1,
         dialogVisible: false,
+        dialogVisibleOffline: false,
         timeVal: [],
         tableData: {
           data: [],
@@ -232,7 +268,12 @@
         fromList: this.$constants.fromList,
         cardLists: [],
         applyId: null,
-        extractType: ''
+        extractType: '',
+        rules:{},
+        form:{},
+        httpsURL() {
+          return SettingMer.apiBaseURL
+        }
       }
     },
     mounted() {
@@ -251,6 +292,32 @@
         this.isCreate = 1;
         this.editData = JSON.parse(JSON.stringify(row));
       },
+
+      handleOffline(row){
+        this.reset();
+        this.form.extractId = row.id
+        this.form.mark = row.mark
+        this.form.operator = row.operator
+        this.form.payStatus = row.payStatus
+        this.dialogVisibleOffline = true
+      },
+      /** 线下支付提交按钮 */
+      submitForm() {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            applyOfflinePay(this.form).then(response => {
+                this.$modal.msgSuccess("新增成功");
+                this.dialogVisibleOffline = false;
+                this.getList();
+              });
+          }
+        });
+      },
+      // 取消按钮
+      cancel() {
+        this.dialogVisibleOffline = false;
+        this.reset();
+      },
       handlerSubmit:Debounce(function(formValue) {
         formValue.id = this.applyId;
         formValue.extractType = this.extractType;
@@ -260,7 +327,18 @@
           this.getList()
         })
       }),
+      // 表单重置
+      reset() {
+        this.form = {
+          extractId:null,
+          mark: null,
+          operator: null,
+          payStatus: true
+        };
+        this.resetForm("form");
+      },
       handleClose() {
+        this.dialogVisibleOffline = false;
         this.dialogVisible = false
         this.editData = {}
       },

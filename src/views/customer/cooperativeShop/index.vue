@@ -44,6 +44,7 @@
         size="mini"
         @selection-change="onSelectTab"
         highlight-current-row
+        :header-cell-style="{fontWeight: 'bolder',fontSize:'14px' }"
       >
         <el-table-column
           type="selection"

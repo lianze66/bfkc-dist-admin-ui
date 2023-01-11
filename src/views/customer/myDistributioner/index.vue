@@ -38,6 +38,7 @@
         <el-button class="mr10" type="primary"  size="small" @click="onSend('1')">设置分销等级</el-button>
       </div>
       <el-table
+        :header-cell-style="{fontWeight: 'bolder',fontSize:'14px' }"
         ref="table"
         v-loading="listLoading"
         :data="tableData.data"

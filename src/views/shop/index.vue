@@ -453,3 +453,10 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.pagination-container{
+  padding: 0 !important;
+  background: #fff0;
+  margin-top: 10px !important;
+}
+</style>

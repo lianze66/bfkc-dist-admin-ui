@@ -40,7 +40,7 @@
 
 
 
-    <el-table v-loading="loading" :data="supplierList" @selection-change="handleSelectionChange">
+    <el-table :header-cell-style="{fontWeight: 'bolder',fontSize:'14px' }" v-loading="loading" :data="supplierList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="供应商名称" align="center" prop="realName" />
