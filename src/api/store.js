@@ -301,3 +301,15 @@ export function copyConfigApi() {
     params
   })
 }
+
+/**
+ * 产品设置分销方案
+ * @param pram
+ */
+ export function setScheme(params) {
+  return request({
+    url: `/api/admin/store/product/setScheme`,
+    method: 'get',
+    params
+  })
+}

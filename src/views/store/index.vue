@@ -92,6 +92,28 @@
           align="center"
         />
         <el-table-column
+          prop="schemeName"
+          label="分销方案名称"
+          min-width="100"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <div v-if="scope.row.schemeName">
+              <el-popover
+                placement="top"
+                width="200"
+                trigger="hover">
+                <p>经销规则：{{ scope.row.disGradeStr || '' }}</p>
+                <p>代理规则：{{ scope.row.agentGradeStr || '' }}</p>
+                <div slot="reference">{{ scope.row.schemeName }}</div>
+              </el-popover>
+            </div>
+            <div v-else>
+              <el-button type="text" @click="popover(scope.row.id)">设置分销方案</el-button>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="sort"
           label="排序"
           min-width="70"
@@ -159,11 +181,40 @@
       :before-close="handleClose">
       <tao-bao v-if="dialogVisible" @handleCloseMod="handleCloseMod"></tao-bao>
     </el-dialog>
+    <el-dialog
+      title="设置分销方案"
+      :visible.sync="dialogDistribution"
+      :close-on-click-modal="false"
+      width="500px"
+      class="taoBaoModal"
+      :before-close="distributionClose">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="分销方案" prop="schemeId">
+          <el-select v-model="ruleForm.schemeId" placeholder="请选择分销方案">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.schemeName"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <!-- <el-form-item>
+          <el-button @click="distributionClose('ruleForm')">取 消</el-button>
+          <el-button type="primary" @click="submit('ruleForm')">确 认</el-button>
+        </el-form-item> -->
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="distributionClose('ruleForm')">取 消</el-button>
+          <el-button type="primary" @click="submit('ruleForm')">确 认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { productLstApi, productDeleteApi, categoryApi, putOnShellApi, offShellApi, productHeadersApi, productExportApi, restoreApi, productExcelApi } from '@/api/store'
+import { productLstApi, productDeleteApi, categoryApi, putOnShellApi, offShellApi, productHeadersApi, productExportApi, restoreApi, productExcelApi, setScheme } from '@/api/store'
+import { listDisScheme } from "@/api/distribution/disScheme";
 import { getToken } from '@/utils/auth'
 import taoBao from './taoBao'
 import { checkPermi } from "@/utils/permission"; // 权限判断函数
@@ -196,6 +247,17 @@ export default {
       merCateList: [],
       objectUrl: process.env.VUE_APP_BASE_API,
       dialogVisible: false,
+      dialogDistribution: false,
+      ruleForm: {
+        productId: null,
+        schemeId: null
+      },
+      options: [],
+      rules: {
+        schemeId: [
+          { required: true, message: '请输入分销方案', trigger: 'change' }
+        ]
+      }
     }
   },
   mounted() {
@@ -301,7 +363,40 @@ export default {
           row.isShow = !row.isShow
         })
     },
-   
+    popover(id) {
+      this.getOptionsList();
+      this.ruleForm.productId = id;
+      this.dialogDistribution = true;
+    },
+    getOptionsList() {
+      listDisScheme().then(response => {
+        this.options = response.rows;
+      });
+    },
+    distributionClose(formName) {
+      this.dialogDistribution = false;
+      this.$refs[formName].resetFields();
+      this.ruleForm = {
+        productId: null,
+        schemeId: null
+      }
+    },
+    submit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          setScheme(this.ruleForm).then(res => {
+            if(res.code == 200) {
+              this.getList();
+              this.dialogDistribution = false;
+              this.ruleForm = {
+                productId: null,
+                schemeId: null
+              }
+            }
+          })
+        }
+      });
+    }
   }
 }
 </script>
