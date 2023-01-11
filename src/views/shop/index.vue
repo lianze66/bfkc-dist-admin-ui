@@ -38,11 +38,11 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="店铺名称" align="center" prop="storeName" />
       <el-table-column label="店主账号" align="center" prop="userName" />
-      <el-table-column label="店铺简介" align="center" prop="storeDesc" />
+<!--      <el-table-column label="店铺简介" align="center" prop="storeDesc" />-->
       <el-table-column label="物流评分" align="center" prop="deliveryScore" />
-      <el-table-column label="服务评分" align="center" prop="serviceScore" />
+      <el-table-column label="服务评分" align="center" prop="serviceScore" width="80" />
       <el-table-column label="开店时间" align="center" prop="createTime" />
-      <el-table-column label="店铺状态" align="center" prop="status">
+      <el-table-column label="店铺状态" align="center" prop="status" width="80">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.status"
@@ -54,27 +54,27 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="300" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" width="400" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
+            size="small"
+            type="warning"
+            icon="el-icon-view"
             @click="showStore(scope.row)"
           >查看店铺</el-button>
 
           <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
+            size="small"
+            type="success"
+            icon="el-icon-view"
             @click="showDetail(scope.row)"
           >查看详情</el-button>
 
 
           <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
+            size="small"
+            type="primary"
+            icon="el-icon-setting"
             @click="handleSettlement(scope.row)"
           >设置结算周期</el-button>
         </template>
