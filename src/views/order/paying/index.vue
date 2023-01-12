@@ -114,24 +114,26 @@
         />
         <el-table-column label="操作" min-width="150" fixed="right" align="center">
           <template slot-scope="scope">
-            <!-- <el-button v-if="scope.row.paid === false" type="text" size="small" @click="edit(scope.row)" class="mr10" v-hasPermi="['admin:order:update:price']">编辑</el-button>
-            <el-button v-if="scope.row.statusStr.key === 'notShipped' && scope.row.refundStatus ===0" type="text" size="small" class="mr10" @click="sendOrder(scope.row)" v-hasPermi="['admin:order:send']">发送货</el-button>
-            <el-button v-if=" scope.row.statusStr.key === 'toBeWrittenOff'  && scope.row.paid == true && scope.row.refundStatus === 0 " type="text" size="small" class="mr10" v-hasPermi="['admin:order:write:update']" @click="onWriteOff(scope.row)">立即核销</el-button> -->
-            <el-dropdown trigger="click">
-              <span class="el-dropdown-link">
-                更多<i class="el-icon-arrow-down el-icon--right" />
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <!-- <el-dropdown-item @click.native="onOrderDetails(scope.row.orderId)" v-if="checkPermi(['admin:order:info'])">订单详情</el-dropdown-item>
-                <el-dropdown-item @click.native="onOrderLog(scope.row.orderId)" v-if="checkPermi(['admin:order:status:list'])">订单记录</el-dropdown-item>
-                <el-dropdown-item @click.native="onOrderMark(scope.row)" v-if="checkPermi(['admin:order:mark'])">订单备注</el-dropdown-item>
-                <el-dropdown-item v-if="scope.row.refundStatus === 1 && checkPermi(['admin:order:refund:refuse'])" @click.native="onOrderRefuse(scope.row)">拒绝退款</el-dropdown-item>
-                v-show="((scope.row.statusStr.key !== 'refunded' && scope.row.statusStr.key !== 'unPaid') && (parseFloat(scope.row.payPrice) >= parseFloat(scope.row.refundPrice))) || (scope.row.payPrice == 0 && [0,1].indexOf(scope.row.refundStatus) !== -1)"
-                <el-dropdown-item v-if="scope.row.refundStatus === 1 && checkPermi(['admin:order:refund'])" @click.native="onOrderRefund(scope.row)" >立即退款</el-dropdown-item>
-                <el-dropdown-item v-if="scope.row.statusStr.key === 'deleted' && checkPermi(['admin:order:delete'])" @click.native="handleDelete(scope.row, scope.$index)">删除订单</el-dropdown-item>
-                <el-dropdown-item v-if="scope.row.statusStr.key !== 'unPaid'" @click.native="onOrderPrint(scope.row)" >打印小票</el-dropdown-item> -->
-              </el-dropdown-menu>
-            </el-dropdown>
+            <div v-if="scope.row.isSupplier">
+              <el-button v-if="scope.row.paid === false" type="text" size="small" @click="edit(scope.row)" class="mr10" v-hasPermi="['admin:order:update:price']">编辑</el-button>
+              <el-button v-if="scope.row.statusStr.key === 'notShipped' && scope.row.refundStatus ===0" type="text" size="small" class="mr10" @click="sendOrder(scope.row)" v-hasPermi="['admin:order:send']">发送货</el-button>
+              <el-button v-if=" scope.row.statusStr.key === 'toBeWrittenOff'  && scope.row.paid == true && scope.row.refundStatus === 0 " type="text" size="small" class="mr10" v-hasPermi="['admin:order:write:update']" @click="onWriteOff(scope.row)">立即核销</el-button>
+              <el-dropdown trigger="click">
+                <span class="el-dropdown-link">
+                  更多<i class="el-icon-arrow-down el-icon--right" />
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="onOrderDetails(scope.row.orderId)" v-if="checkPermi(['admin:order:info'])">订单详情</el-dropdown-item>
+                  <el-dropdown-item @click.native="onOrderLog(scope.row.orderId)" v-if="checkPermi(['admin:order:status:list'])">订单记录</el-dropdown-item>
+                  <el-dropdown-item @click.native="onOrderMark(scope.row)" v-if="checkPermi(['admin:order:mark'])">订单备注</el-dropdown-item>
+                  <el-dropdown-item v-if="scope.row.refundStatus === 1 && checkPermi(['admin:order:refund:refuse'])" @click.native="onOrderRefuse(scope.row)">拒绝退款</el-dropdown-item>
+                  <!-- v-show="((scope.row.statusStr.key !== 'refunded' && scope.row.statusStr.key !== 'unPaid') && (parseFloat(scope.row.payPrice) >= parseFloat(scope.row.refundPrice))) || (scope.row.payPrice == 0 && [0,1].indexOf(scope.row.refundStatus) !== -1)" -->
+                  <el-dropdown-item v-if="scope.row.refundStatus === 1 && checkPermi(['admin:order:refund'])" @click.native="onOrderRefund(scope.row)" >立即退款</el-dropdown-item>
+                  <el-dropdown-item v-if="scope.row.statusStr.key === 'deleted' && checkPermi(['admin:order:delete'])" @click.native="handleDelete(scope.row, scope.$index)">删除订单</el-dropdown-item>
+                  <el-dropdown-item v-if="scope.row.statusStr.key !== 'unPaid'" @click.native="onOrderPrint(scope.row)" >打印小票</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -147,14 +149,130 @@
         />
       </div>
     </el-card>
+    <!--编辑-->
+    <el-dialog
+      title="编辑订单"
+      :visible.sync="dialogVisible"
+      width="500px"
+      :before-close="handleClose">
+        <zb-parser
+        v-if="dialogVisible"
+        :form-id="104"
+        :is-create="isCreate"
+        :edit-data="editData"
+        @submit="handlerSubmit"
+        @resetForm="resetForm"
+      />
+    </el-dialog>
+
+    <!--记录-->
+    <el-dialog
+      title="操作记录"
+      :visible.sync="dialogVisibleJI"
+      width="700px"
+    >
+      <el-table
+        v-loading="LogLoading"
+        border
+        :data="tableDataLog.data"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="oid"
+          align="center"
+          label="ID"
+          min-width="80"
+        />
+        <el-table-column
+          prop="changeMessage"
+          label="操作记录"
+          align="center"
+          min-width="280"
+        />
+        <el-table-column
+          prop="createTime"
+          label="操作时间"
+          align="center"
+          min-width="280"
+        />
+      </el-table>
+      <div class="block">
+        <el-pagination
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="tableFromLog.limit"
+          :current-page="tableFromLog.page"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableDataLog.total"
+          @size-change="handleSizeChangeLog"
+          @current-change="pageChangeLog"
+        />
+      </div>
+    </el-dialog>
+
+    <!--详情-->
+    <details-from ref="orderDetail" :orderId="orderId"/>
+
+    <!-- 发送货 -->
+    <order-send ref="send" :orderId="orderId" @submitFail="getList"></order-send>
+
+    <!-- 发送货视频号商品 -->
+    <order-video-send ref="videoSend" :orderId="orderId" @submitFail="getList"></order-video-send>
+
+    <!--拒绝退款-->
+    <el-dialog
+      title="拒绝退款原因"
+      v-if="RefuseVisible"
+      :visible.sync="RefuseVisible"
+      width="500px"
+      :before-close="RefusehandleClose">
+      <zb-parser
+        :form-id="106"
+        :is-create="1"
+        :edit-data="RefuseData"
+        @submit="RefusehandlerSubmit"
+        @resetForm="resetFormRefusehand"
+      />
+    </el-dialog>
+
+    <!--立即退款-->
+    <el-dialog
+      title="退款处理"
+      :visible.sync="refundVisible"
+      width="500px"
+      :before-close="refundhandleClose">
+      <zb-parser
+        :form-id="107"
+        :is-create="1"
+        :edit-data="refundData"
+        @submit="refundhandlerSubmit"
+        v-if="refundVisible"
+        @resetForm="resetFormRefundhandler"
+      />
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import { orderListDataApi, orderStatusNumApi, writeUpdateApi, orderListApi, updatePriceApi, orderLogApi, orderMarkApi, orderDeleteApi, orderRefuseApi, orderRefundApi,orderPrint, orderAgentList } from '@/api/order'
   import { isWriteOff } from "@/utils";
+  import cardsData from '@/components/cards/index'
+  import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
+  import detailsFrom from '../orderDetail'
+  import orderSend from '../orderSend'
+  import orderVideoSend from '../orderVideoSend'
+  import { storeStaffListApi } from '@/api/storePoint'
+  import Cookies from 'js-cookie'
+  import {orderExcelApi} from '@/api/store'
+  import { checkPermi } from "@/utils/permission"; // 权限判断函数
   export default {
     name: 'orderlistDetails',
+    components: {
+      cardsData,
+      zbParser,
+      detailsFrom,
+      orderSend,
+      orderVideoSend
+    },
     data() {
         return {
           RefuseVisible: false,
@@ -214,6 +332,7 @@
       // this.getOrderListData();
     },
     methods: {
+      checkPermi,
       resetFormRefundhandler(){
         this.refundVisible = false
       },

@@ -20,10 +20,10 @@ const orderRouter = {
       meta: { title: '订单' }
     },
     {
-      path: 'paying',
+      path: 'orderAgent',
       component: () => import('@/views/order/paying/index'),
-      name: 'paying',
-      meta: { title: '一件代发' }
+      name: 'orderAgent',
+      meta: { title: '代理订单' }
     },
     {
       path: 'myOrder',
