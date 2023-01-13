@@ -221,7 +221,7 @@
 </template>
 
 <script>
-import { listDisScheme, getDisScheme, delDisScheme, addDisScheme, updateDisScheme, changeStatus } from "@/api/distribution/disScheme";
+import { listDisScheme, getDisScheme, delDisScheme, addDisScheme, updateDisScheme, changeStatus, schemeGrade } from "@/api/distribution/disScheme";
 export default {
   name: 'index',
   data() {
@@ -308,6 +308,9 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      schemeGrade().then(res => {
+        this.form.schemeGradeList = res
+      })
       this.open = true;
       this.title = "添加分销方案";
     },

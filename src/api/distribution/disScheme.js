@@ -9,6 +9,15 @@ export function listDisScheme(query) {
   })
 }
 
+// 查询分销等级
+export function schemeGrade(query) {
+  return request({
+    url: '/api/admin/distribution/disScheme/schemeGrade',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询分销方案详细
 export function getDisScheme(id) {
   return request({
