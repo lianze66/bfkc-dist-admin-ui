@@ -42,6 +42,12 @@ const distributionRouter = {
       name: 'distributionRecord',
       meta: { title: '分销记录', icon: '' }
     },
+    {
+      path: 'teamPerformance',
+      component: () => import('@/views/distributionSet/teamPerformance'),
+      name: 'teamPerformance',
+      meta: { title: '团队业绩', icon: '' }
+    },
   ]
 }
 

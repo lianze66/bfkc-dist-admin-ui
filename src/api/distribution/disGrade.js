@@ -52,3 +52,11 @@ export function delDisGrade(id) {
     method: 'delete'
   })
 }
+
+// 获取团队业绩列表
+export function getBrokerageList() {
+  return request({
+    url: '/api/admin/distribution/brokerage/list',
+    method: 'get'
+  })
+}
