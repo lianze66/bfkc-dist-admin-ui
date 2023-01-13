@@ -51,8 +51,7 @@
     <el-table v-loading="loading" :data="disSchemeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="方案名称" align="center" prop="schemeName" />
-      <!-- <el-table-column label="经销商等级" align="center" prop="disGradeStr" width="280" />
-      <el-table-column label="代理商等级" align="center" prop="agentGradeStr" width="280" /> -->
+      <el-table-column label="方案名称" align="center" prop="schemeName" />
       <el-table-column label="状态" align="center" prop="status" >
         <template slot-scope="scope">
           <el-switch
