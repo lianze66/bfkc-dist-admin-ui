@@ -27,6 +27,7 @@ import customer from './modules/customer'
 import shop from './modules/shop'
 import ecologyStatistics from './modules/ecologyStatistics'
 import commodityStatistics from './modules/commodityStatistics'
+import distributionSet from './modules/distributionSet'
 
 
 /**
@@ -92,6 +93,8 @@ export const constantRoutes = [
   ecologyStatistics,
   // 商品数据统计
   commodityStatistics,
+  // 分销设置
+  distributionSet,
 
   {
     path: '/404',
