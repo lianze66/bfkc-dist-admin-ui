@@ -26,16 +26,16 @@
     </el-row>
 
     <el-table v-if="refreshTable" v-loading="loading" :data="deptList" row-key="id" :default-expand-all="isExpandAll" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column prop="realName" label="名称" width="260" />
+      <el-table-column prop="realName" label="真实名称" width="260" />
 <!--      <el-table-column prop="parentName" label="上级成员" width="260" />-->
-      <el-table-column prop="schemeGradeId"  label="等级名称" width="200">
+      <el-table-column align="center" prop="schemeGradeId"  label="等级名称" width="200">
         <template  slot-scope="scope">
           {{ formatterSex(scope.row) }}
         </template>
       </el-table-column>
       <el-table-column prop="province" label="省" width="120" />
       <el-table-column prop="city" label="市" width="120" />
-      <el-table-column prop="sex" label="性别" width="100" />
+<!--      <el-table-column prop="sex" label="性别" width="100" />-->
 <!--      <el-table-column prop="status" label="状态" width="100">-->
 <!--        <template slot-scope="scope">-->
 <!--          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status" />-->
@@ -67,7 +67,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="名称" prop="realName">
+            <el-form-item label="真实姓名" prop="realName">
               <el-input v-model="form.realName" placeholder="请输入名称" />
             </el-form-item>
           </el-col>
@@ -87,19 +87,19 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="账号" prop="account">
+            <el-form-item label="登录账号" prop="account">
               <el-input v-model="form.account" placeholder="请输入账号" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="密码" prop="pwd">
+            <el-form-item label="登录密码" prop="pwd">
               <el-input type="password" v-model="form.pwd" placeholder="请输入密码" show-password />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
+            <el-form-item label="注册邮箱" prop="email">
               <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
           </el-col>
@@ -194,9 +194,9 @@ export default {
         }
       ],//分销人员负责人
       rules: {
-        parentId: [
-          { required: true, message: '上级成员不能为空', trigger: 'blur' }
-        ],
+        // parentId: [
+        //   { required: true, message: '上级成员不能为空', trigger: 'blur' }
+        // ],
         realName: [
           { required: true, message: '名称不能为空', trigger: 'blur' }
         ],

@@ -101,7 +101,7 @@ export default {
       return {
         id: node.id,
         label: node.realName,
-        children: node.children
+        // children: node.children
       }
     },
     // 取消按钮
