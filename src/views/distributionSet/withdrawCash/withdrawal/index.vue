@@ -39,7 +39,7 @@
       <cards-data :cardLists="cardLists" v-if="checkPermi(['admin:finance:apply:balance'])"></cards-data>
     </div>
     <el-card class="box-card">
-      <el-table
+       <el-table
         v-loading="listLoading"
         :data="tableData.data"
         style="width: 100%"
@@ -91,9 +91,9 @@
                  收款码：
                  <div class="demo-image__preview" v-if="scope.row.qrcodeUrl">
                     <el-image
-                      :src="httpsURL() + scope.row.qrcodeUrl"
-                      :preview-src-list="[httpsURL() + scope.row.qrcodeUrl]"
-                    />
+                     :src="httpsURL() + scope.row.qrcodeUrl"
+                     :preview-src-list="[httpsURL() + scope.row.qrcodeUrl]"
+                   />
                  </div>
                  <div v-else>无</div>
                </div>
@@ -105,8 +105,8 @@
                  收款码：
                  <div class="demo-image__preview" v-if="scope.row.qrcodeUrl">
                  <el-image
-                   :src="httpsURL() + scope.row.qrcodeUrl"
-                   :preview-src-list="[httpsURL() + scope.row.qrcodeUrl]"
+                 :src="httpsURL() + scope.row.qrcodeUrl"
+                 :preview-src-list="[httpsURL() + scope.row.qrcodeUrl]"
                  />
                  </div>
                  <div v-else>无</div>
@@ -160,7 +160,7 @@
           @current-change="pageChange"
         />
       </div>
-    </el-card>
+     </el-card>
 
     <!--编辑-->
     <el-dialog
@@ -232,205 +232,205 @@
 </template>
 
 <script>
-import { applyListApi, applyBalanceApi, applyUpdateApi, applyStatusApi, applyOfflinePay } from '@/api/financial'
-import cardsData from '@/components/cards/index'
-import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
-import { checkPermi } from "@/utils/permission"; // 权限判断函数
-import {Debounce} from '@/utils/validate'
-import SettingMer from '@/utils/settingMer'
-import { addInviter, updateInviter } from '@/api/crm/inviter'
-export default {
-  name: 'AccountsExtract',
-  components: {
-    cardsData,
-    zbParser
-  },
-  data() {
-    return {
-      editData: {},
-      isCreate: 1,
-      dialogVisible: false,
-      dialogVisibleOffline: false,
-      timeVal: [],
-      tableData: {
-        data: [],
-        total: 0
-      },
-      listLoading: true,
-      tableFrom: {
+  import { applyListApi, applyBalanceApi, applyUpdateApi, applyStatusApi, applyOfflinePay } from '@/api/financial'
+  import cardsData from '@/components/cards/index'
+  import zbParser from '@/components/FormGenerator/components/parser/ZBParser'
+  import { checkPermi } from "@/utils/permission"; // 权限判断函数
+  import {Debounce} from '@/utils/validate'
+  import SettingMer from '@/utils/settingMer'
+  import { addInviter, updateInviter } from '@/api/crm/inviter'
+  export default {
+    name: 'AccountsExtract',
+    components: {
+      cardsData,
+      zbParser
+    },
+    data() {
+      return {
+        editData: {},
+        isCreate: 1,
+        dialogVisible: false,
+        dialogVisibleOffline: false,
+        timeVal: [],
+        tableData: {
+          data: [],
+          total: 0
+        },
+        listLoading: true,
+        tableFrom: {
+          extractType: '',
+          status: '',
+          dateLimit: '',
+          keywords: '',
+          page: 1,
+          limit: 20
+        },
+        fromList: this.$constants.fromList,
+        cardLists: [],
+        applyId: null,
         extractType: '',
-        status: '',
-        dateLimit: '',
-        keywords: '',
-        page: 1,
-        limit: 20
+        rules:{},
+        form:{},
+        httpsURL() {
+          return SettingMer.apiBaseURL
+        }
+      }
+    },
+    mounted() {
+      this.getList()
+      this.getBalance()
+    },
+    methods: {
+      checkPermi,
+      resetForm(){
+        this.dialogVisible = false;
       },
-      fromList: this.$constants.fromList,
-      cardLists: [],
-      applyId: null,
-      extractType: '',
-      rules:{},
-      form:{},
-      httpsURL() {
-        return SettingMer.apiBaseURL
+      handleEdit(row) {
+        this.extractType = row.extractType;
+        this.applyId = row.id;
+        this.dialogVisible = true;
+        this.isCreate = 1;
+        this.editData = JSON.parse(JSON.stringify(row));
+      },
+
+      handleOffline(row){
+        this.reset();
+        this.form.extractId = row.id
+        this.form.mark = row.mark
+        this.form.operator = row.operator
+        this.form.payStatus = row.payStatus
+        this.dialogVisibleOffline = true
+      },
+      /** 线下支付提交按钮 */
+      submitForm() {
+        this.$refs["form"].validate(valid => {
+          if (valid) {
+            applyOfflinePay(this.form).then(response => {
+                this.$modal.msgSuccess("新增成功");
+                this.dialogVisibleOffline = false;
+                this.getList();
+              });
+          }
+        });
+      },
+      // 取消按钮
+      cancel() {
+        this.dialogVisibleOffline = false;
+        this.reset();
+      },
+      handlerSubmit:Debounce(function(formValue) {
+        formValue.id = this.applyId;
+        formValue.extractType = this.extractType;
+        applyUpdateApi(formValue).then(data => {
+          this.$message.success('编辑成功')
+          this.dialogVisible = false
+          this.getList()
+        })
+      }),
+      // 表单重置
+      reset() {
+        this.form = {
+          extractId:null,
+          mark: null,
+          operator: null,
+          payStatus: true
+        };
+        this.resetForm("form");
+      },
+      handleClose() {
+        this.dialogVisibleOffline = false;
+        this.dialogVisible = false
+        this.editData = {}
+      },
+      onExamine(id) {
+        this.$prompt('未通过', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputErrorMessage: '请输入原因',
+          inputType: 'textarea',
+          inputValue: '输入信息不完整或有误!',
+          inputPlaceholder: '请输入原因',
+          inputValidator: (value) => {
+            if (!value) {
+              return '请输入原因'
+            }
+          }
+        }).then(({ value }) => {
+          applyStatusApi({ id: id, status: -1, backMessage: value }).then(res => {
+            this.$message({
+              type: 'success',
+              message: '提交成功'
+            })
+            this.getList()
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          })
+        })
+      },
+      ok(id) {
+        this.$modalSure('审核通过吗').then(() => {
+          applyStatusApi({id: id, status: 1 }).then(() => {
+            this.$message.success('操作成功')
+            this.getList()
+          })
+        })
+      },
+      // 金额
+      getBalance() {
+        applyBalanceApi({dateLimit: this.tableFrom.dateLimit}).then(res => {
+          this.cardLists = [
+            { name: '待提现金额', count: res.toBeWithdrawn,color:'#1890FF',class:'one',icon:'iconzhichujine1' },
+            { name: '佣金总金额', count: res.commissionTotal,color:'#A277FF',class:'two',icon:'iconzhifuyongjinjine1' },
+            { name: '已提现金额', count: res.withdrawn,color:'#EF9C20',class:'three',icon:'iconyingyee1' },
+            { name: '未提现金额', count: res.unDrawn,color:'#1BBE6B',class:'four',icon:'iconyuezhifujine2' }
+          ]
+        })
+      },
+      // 选择时间
+      selectChange(tab) {
+        this.timeVal = []
+        this.tableFrom.dateLimit = tab
+        this.tableFrom.page = 1;
+        this.getList();
+        this.getBalance();
+      },
+      // 具体日期
+      onchangeTime(e) {
+        this.timeVal = e
+        this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
+        this.tableFrom.page = 1;
+        this.getList();
+        this.getBalance();
+      },
+      // 列表
+      getList(num) {
+        this.listLoading = true
+        this.tableFrom.page = num ? num : this.tableFrom.page;
+        applyListApi(this.tableFrom).then(res => {
+          this.tableData.data = res.list
+          this.tableData.total = res.total
+          this.listLoading = false
+        }).catch(() => {
+          this.listLoading = false
+        })
+      },
+      pageChange(page) {
+        this.tableFrom.page = page
+        this.getList()
+      },
+      handleSizeChange(val) {
+        this.tableFrom.limit = val
+        this.getList()
       }
     }
-  },
-  mounted() {
-    this.getList()
-    this.getBalance()
-  },
-  methods: {
-    checkPermi,
-    resetForm(){
-      this.dialogVisible = false;
-    },
-    handleEdit(row) {
-      this.extractType = row.extractType;
-      this.applyId = row.id;
-      this.dialogVisible = true;
-      this.isCreate = 1;
-      this.editData = JSON.parse(JSON.stringify(row));
-    },
-
-    handleOffline(row){
-      this.reset();
-      this.form.extractId = row.id
-      this.form.mark = row.mark
-      this.form.operator = row.operator
-      this.form.payStatus = row.payStatus
-      this.dialogVisibleOffline = true
-    },
-    /** 线下支付提交按钮 */
-    submitForm() {
-      this.$refs["form"].validate(valid => {
-        if (valid) {
-          applyOfflinePay(this.form).then(response => {
-            this.$modal.msgSuccess("新增成功");
-            this.dialogVisibleOffline = false;
-            this.getList();
-          });
-        }
-      });
-    },
-    // 取消按钮
-    cancel() {
-      this.dialogVisibleOffline = false;
-      this.reset();
-    },
-    handlerSubmit:Debounce(function(formValue) {
-      formValue.id = this.applyId;
-      formValue.extractType = this.extractType;
-      applyUpdateApi(formValue).then(data => {
-        this.$message.success('编辑成功')
-        this.dialogVisible = false
-        this.getList()
-      })
-    }),
-    // 表单重置
-    reset() {
-      this.form = {
-        extractId:null,
-        mark: null,
-        operator: null,
-        payStatus: true
-      };
-      this.resetForm("form");
-    },
-    handleClose() {
-      this.dialogVisibleOffline = false;
-      this.dialogVisible = false
-      this.editData = {}
-    },
-    onExamine(id) {
-      this.$prompt('未通过', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputErrorMessage: '请输入原因',
-        inputType: 'textarea',
-        inputValue: '输入信息不完整或有误!',
-        inputPlaceholder: '请输入原因',
-        inputValidator: (value) => {
-          if (!value) {
-            return '请输入原因'
-          }
-        }
-      }).then(({ value }) => {
-        applyStatusApi({ id: id, status: -1, backMessage: value }).then(res => {
-          this.$message({
-            type: 'success',
-            message: '提交成功'
-          })
-          this.getList()
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
-        })
-      })
-    },
-    ok(id) {
-      this.$modalSure('审核通过吗').then(() => {
-        applyStatusApi({id: id, status: 1 }).then(() => {
-          this.$message.success('操作成功')
-          this.getList()
-        })
-      })
-    },
-    // 金额
-    getBalance() {
-      applyBalanceApi({dateLimit: this.tableFrom.dateLimit}).then(res => {
-        this.cardLists = [
-          { name: '待提现金额', count: res.toBeWithdrawn,color:'#1890FF',class:'one',icon:'iconzhichujine1' },
-          { name: '佣金总金额', count: res.commissionTotal,color:'#A277FF',class:'two',icon:'iconzhifuyongjinjine1' },
-          { name: '已提现金额', count: res.withdrawn,color:'#EF9C20',class:'three',icon:'iconyingyee1' },
-          { name: '未提现金额', count: res.unDrawn,color:'#1BBE6B',class:'four',icon:'iconyuezhifujine2' }
-        ]
-      })
-    },
-    // 选择时间
-    selectChange(tab) {
-      this.timeVal = []
-      this.tableFrom.dateLimit = tab
-      this.tableFrom.page = 1;
-      this.getList();
-      this.getBalance();
-    },
-    // 具体日期
-    onchangeTime(e) {
-      this.timeVal = e
-      this.tableFrom.dateLimit = e ? this.timeVal.join(',') : ''
-      this.tableFrom.page = 1;
-      this.getList();
-      this.getBalance();
-    },
-    // 列表
-    getList(num) {
-      this.listLoading = true
-      this.tableFrom.page = num ? num : this.tableFrom.page;
-      applyListApi(this.tableFrom).then(res => {
-        this.tableData.data = res.list
-        this.tableData.total = res.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
-      })
-    },
-    pageChange(page) {
-      this.tableFrom.page = page
-      this.getList()
-    },
-    handleSizeChange(val) {
-      this.tableFrom.limit = val
-      this.getList()
-    }
   }
-}
 </script>
 
 <style scoped>
-.selWidth{
-  width: 350px;
-}
+  .selWidth{
+    width: 350px;
+  }
 </style>
