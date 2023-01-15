@@ -48,6 +48,12 @@ const distributionRouter = {
       name: 'teamPerformance',
       meta: { title: '团队业绩', icon: '' }
     },
+    {
+      path: 'withdrawal',
+      component: () => import('@/views/distributionSet/withdrawal'),
+      name: 'withdrawal',
+      meta: { title: '提现设置', icon: '' }
+    },
   ]
 }
 
