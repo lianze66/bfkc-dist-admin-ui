@@ -197,6 +197,15 @@
                 <el-input-number style="width: 100%" v-model="scope.row.countryBonus" controls-position="right"></el-input-number>
               </template>
             </el-table-column>
+            <el-table-column
+              prop="saleAmount"
+              align="center"
+              label="达标业绩">
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
+                <el-input-number style="width: 100%" v-model="scope.row.saleAmount" controls-position="right"></el-input-number>
+              </template>
+            </el-table-column>
           </el-table>
         </el-form-item>
         <el-form-item label="排名奖励">
