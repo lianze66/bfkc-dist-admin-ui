@@ -132,8 +132,7 @@
             <el-table-column
               prop="gradeName"
               align="center"
-              label="级别名称"
-              :render-header="renderHeaderMethods">
+              label="级别名称">
               <template slot-scope="scope">
                 <el-input style="width: 100%" v-model="scope.row.gradeName" placeholder="请输入级别名称"></el-input>
               </template>
@@ -141,7 +140,7 @@
             <el-table-column
               prop="recommendBonus"
               align="center"
-              label="推荐奖励"
+              label="推荐奖励（%）"
               :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.recommendBonus" placeholder="请输入推荐奖励"></el-input> -->
@@ -149,19 +148,9 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="countryBonus"
-              align="center"
-              label="全国分红"
-              :render-header="renderHeaderMethods">
-              <template slot-scope="scope">
-                <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
-                <el-input-number style="width: 100%" v-model="scope.row.countryBonus" controls-position="right"></el-input-number>
-              </template>
-            </el-table-column>
-            <el-table-column
               prop="groupBonus"
               align="center"
-              label="团队分红"
+              label="团队分红（%）"
               :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
@@ -171,7 +160,7 @@
             <el-table-column
               prop="adBonus"
               align="center"
-              label="广告分红"
+              label="广告分红（%）"
               :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.adBonus" placeholder="请输入广告分红"></el-input> -->
@@ -181,7 +170,7 @@
             <el-table-column
               prop="adBonusMax"
               align="center"
-              label="广告分红最大值"
+              label="广告分红最大值（万）"
               :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.adBonusMax" placeholder="请输入广告分红"></el-input> -->
@@ -191,11 +180,30 @@
             <el-table-column
               prop="manageBonus"
               align="center"
-              label="管理奖金"
+              label="管理奖金（%）"
               :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.manageBonus" placeholder="请输入管理奖金"></el-input> -->
                 <el-input-number style="width: 100%" v-model="scope.row.manageBonus" controls-position="right"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="countryBonus"
+              align="center"
+              label="全国分红（%）"
+              :render-header="renderHeaderMethods">
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
+                <el-input-number style="width: 100%" v-model="scope.row.countryBonus" controls-position="right"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="saleAmount"
+              align="center"
+              label="达标业绩">
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
+                <el-input-number style="width: 100%" v-model="scope.row.saleAmount" controls-position="right"></el-input-number>
               </template>
             </el-table-column>
           </el-table>
@@ -410,29 +418,25 @@ export default {
     },
     // 提示标签
     renderHeaderMethods(h, { column }) {
-      console.log(h, column);
       let name = null;
       switch (column.label) {
-        case "级别名称":
-          name = '这是个提示'
+        case "推荐奖励（%）":
+          name = '推荐奖励（极差滑落）-实时每一笔收益'
           break;
-        case "推荐奖励":
-          name = '实时每一笔收益'
+        case "团队分红（%）":
+          name = '团队分红（级差利益滑落）-客户确认签收实时'
           break;
-        case "团队分红":
-          name = '客户确认签收实时'
+        case "全国分红（%）":
+          name = '全国分红(总业绩的5%)（的40%）-'
           break;
-        case "全国分红":
-          name = '这是个提示'
+        case "广告分红（%）":
+          name = '广告分红（总业绩的3%）'
           break;
-        case "广告分红":
-          name = '总业绩的3%'
+        case "广告分红最大值（万）":
+          name = '广告分红（总业绩的3%）'
           break;
-        case "广告分红最大值":
-          name = '总业绩的3%'
-          break;
-        case "管理奖金":
-          name = '这是个提示'
+        case "管理奖金（%）":
+          name = '管理奖金（5%）-'
           break;
         default:
           break;
