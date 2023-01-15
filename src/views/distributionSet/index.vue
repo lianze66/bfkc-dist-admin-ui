@@ -92,15 +92,15 @@
     </el-table>
 
     <!-- 添加或修改分销方案对话框 -->
-    <el-dialog :title="title" :visible.sync="open" top="3vh" width="1000px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" top="3vh" width="1200px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="方案名称" class="form" prop="schemeName">
           <el-input v-model="form.schemeName" placeholder="请输入分销方案名称" />
         </el-form-item>
-        <el-form-item label="全国分红" class="form" prop="countryBonus">
-          <!-- <el-input v-model="form.countryBonus" placeholder="请输入全国分红" /> -->
+        <!-- <el-form-item label="全国分红" class="form" prop="countryBonus">
+          <el-input v-model="form.countryBonus" placeholder="请输入全国分红" />
           <el-input-number style="width: 100%" v-model="form.countryBonus" controls-position="right"></el-input-number>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="开始时间" class="form" prop="startTime">
           <el-date-picker clearable
             v-model="form.startTime"
@@ -132,7 +132,8 @@
             <el-table-column
               prop="gradeName"
               align="center"
-              label="级别名称">
+              label="级别名称"
+              :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <el-input style="width: 100%" v-model="scope.row.gradeName" placeholder="请输入级别名称"></el-input>
               </template>
@@ -140,16 +141,28 @@
             <el-table-column
               prop="recommendBonus"
               align="center"
-              label="推荐奖励">
+              label="推荐奖励"
+              :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.recommendBonus" placeholder="请输入推荐奖励"></el-input> -->
                 <el-input-number style="width: 100%" v-model="scope.row.recommendBonus" controls-position="right"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column
+              prop="countryBonus"
+              align="center"
+              label="全国分红"
+              :render-header="renderHeaderMethods">
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
+                <el-input-number style="width: 100%" v-model="scope.row.countryBonus" controls-position="right"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
               prop="groupBonus"
               align="center"
-              label="团队分红">
+              label="团队分红"
+              :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
                 <el-input-number style="width: 100%" v-model="scope.row.groupBonus" controls-position="right"></el-input-number>
@@ -158,16 +171,28 @@
             <el-table-column
               prop="adBonus"
               align="center"
-              label="广告分红">
+              label="广告分红"
+              :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.adBonus" placeholder="请输入广告分红"></el-input> -->
                 <el-input-number style="width: 100%" v-model="scope.row.adBonus" controls-position="right"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column
+              prop="adBonusMax"
+              align="center"
+              label="广告分红最大值"
+              :render-header="renderHeaderMethods">
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.adBonusMax" placeholder="请输入广告分红"></el-input> -->
+                <el-input-number style="width: 100%" v-model="scope.row.adBonusMax" controls-position="right"></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
               prop="manageBonus"
               align="center"
-              label="管理奖金">
+              label="管理奖金"
+              :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.manageBonus" placeholder="请输入管理奖金"></el-input> -->
                 <el-input-number style="width: 100%" v-model="scope.row.manageBonus" controls-position="right"></el-input-number>
@@ -382,6 +407,58 @@ export default {
       }
       list.rankName = `第${this.form.rankRewardList.length + 1}名`
       this.form.rankRewardList.push(list);
+    },
+    // 提示标签
+    renderHeaderMethods(h, { column }) {
+      console.log(h, column);
+      let name = null;
+      switch (column.label) {
+        case "级别名称":
+          name = '这是个提示'
+          break;
+        case "推荐奖励":
+          name = '实时每一笔收益'
+          break;
+        case "团队分红":
+          name = '客户确认签收实时'
+          break;
+        case "全国分红":
+          name = '这是个提示'
+          break;
+        case "广告分红":
+          name = '总业绩的3%'
+          break;
+        case "广告分红最大值":
+          name = '总业绩的3%'
+          break;
+        case "管理奖金":
+          name = '这是个提示'
+          break;
+        default:
+          break;
+      }
+      return h('div', [
+        h('span', column.label),
+        h('el-tooltip', {
+            undefined,
+            props: {
+                undefined,
+                effect: 'dark',
+                placement: 'top',
+                content: ''
+            },
+        },
+          [
+              h('div', { slot: "content", },
+                  [name, h('br')]
+              ),
+              h('i', {
+                  undefined, class: 'el-icon-question',
+                  style: "color:#409eff;"
+              })
+          ],
+        )
+      ]);
     }
   }
 };
