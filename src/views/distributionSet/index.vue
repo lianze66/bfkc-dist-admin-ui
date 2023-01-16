@@ -169,7 +169,7 @@
             <el-table-column
               prop="adBonusMax"
               align="center"
-              label="广告分红最大值（万）"
+              label="广告分红最大值"
               width="180"
               :render-header="renderHeaderMethods">
               <template slot-scope="scope">
