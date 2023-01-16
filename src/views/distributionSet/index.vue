@@ -94,7 +94,7 @@
     <!-- 添加或修改分销方案对话框 -->
     <el-dialog :title="title" :visible.sync="open" top="3vh" width="1200px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="方案名称" class="form" prop="schemeName">
+        <el-form-item label="方案名称" prop="schemeName">
           <el-input v-model="form.schemeName" placeholder="请输入分销方案名称" />
         </el-form-item>
         <!-- <el-form-item label="全国分红" class="form" prop="countryBonus">
