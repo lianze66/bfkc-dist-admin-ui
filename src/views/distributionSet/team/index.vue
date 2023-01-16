@@ -26,7 +26,7 @@
     </el-row>
 
     <el-table v-if="refreshTable" v-loading="loading" :data="deptList" row-key="id" :default-expand-all="isExpandAll" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column prop="realName" label="真实名称" width="260" />
+      <el-table-column prop="realName" label="用户名称" width="260" />
 <!--      <el-table-column prop="parentName" label="上级成员" width="260" />-->
       <el-table-column align="center" prop="schemeGradeId"  label="等级名称" width="200">
         <template  slot-scope="scope">
@@ -67,7 +67,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="真实姓名" prop="realName">
+            <el-form-item label="用户名称" prop="realName">
               <el-input v-model="form.realName" placeholder="请输入名称" />
             </el-form-item>
           </el-col>
@@ -323,6 +323,9 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset()
+      listDept().then(response => {
+        this.deptOptions = this.handleTree(response.rows, 'id')
+      })
       getDept(row.id).then(response => {
         this.form = response
         this.open = true
