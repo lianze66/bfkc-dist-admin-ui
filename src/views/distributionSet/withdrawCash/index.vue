@@ -123,8 +123,8 @@
             <span class="spBlock">{{ scope.row.status | extractStatusFilter }}</span>
             <span v-if="scope.row.status === -1">拒绝原因：{{scope.row.failMsg}}</span>
             <template v-if="scope.row.status === 0">
-              <el-button type="danger" icon="el-icon-close" size="mini" @click="onExamine(scope.row.id)" v-hasPermi="['admin:finance:apply:apply']">未通过</el-button>
-              <el-button type="primary" icon="el-icon-check" size="mini" @click="ok(scope.row.id)" v-hasPermi="['admin:finance:apply:apply']">通过</el-button>
+              <el-button type="danger" icon="el-icon-close" size="mini" @click="onExamine(scope.row.id)">未通过</el-button>
+              <el-button type="primary" icon="el-icon-check" size="mini" @click="ok(scope.row.id)">通过</el-button>
             </template>
           </template>
         </el-table-column>
@@ -143,7 +143,7 @@
         />
         <el-table-column label="操作" min-width="80" fixed="right" align="center">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.status !== 1" type="text" size="small" @click="handleEdit(scope.row)" v-hasPermi="['admin:finance:apply:update']">编辑</el-button>
+            <el-button v-if="scope.row.status !== 1" type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button v-else-if="scope.row.status === 1" type="text" size="small" @click="handleOffline(scope.row)">线下支付</el-button>
             <span v-else>无</span>
           </template>
