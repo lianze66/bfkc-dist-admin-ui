@@ -117,8 +117,7 @@
             placeholder="请选择结束时间">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="分销方案">
-          <!-- <el-button type="primary" @click="addDisGradeList()">新增级别</el-button> -->
+        <!-- <el-button type="primary" @click="addDisGradeList()">新增级别</el-button> -->
           <el-table
             :data="form.schemeGradeList"
             border
@@ -171,6 +170,7 @@
               prop="adBonusMax"
               align="center"
               label="广告分红最大值（万）"
+              width="180"
               :render-header="renderHeaderMethods">
               <template slot-scope="scope">
                 <!-- <el-input style="width: 100%" v-model="scope.row.adBonusMax" placeholder="请输入广告分红"></el-input> -->
@@ -207,7 +207,6 @@
               </template>
             </el-table-column>
           </el-table>
-        </el-form-item>
         <el-form-item label="排名奖励">
           <el-button type="primary" @click="rankList()">新增排名</el-button>
           <el-table
