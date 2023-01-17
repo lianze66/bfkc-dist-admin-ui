@@ -94,13 +94,13 @@
     <!-- 添加或修改分销方案对话框 -->
     <el-dialog :title="title" :visible.sync="open" top="3vh" width="1200px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="方案名称" prop="schemeName">
+        <el-form-item label="方案名称" class="form" prop="schemeName">
           <el-input v-model="form.schemeName" placeholder="请输入分销方案名称" />
         </el-form-item>
-        <!-- <el-form-item label="全国分红" class="form" prop="countryBonus">
-          <el-input v-model="form.countryBonus" placeholder="请输入全国分红" />
+        <el-form-item label="全国分红" class="form" prop="countryBonus">
+          <!-- <el-input v-model="form.countryBonus" placeholder="请输入全国分红" /> -->
           <el-input-number style="width: 100%" v-model="form.countryBonus" controls-position="right"></el-input-number>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="开始时间" class="form" prop="startTime">
           <el-date-picker clearable
             v-model="form.startTime"
@@ -187,16 +187,16 @@
                 <el-input-number style="width: 100%" v-model="scope.row.manageBonus" controls-position="right"></el-input-number>
               </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               prop="countryBonus"
               align="center"
               label="全国分红（%）"
               :render-header="renderHeaderMethods">
               <template slot-scope="scope">
-                <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
+                <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input>
                 <el-input-number style="width: 100%" v-model="scope.row.countryBonus" controls-position="right"></el-input-number>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="saleAmount"
               align="center"
