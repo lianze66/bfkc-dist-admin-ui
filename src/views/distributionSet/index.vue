@@ -133,6 +133,7 @@
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
+        <div class="name">基础数据</div>
         <el-form-item label="方案名称" class="form" prop="schemeName">
           <el-input
             v-model="form.schemeName"
@@ -167,124 +168,196 @@
           >
           </el-date-picker>
         </el-form-item>
-        <!-- <el-button type="primary" @click="addDisGradeList()">新增级别</el-button> -->
-        <el-table :data="form.schemeGradeList" border style="width: 100%">
-          <el-table-column type="index" width="50" align="center" label="序号">
-          </el-table-column>
-          <el-table-column prop="gradeName" align="center" label="级别名称">
-            <template slot-scope="scope">
-              <el-input
-                style="width: 100%"
-                v-model="scope.row.gradeName"
-                placeholder="请输入级别名称"
-              ></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="recommendBonus"
-            align="center"
-            label="推荐奖励（%）"
-            :render-header="renderHeaderMethods"
+        <el-divider></el-divider>
+        <div class="name">合伙人业绩考核</div>
+        <el-form-item label=" ">
+          <div style="width: 100%">
+            <el-button type="primary" @click="rankList1()">新增</el-button>
+          </div>
+          <el-table
+            :data="form.partnerList"
+            border
+            :default-sort="{ prop: 'sorts', order: 'ascending' }"
+            style="width: 100%"
           >
-            <template slot-scope="scope">
-              <!-- <el-input style="width: 100%" v-model="scope.row.recommendBonus" placeholder="请输入推荐奖励"></el-input> -->
-              <el-input-number
-                style="width: 100%"
-                v-model="scope.row.recommendBonus"
-                controls-position="right"
-              ></el-input-number>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="groupBonus"
-            align="center"
-            label="团队分红（%）"
-            :render-header="renderHeaderMethods"
-          >
-            <template slot-scope="scope">
-              <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
-              <el-input-number
-                style="width: 100%"
-                v-model="scope.row.groupBonus"
-                controls-position="right"
-              ></el-input-number>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="adBonus"
-            align="center"
-            label="广告分红（%）"
-            :render-header="renderHeaderMethods"
-          >
-            <template slot-scope="scope">
-              <!-- <el-input style="width: 100%" v-model="scope.row.adBonus" placeholder="请输入广告分红"></el-input> -->
-              <el-input-number
-                style="width: 100%"
-                v-model="scope.row.adBonus"
-                controls-position="right"
-              ></el-input-number>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="adBonusMax"
-            align="center"
-            label="广告分红最大值"
-            width="180"
-            :render-header="renderHeaderMethods"
-          >
-            <template slot-scope="scope">
-              <!-- <el-input style="width: 100%" v-model="scope.row.adBonusMax" placeholder="请输入广告分红"></el-input> -->
-              <el-input-number
-                style="width: 100%"
-                v-model="scope.row.adBonusMax"
-                controls-position="right"
-              ></el-input-number>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="manageBonus"
-            align="center"
-            label="管理奖金（%）"
-            :render-header="renderHeaderMethods"
-          >
-            <template slot-scope="scope">
-              <!-- <el-input style="width: 100%" v-model="scope.row.manageBonus" placeholder="请输入管理奖金"></el-input> -->
-              <el-input-number
-                style="width: 100%"
-                v-model="scope.row.manageBonus"
-                controls-position="right"
-              ></el-input-number>
-            </template>
-          </el-table-column>
-          <!-- <el-table-column
-              prop="countryBonus"
-              align="center"
-              label="全国分红（%）"
-              :render-header="renderHeaderMethods">
+            <el-table-column prop="examineName" align="center" label="考核名称">
               <template slot-scope="scope">
-                <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input>
-                <el-input-number style="width: 100%" v-model="scope.row.countryBonus" controls-position="right"></el-input-number>
+                <el-input
+                  style="width: 100%"
+                  v-model="scope.row.examineName"
+                  placeholder="请输入名称"
+                ></el-input>
               </template>
-            </el-table-column> -->
-          <el-table-column prop="saleAmount" align="center" label="达标业绩">
-            <template slot-scope="scope">
-              <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
-              <el-input-number
-                style="width: 100%"
-                v-model="scope.row.saleAmount"
-                controls-position="right"
-              ></el-input-number>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-form-item label="排名奖励">
+            </el-table-column>
+            <el-table-column prop="startTime" align="center" label="开始时间">
+              <template slot-scope="scope">
+                <el-date-picker
+                  style="width: 100%"
+                  v-model="scope.row.startTime"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </template>
+            </el-table-column>
+            <el-table-column prop="endTime" align="center" label="结束时间">
+              <template slot-scope="scope">
+                <el-date-picker
+                  style="width: 100%"
+                  v-model="scope.row.endTime"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </template>
+            </el-table-column>
+            <el-table-column prop="examineAmount" align="center" label="考核业绩">
+              <template slot-scope="scope">
+                <el-input-number
+                  style="width: 100%"
+                  v-model="scope.row.examineAmount"
+                  controls-position="right"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column prop="sorts" align="center" sortable label="排序">
+              <template slot-scope="scope">
+                <el-input-number
+                  style="width: 100%"
+                  v-model="scope.row.sorts"
+                  controls-position="right"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作" width="70">
+              <template slot-scope="scope">
+                <el-button type="danger" icon="el-icon-delete" @click="del1(scope.row)" circle></el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form-item>
+        <el-divider></el-divider>
+        <div class="name">联创分红设置</div>
+        <!-- <el-button type="primary" @click="addDisGradeList()">新增级别</el-button> -->
+        <el-form-item label="">
+          <el-table :data="form.schemeGradeList" border style="width: 100%">
+            <el-table-column type="index" width="50" align="center" label="序号">
+            </el-table-column>
+            <el-table-column prop="gradeName" align="center" label="级别名称">
+              <template slot-scope="scope">
+                <el-input
+                  style="width: 100%"
+                  v-model="scope.row.gradeName"
+                  placeholder="请输入级别名称"
+                ></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="recommendBonus"
+              align="center"
+              label="推荐奖励（%）"
+              :render-header="renderHeaderMethods"
+            >
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.recommendBonus" placeholder="请输入推荐奖励"></el-input> -->
+                <el-input-number
+                  style="width: 100%"
+                  v-model="scope.row.recommendBonus"
+                  controls-position="right"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="groupBonus"
+              align="center"
+              label="团队分红（%）"
+              :render-header="renderHeaderMethods"
+            >
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
+                <el-input-number
+                  style="width: 100%"
+                  v-model="scope.row.groupBonus"
+                  controls-position="right"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="adBonus"
+              align="center"
+              label="广告分红（%）"
+              :render-header="renderHeaderMethods"
+            >
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.adBonus" placeholder="请输入广告分红"></el-input> -->
+                <el-input-number
+                  style="width: 100%"
+                  v-model="scope.row.adBonus"
+                  controls-position="right"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="adBonusMax"
+              align="center"
+              label="广告分红最大值"
+              width="180"
+              :render-header="renderHeaderMethods"
+            >
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.adBonusMax" placeholder="请输入广告分红"></el-input> -->
+                <el-input-number
+                  style="width: 100%"
+                  v-model="scope.row.adBonusMax"
+                  controls-position="right"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="manageBonus"
+              align="center"
+              label="管理奖金（%）"
+              :render-header="renderHeaderMethods"
+            >
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.manageBonus" placeholder="请输入管理奖金"></el-input> -->
+                <el-input-number
+                  style="width: 100%"
+                  v-model="scope.row.manageBonus"
+                  controls-position="right"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column
+                prop="countryBonus"
+                align="center"
+                label="全国分红（%）"
+                :render-header="renderHeaderMethods">
+                <template slot-scope="scope">
+                  <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input>
+                  <el-input-number style="width: 100%" v-model="scope.row.countryBonus" controls-position="right"></el-input-number>
+                </template>
+              </el-table-column> -->
+            <el-table-column prop="saleAmount" align="center" label="达标业绩">
+              <template slot-scope="scope">
+                <!-- <el-input style="width: 100%" v-model="scope.row.groupBonus" placeholder="请输入团队分红"></el-input> -->
+                <el-input-number
+                  style="width: 100%"
+                  v-model="scope.row.saleAmount"
+                  controls-position="right"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form-item>
+        <el-divider></el-divider>
+        <div class="name">排名奖励</div>
+        <el-form-item label=" ">
           <div style="width: 100%">
             <el-button type="primary" @click="rankList()">新增排名</el-button>
           </div>
           <el-form-item label="排名类型" style="margin-top: 20px" class="form" prop="countryBonus">
             <el-radio-group v-model="form.calModel">
-              <el-radio :label="'1'">百分比</el-radio>
-              <el-radio :label="'2'">固定金额</el-radio>
+              <el-radio :label="1">百分比</el-radio>
+              <el-radio :label="2">固定金额</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="排名奖励百分比" v-if="form.calModel == 1" class="form" prop="countryBonus">
@@ -314,14 +387,14 @@
                 <!-- <el-input style="width: 100%" v-model="scope.row.bonus" placeholder="请输入奖励"></el-input> -->
                 <div v-if="form.calModel == 1">
                   <el-input-number
-                    style="width: 87%"
+                    style="width: 86%"
                     v-model="scope.row.bonus"
                     controls-position="right"
                   ></el-input-number>（%）
                 </div>
                 <div v-if="form.calModel == 2">
                   <el-input-number
-                    style="width: 87%"
+                    style="width: 86%"
                     v-model="scope.row.bonus"
                     controls-position="right"
                   ></el-input-number>（元）
@@ -336,6 +409,11 @@
                   v-model="scope.row.sorts"
                   controls-position="right"
                 ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="操作" width="70">
+              <template slot-scope="scope">
+                <el-button type="danger" icon="el-icon-delete" @click="del(scope.row)" circle></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -422,10 +500,11 @@ export default {
         status: "0",
         startTime: null,
         endTime: null,
-        calModel: '1',
+        calModel: 1,
         rankRate: null,
         schemeGradeList: [],
         rankRewardList: [],
+        partnerList: [],
       };
       this.resetForm("form");
     },
@@ -526,6 +605,16 @@ export default {
       list.rankName = `第${this.form.rankRewardList.length + 1}名`;
       this.form.rankRewardList.push(list);
     },
+    rankList1() {
+      let list = {
+        examineName: null,
+        startTime: null,
+        endTime: null,
+        examineAmount: null,
+        sorts: null
+      };
+      this.form.partnerList.push(list);
+    },
     // 提示标签
     renderHeaderMethods(h, { column }) {
       let name = null;
@@ -575,6 +664,37 @@ export default {
         ),
       ]);
     },
+    del(row) {
+      this.form.rankRewardList.forEach((res, index) => {
+        if(res == row) {
+          this.form.rankRewardList.splice(index, 1);
+          this.form.rankRewardList.sort(this.compare('sorts'))
+          this.form.rankRewardList.forEach((item, index) => {
+            item.rankName = `第${index + 1}名`
+            item.sorts = index + 1;
+          })
+        }
+      })
+    },
+    del1(row) {
+      this.form.partnerList.forEach((res, index) => {
+        if(res == row) {
+          this.form.partnerList.splice(index, 1);
+          this.form.partnerList.sort(this.compare('sorts'))
+          this.form.partnerList.forEach((item, index) => {
+            item.sorts = index + 1;
+          })
+        }
+      })
+    },
+    // 排序方法
+    compare (property) {
+      return function (a, b) {
+        var value1 = a[property];
+        var value2 = b[property];
+        return value1 - value2;
+      }
+    }
   },
 };
 </script>
@@ -586,5 +706,10 @@ export default {
 }
 ::v-deep .el-date-editor {
   width: 100%;
+}
+.name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 </style>
