@@ -1,33 +1,30 @@
 <template>
   <div class="app-container">
-    <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true">
-      <el-form-item label="分销人员名称" prop="realName">
-        <el-input v-model="queryParams.realName" placeholder="请输入分销人员名称" clearable size="small" @keyup.enter.native="handleQuery" />
-      </el-form-item>
-<!--      <el-form-item label="状态" prop="status">-->
-<!--        <el-select v-model="queryParams.status" placeholder="分销人员状态" clearable size="small">-->
-<!--          <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value" />-->
-<!--        </el-select>-->
+<!--    <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true">-->
+<!--      <el-form-item label="分销人员名称" prop="realName">-->
+<!--        <el-input v-model="queryParams.realName" placeholder="请输入分销人员名称" clearable size="small" @keyup.enter.native="handleQuery" />-->
 <!--      </el-form-item>-->
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+<!--      &lt;!&ndash;      <el-form-item label="状态" prop="status">&ndash;&gt;-->
+<!--      &lt;!&ndash;        <el-select v-model="queryParams.status" placeholder="分销人员状态" clearable size="small">&ndash;&gt;-->
+<!--      &lt;!&ndash;          <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value" />&ndash;&gt;-->
+<!--      &lt;!&ndash;        </el-select>&ndash;&gt;-->
+<!--      &lt;!&ndash;      </el-form-item>&ndash;&gt;-->
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button v-hasPermi="['system:dept:add']" type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button type="info" plain icon="el-icon-sort" size="mini" @click="toggleExpandAll">展开/折叠</el-button>
-      </el-col>
-<!--      <right-toolbar :show-search.sync="showSearch" @queryTable="getList" />-->
+      <!--      <right-toolbar :show-search.sync="showSearch" @queryTable="getList" />-->
     </el-row>
 
     <el-table v-if="refreshTable" v-loading="loading" :data="deptList" row-key="id" :default-expand-all="isExpandAll" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column prop="realName" label="用户名称" width="260" />
-<!--      <el-table-column prop="parentName" label="上级成员" width="260" />-->
+      <!--      <el-table-column prop="parentName" label="上级成员" width="260" />-->
       <el-table-column align="center" prop="schemeGradeId"  label="等级名称" width="200">
         <template  slot-scope="scope">
           {{ formatterSex(scope.row) }}
@@ -35,12 +32,12 @@
       </el-table-column>
       <el-table-column prop="province" label="省" width="120" />
       <el-table-column prop="city" label="市" width="120" />
-<!--      <el-table-column prop="sex" label="性别" width="100" />-->
-<!--      <el-table-column prop="status" label="状态" width="100">-->
-<!--        <template slot-scope="scope">-->
-<!--          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status" />-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column prop="sex" label="性别" width="100" />-->
+      <!--      <el-table-column prop="status" label="状态" width="100">-->
+      <!--        <template slot-scope="scope">-->
+      <!--          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status" />-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="创建时间" align="center" prop="createTime" width="200">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -49,22 +46,30 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-hasPermi="['system:dept:edit']" size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button v-hasPermi="['system:dept:add']" size="mini" type="text" icon="el-icon-plus" @click="handleAdd(scope.row)">新增</el-button>
           <el-button v-if="scope.row.parentId != 0" v-hasPermi="['system:dept:remove']" size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
+    <el-pagination
+      v-show="total>0"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="queryParams.pageNum"
+      :page-sizes="[10, 20, 30, 40]"
+      :page-size="queryParams.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
     <!-- 添加或修改分销人员对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="上级成员" prop="parentId">
-              <treeselect v-model="form.parentId" :options="deptOptions" :normalizer="normalizer" placeholder="选择上级分销人员" />
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--        <el-row>-->
+<!--          <el-col :span="24">-->
+<!--            <el-form-item label="上级成员" prop="parentId">-->
+<!--              <treeselect v-model="form.parentId" :options="deptOptions" :normalizer="normalizer" placeholder="选择上级分销人员" />-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
         <el-row>
           <el-col :span="12">
             <el-form-item label="用户名称" prop="realName">
@@ -72,17 +77,28 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="等级名称" prop="schemeGradeId">
-              <el-select v-model="form.schemeGradeId"  ref="ref_leader" @change="changeOption" placeholder="请选择等级名称" clearable size="small">
-                <el-option
-                  v-for="dept in deptOpetionList"
-                  :key="dept.id"
-                  :label="dept.gradeName"
-                  :value="dept.id"
-                />
-              </el-select>
+            <el-form-item label="性别">
+              <el-radio-group v-model="form.sex">
+                <el-radio
+                  v-for="dict in sexList"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
+<!--          <el-col :span="12">-->
+<!--            <el-form-item label="等级名称" prop="schemeGradeId">-->
+<!--              <el-select v-model="form.schemeGradeId"  ref="ref_leader" @change="changeOption" placeholder="请选择等级名称" clearable size="small">-->
+<!--                <el-option-->
+<!--                  v-for="dept in deptOpetionList"-->
+<!--                  :key="dept.id"-->
+<!--                  :label="dept.gradeName"-->
+<!--                  :value="dept.id"-->
+<!--                />-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
 
         </el-row>
         <el-row>
@@ -110,22 +126,12 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
-            <el-form-item label="性别">
-              <el-radio-group v-model="form.sex">
-                <el-radio
-                  v-for="dict in sexList"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-<!--          <el-col :span="12">-->
-<!--            <el-form-item label="联系电话" prop="phone">-->
-<!--              <el-input v-model="form.phone" placeholder="请输入联系电话" maxlength="11" />-->
-<!--            </el-form-item>-->
-<!--          </el-col>-->
+
+          <!--          <el-col :span="12">-->
+          <!--            <el-form-item label="联系电话" prop="phone">-->
+          <!--              <el-input v-model="form.phone" placeholder="请输入联系电话" maxlength="11" />-->
+          <!--            </el-form-item>-->
+          <!--          </el-col>-->
         </el-row>
 
       </el-form>
@@ -168,12 +174,17 @@ export default {
       // 查询参数
       queryParams: {
         realName: undefined,
-        status: undefined
+        status: undefined,
+        userType:6,
+        pageNum: 1,
+        pageSize: 10
       },
+      // 总条数
+      total: 0,
       sexList:[
         {
-         label:'男',
-         value:1
+          label:'男',
+          value:1
         },
         {
           label:'女',
@@ -237,7 +248,7 @@ export default {
     formatterSex(row){
       for (let i = 0; i < this.deptOpetionList.length; i++) {
         if(this.deptOpetionList[i].id == row.schemeGradeId){
-            return this.deptOpetionList[i].gradeName
+          return this.deptOpetionList[i].gradeName
         }
       }
     },
@@ -245,9 +256,8 @@ export default {
     getList() {
       this.loading = true
       listDept(this.queryParams).then(response => {
-        console.log('res',response)
-        this.deptList = this.handleTree(response.rows, 'id')
-        console.log('this.deptList',this.deptList)
+        this.deptList = response.rows
+        this.total = response.total
         this.loading = false
       })
     },
@@ -280,8 +290,9 @@ export default {
         pwd:null,
         realName:null,
         parentId: null,
-        schemeGradeId:null,
+        schemeGradeId:6,
         sex:0,
+        userType:6
         // orderNum: undefined,
         // leader: undefined,
         // leaderId: undefined,
@@ -295,6 +306,16 @@ export default {
     handleQuery() {
       this.getList()
     },
+    handleSizeChange(val) {
+      // console.log(`每页 ${val} 条`);
+      this.queryParams.pageNum = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.queryParams.pageSize = val;
+      this.getList();
+    },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm('queryForm')
@@ -307,7 +328,7 @@ export default {
         this.form.parentId = row.id
       }
       this.open = true
-      this.title = '添加分销人员'
+      this.title = '添加合伙人'
       listDept().then(response => {
         this.deptOptions = this.handleTree(response.rows, 'id')
       })
@@ -329,7 +350,7 @@ export default {
       getDept(row.id).then(response => {
         this.form = response
         this.open = true
-        this.title = '修改分销人员'
+        this.title = '修改合伙人'
       })
       // listDeptExcludeChild(row.deptId).then(response => {
       //   this.deptOptions = this.handleTree(response.data, 'deptId')

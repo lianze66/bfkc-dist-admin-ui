@@ -25,6 +25,12 @@ const distributionRouter = {
       meta: { title: '团队管理', icon: '' }
     },
     {
+      path: 'partnerManagement',
+      component: () => import('@/views/distributionSet/partnerManagement'),
+      name: 'partnerManagement',
+      meta: { title: '合伙人管理', icon: '' }
+    },
+    {
       path: 'withdrawCash',
       component: () => import('@/views/distributionSet/withdrawCash'),
       name: 'withdrawCash',
@@ -48,6 +54,7 @@ const distributionRouter = {
       name: 'teamPerformance',
       meta: { title: '团队业绩', icon: '' }
     },
+
     {
       path: 'withdrawal',
       component: () => import('@/views/distributionSet/withdrawal'),
