@@ -23,11 +23,11 @@
       <el-table-column  align="center" prop="groupBonus" label="团队分红" width="120" />
       <el-table-column  align="center" prop="adBonus" label="广告分红" width="120" />
       <el-table-column  align="center" prop="manageBonus" label="管理奖金" width="120" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="创建时间" align="center" prop="createTime" width="200">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.createTime) }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
 
   </div>

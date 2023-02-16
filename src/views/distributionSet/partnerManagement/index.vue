@@ -24,12 +24,14 @@
 
     <el-table v-if="refreshTable" v-loading="loading" :data="deptList" row-key="id" :default-expand-all="isExpandAll" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column prop="realName" label="用户名称" width="260" />
+      <el-table-column prop="account" label="登录账号" width="150" />
+      <el-table-column prop="phone" label="电话号码" width="150" />
       <!--      <el-table-column prop="parentName" label="上级成员" width="260" />-->
-      <el-table-column align="center" prop="schemeGradeId"  label="等级名称" width="200">
-        <template  slot-scope="scope">
-          {{ formatterSex(scope.row) }}
-        </template>
-      </el-table-column>
+<!--      <el-table-column align="center" prop="schemeGradeId"  label="等级名称" width="200">-->
+<!--        <template  slot-scope="scope">-->
+<!--          {{ formatterSex(scope.row) }}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column prop="province" label="省" width="120" />
       <el-table-column prop="city" label="市" width="120" />
       <!--      <el-table-column prop="sex" label="性别" width="100" />-->
